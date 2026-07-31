@@ -3,6 +3,15 @@ const { useState, useEffect, createContext, useContext } = React;
 // Helper Functions
 const generateId = () => Math.random().toString(36).substr(2, 9);
 const generateTripCode = () => Math.random().toString(36).substr(2, 6).toUpperCase();
+const formatCurrency = (val) => {
+  if (!val && val !== 0) return '';
+  const num = val.toString().replace(/[^0-9]/g, '');
+  return num ? parseInt(num, 10).toLocaleString('en-US') : '';
+};
+const parseCurrency = (val) => {
+  if (!val) return 0;
+  return parseFloat(val.toString().replace(/,/g, '')) || 0;
+};
 const compressImage = (file, maxWidth = 800) => {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -118,7 +127,7 @@ const TripProvider = ({ children }) => {
   const createTrip = async (name, budget, category_id = null, coverUrl = null) => {
     const trip = {
       id: generateId(), owner: currentUser, name,
-      totalPlanBudget: parseFloat(budget) || 0,
+      totalPlanBudget: parseCurrency(budget),
       tripCode: generateTripCode(), category_id,
       coverUrl: coverUrl,
       schedules: [], friends: []
@@ -546,7 +555,7 @@ const MyTrips = () => {
                   <label className="form-label">Budget (IDR)</label>
                   <div className="input-group">
                     <span className="input-group-text">Rp</span>
-                    <input type="number" className="form-control" placeholder="5,000,000" value={newTrip.budget} onChange={e => setNewTrip({...newTrip, budget: e.target.value})} required />
+                    <input type="text" inputMode="numeric" className="form-control" placeholder="5,000,000" value={newTrip.budget} onChange={e => setNewTrip({...newTrip, budget: formatCurrency(e.target.value)})} required />
                   </div>
                 </div>
                 <div className="col-md-4">
@@ -697,7 +706,7 @@ const TripDashboard = () => {
               </div>
               <div className="col-md-4">
                 <label className="form-label">Budget</label>
-                <input type="number" className="form-control" value={edit.totalPlanBudget || ''} onChange={e => setEdit({...edit, totalPlanBudget: e.target.value})} />
+                <input type="text" inputMode="numeric" className="form-control" value={formatCurrency(edit.totalPlanBudget)} onChange={e => setEdit({...edit, totalPlanBudget: parseCurrency(e.target.value)})} />
               </div>
               <div className="col-md-4">
                 <label className="form-label">Cover Photo</label>
@@ -743,11 +752,10 @@ const Itinerary = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [newSch, setNewSch] = useState({ date: '', title: '', planBudget: '' });
 
-  if (!activeTrip) return null;
-
   const handleAdd = async (e) => {
     e.preventDefault();
-    await addSchedule({ date: newSch.date, title: newSch.title, planBudget: parseFloat(newSch.planBudget) || 0 });
+    if (!newSch.date || !newSch.title) return;
+    await addSchedule({ date: newSch.date, title: newSch.title, planBudget: parseCurrency(newSch.planBudget) });
     setNewSch({ date: '', title: '', planBudget: '' });
     setShowAdd(false);
   };
@@ -782,7 +790,7 @@ const Itinerary = () => {
                   <label className="form-label">Budget (IDR)</label>
                   <div className="input-group">
                     <span className="input-group-text">Rp</span>
-                    <input type="number" className="form-control" placeholder="0" value={newSch.planBudget} onChange={e => setNewSch({...newSch, planBudget: e.target.value})} />
+                    <input type="text" inputMode="numeric" className="form-control" placeholder="0" value={newSch.planBudget} onChange={e => setNewSch({...newSch, planBudget: formatCurrency(e.target.value)})} />
                   </div>
                 </div>
               </div>
@@ -811,7 +819,7 @@ const Itinerary = () => {
 const ScheduleCard = ({ schedule }) => {
   const { updateSchedule, deleteSchedule } = useTrip();
   const [showComplete, setShowComplete] = useState(false);
-  const [realBudget, setRealBudget] = useState(schedule.realBudget || '');
+  const [realBudget, setRealBudget] = useState(formatCurrency(schedule.realBudget || ''));
   const [photos, setPhotos] = useState(schedule.photos || []);
 
   // Handle multiple file uploads
@@ -836,7 +844,7 @@ const ScheduleCard = ({ schedule }) => {
   };
 
   const handleComplete = () => {
-    updateSchedule(schedule.id, { isCompleted: true, realBudget: parseFloat(realBudget) || 0, photos });
+    updateSchedule(schedule.id, { isCompleted: true, realBudget: parseCurrency(realBudget), photos });
     setShowComplete(false);
   };
 
@@ -871,7 +879,7 @@ const ScheduleCard = ({ schedule }) => {
               <div className="w-100">
                 <div className="row g-2 align-items-end">
                   <div className="col">
-                    <input type="number" className="form-control" placeholder="Actual spending" value={realBudget} onChange={e => setRealBudget(e.target.value)} />
+                    <input type="text" inputMode="numeric" className="form-control" placeholder="Actual spending" value={realBudget} onChange={e => setRealBudget(formatCurrency(e.target.value))} />
                   </div>
                   <div className="col-auto">
                     <button className="btn btn-success btn-sm" onClick={handleComplete}>Confirm</button>
