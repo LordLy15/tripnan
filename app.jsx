@@ -499,13 +499,13 @@ const MyTrips = () => {
 
   return (
     <div className="animate-fade-in">
-      <div className="d-flex justify-content-between align-items-center mb-4">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>
           <h1 className="h3 fw-bold mb-1">My Trips</h1>
           <p className="text-muted mb-0">{trips.length} trips planned</p>
         </div>
-        <div className="d-flex gap-2">
-          <select className="form-select" value={filterCat} onChange={e => setFilterCat(e.target.value)} style={{ width: 'auto' }}>
+        <div className="d-flex flex-wrap gap-2">
+          <select className="form-select" value={filterCat} onChange={e => setFilterCat(e.target.value)} style={{ width: 'auto', flexGrow: 1 }}>
             <option value="">All Categories</option>
             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
@@ -757,7 +757,7 @@ const Itinerary = () => {
   return (
     <div className="animate-fade-in">
       <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('trip-dashboard')}><Icon name="arrow-left" size={16} /> Back</button>
-      <div className="d-flex justify-content-between align-items-center mb-4">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div><h2 className="fw-bold mb-1">Itinerary</h2><p className="text-muted mb-0">Plan your activities</p></div>
         <button className={`btn ${showAdd ? 'btn-secondary' : 'btn-primary'}`} onClick={() => setShowAdd(!showAdd)}>
           <Icon name={showAdd ? 'x' : 'plus'} size={16} /> {showAdd ? 'Cancel' : 'Add Activity'}

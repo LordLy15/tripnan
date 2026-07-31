@@ -133,9 +133,20 @@ try {
                 }
                 $trip['schedules'] = $schedules;
 
-                $frStmt = $pdo->prepare("SELECT * FROM friends WHERE trip_id = ?");
+                $frStmt = $pdo->prepare("SELECT id, name, email FROM friends WHERE trip_id = ?");
                 $frStmt->execute([$trip['id']]);
-                $trip['friends'] = $frStmt->fetchAll(PDO::FETCH_ASSOC);
+                $manualFriends = $frStmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $shStmt = $pdo->prepare("
+                    SELECT ts.id, u.full_name as name, u.email 
+                    FROM trip_shares ts 
+                    JOIN users u ON ts.shared_with = u.username 
+                    WHERE ts.trip_id = ?
+                ");
+                $shStmt->execute([$trip['id']]);
+                $sharedFriends = $shStmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $trip['friends'] = array_merge($manualFriends, $sharedFriends);
                 $trip['totalPlanBudget'] = (float)$trip['totalPlanBudget'];
             }
             echo json_encode(['success' => true, 'trips' => $trips]);
