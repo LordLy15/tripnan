@@ -430,9 +430,12 @@ const PhotoGallery = ({ photos = [], onAdd, onDelete, editable = false, showHead
 
 // My Trips Page
 const MyTrips = () => {
-  const { trips, createTrip, navigateTo, isLoading, categories } = useTrip();
+  const { trips, createTrip, joinTrip, navigateTo, isLoading, categories } = useTrip();
   const [showCreate, setShowCreate] = useState(false);
+  const [showJoin, setShowJoin] = useState(false);
   const [newTrip, setNewTrip] = useState({ name: '', budget: '', category_id: '' });
+  const [joinCode, setJoinCode] = useState('');
+  const [joinError, setJoinError] = useState('');
   const [coverPreview, setCoverPreview] = useState(null);
   const [filterCat, setFilterCat] = useState('');
 
@@ -442,6 +445,20 @@ const MyTrips = () => {
     setNewTrip({ name: '', budget: '', category_id: '' });
     setCoverPreview(null);
     setShowCreate(false);
+  };
+
+  const handleJoin = async (e) => {
+    e.preventDefault();
+    setJoinError('');
+    if (!joinCode) return;
+    const res = await joinTrip(joinCode);
+    if (res.success) {
+      setShowJoin(false);
+      setJoinCode('');
+      alert(res.message);
+    } else {
+      setJoinError(res.message);
+    }
   };
 
   const handleCoverUpload = (e) => {
@@ -468,9 +485,21 @@ const MyTrips = () => {
             <option value="">All Categories</option>
             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
-          <button className="btn btn-primary" onClick={() => setShowCreate(!showCreate)}>
-            <Icon name={showCreate ? 'x' : 'plus'} size={16} /> {showCreate ? 'Cancel' : 'New Trip'}
-          </button>
+          {showCreate || showJoin ? (
+            <button className="btn btn-primary" onClick={() => { setShowCreate(false); setShowJoin(false); }}>
+              <Icon name="x" size={16} /> Cancel
+            </button>
+          ) : (
+            <div className="dropdown">
+              <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <Icon name="plus" size={16} /> New Trip
+              </button>
+              <ul className="dropdown-menu dropdown-menu-end shadow-sm">
+                <li><button className="dropdown-item" onClick={() => setShowCreate(true)}><Icon name="plus" size={14} className="me-2" />Create New Trip</button></li>
+                <li><button className="dropdown-item" onClick={() => setShowJoin(true)}><Icon name="user-plus" size={14} className="me-2" />Join via Code</button></li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
@@ -515,12 +544,35 @@ const MyTrips = () => {
         </div>
       )}
 
+      {showJoin && (
+        <div className="card-trip mb-4 animate-fade-in" style={{ border: '2px solid var(--primary)' }}>
+          <div className="card-body p-4">
+            <h5 className="fw-bold mb-3">Join a Trip</h5>
+            <form onSubmit={handleJoin}>
+              {joinError && <div className="alert alert-danger p-2 small">{joinError}</div>}
+              <div className="row g-3 align-items-end">
+                <div className="col-md-8">
+                  <label className="form-label">Trip Code</label>
+                  <input type="text" className="form-control" placeholder="Enter 6-character code" value={joinCode} onChange={e => setJoinCode(e.target.value.toUpperCase())} required />
+                </div>
+                <div className="col-md-4">
+                  <button type="submit" className="btn btn-primary w-100">Join Trip</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {filtered.length === 0 ? (
         <div className="empty-state">
           <Icon name="compass" size={64} />
           <h4 className="fw-bold">No trips yet</h4>
           <p>Create your first trip to get started!</p>
-          <button className="btn btn-primary mt-2" onClick={() => setShowCreate(true)}><Icon name="plus" size={16} /> Create Trip</button>
+          <div className="d-flex gap-2 justify-content-center mt-2">
+            <button className="btn btn-primary" onClick={() => setShowCreate(true)}><Icon name="plus" size={16} /> Create Trip</button>
+            <button className="btn btn-outline-primary" onClick={() => setShowJoin(true)}><Icon name="user-plus" size={16} /> Join Trip</button>
+          </div>
         </div>
       ) : (
         <div className="row g-4">
@@ -541,7 +593,7 @@ const MyTrips = () => {
                   </div>
                   <div className="card-body">
                     <h5 className="fw-bold mb-1">{trip.name}</h5>
-                    <p className="text-muted small mb-3">Budget: Rp {parseFloat(trip.totalPlanBudget).toLocaleString()}</p>
+                    <p className="text-muted small mb-3">Budget: Rp {parseFloat(trip.totalPlanBudget).toLocaleString('en-US')}</p>
                     <div className="d-flex justify-content-between align-items-center">
                       <span className="small text-muted">{completed}/{total} activities</span>
                       <span className="fw-bold" style={{ color: progress === 100 ? 'var(--success)' : 'var(--primary)' }}>{progress}%</span>
@@ -598,7 +650,7 @@ const TripDashboard = () => {
         <div style={{ position: 'relative' }}>
           <span className="badge">Trip Workspace</span>
           <h1 className="display-5 fw-bold mt-2 mb-1">{activeTrip.name}</h1>
-          <p className="mb-0" style={{ opacity: 0.8 }}>Budget: Rp {parseFloat(activeTrip.totalPlanBudget).toLocaleString()}</p>
+          <p className="mb-0" style={{ opacity: 0.8 }}>Budget: Rp {parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')}</p>
           <div style={{ position: 'absolute', top: 0, right: 0, display: 'flex', gap: 8 }}>
             <button className="btn btn-secondary" onClick={() => { setEdit(activeTrip); setEditing(true) }}><Icon name="edit" size={16} /></button>
             <button className="btn btn-danger btn-sm" onClick={handleDelete}><Icon name="trash" size={16} /></button>
@@ -777,10 +829,10 @@ const ScheduleCard = ({ schedule }) => {
             <span className="badge bg-light"><Icon name="calendar" size={12} /> {new Date(schedule.date).toLocaleDateString()}</span>
           </div>
           <div className="text-end">
-            <p className="text-muted small mb-1">Plan: Rp {parseFloat(schedule.planBudget || 0).toLocaleString()}</p>
+            <p className="text-muted small mb-1">Plan: Rp {parseFloat(schedule.planBudget || 0).toLocaleString('en-US')}</p>
             {schedule.isCompleted && (
               <p className={`fw-bold mb-0 ${schedule.realBudget > schedule.planBudget ? 'text-danger' : 'text-success'}`}>
-                Real: Rp {parseFloat(schedule.realBudget || 0).toLocaleString()}
+                Real: Rp {parseFloat(schedule.realBudget || 0).toLocaleString('en-US')}
               </p>
             )}
           </div>
@@ -936,7 +988,7 @@ const BudgetReport = () => {
               {isOver ? <Icon name="alert-circle" size={60} className="text-danger mb-3" /> : <Icon name="check-circle" size={60} className="text-success mb-3" />}
               <h1 className={`display-4 fw-bold ${isOver ? 'text-danger' : 'text-success'}`}>{isOver ? 'OVER BUDGET' : 'ON BUDGET'}</h1>
               <p className="fs-5 text-muted">
-                {isOver ? <>Over by <strong className="text-danger">Rp {diff.toLocaleString()}</strong></> : <>Saving <strong className="text-success">Rp {Math.abs(diff).toLocaleString()}</strong></>}
+                {isOver ? <>Over by <strong className="text-danger">Rp {diff.toLocaleString('en-US')}</strong></> : <>Saving <strong className="text-success">Rp {Math.abs(diff).toLocaleString('en-US')}</strong></>}
               </p>
             </div>
           )}
@@ -947,7 +999,7 @@ const BudgetReport = () => {
           <div className="card-trip text-center">
             <div className="card-body p-4">
               <p className="text-muted small fw-bold mb-2">PLANNED</p>
-              <h2 className="fw-bold" style={{ color: 'var(--primary)' }}>Rp {totalPlan.toLocaleString()}</h2>
+              <h2 className="fw-bold" style={{ color: 'var(--primary)' }}>Rp {totalPlan.toLocaleString('en-US')}</h2>
             </div>
           </div>
         </div>
@@ -955,7 +1007,7 @@ const BudgetReport = () => {
           <div className="card-trip text-center">
             <div className="card-body p-4">
               <p className="text-muted small fw-bold mb-2">ACTUAL</p>
-              <h2 className={`fw-bold ${isOver ? 'text-danger' : 'text-success'}`}>Rp {totalReal.toLocaleString()}</h2>
+              <h2 className={`fw-bold ${isOver ? 'text-danger' : 'text-success'}`}>Rp {totalReal.toLocaleString('en-US')}</h2>
             </div>
           </div>
         </div>
@@ -963,11 +1015,11 @@ const BudgetReport = () => {
       <div className="card-trip">
         <div className="card-body p-4">
           <h5 className="fw-bold mb-1">Trip Allowance</h5>
-          <p className="text-muted small">Budget: Rp {parseFloat(activeTrip.totalPlanBudget).toLocaleString()}</p>
+          <p className="text-muted small">Budget: Rp {parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')}</p>
           {totalReal > activeTrip.totalPlanBudget ? (
-            <div className="alert alert-danger"><Icon name="alert-triangle" size={20} /> Exceeded by Rp {(totalReal - activeTrip.totalPlanBudget).toLocaleString()}</div>
+            <div className="alert alert-danger"><Icon name="alert-triangle" size={20} /> Exceeded by Rp {(totalReal - activeTrip.totalPlanBudget).toLocaleString('en-US')}</div>
           ) : (
-            <div className="alert alert-success"><Icon name="check-circle" size={20} /> Rp {(activeTrip.totalPlanBudget - totalReal).toLocaleString()} remaining</div>
+            <div className="alert alert-success"><Icon name="check-circle" size={20} /> Rp {(activeTrip.totalPlanBudget - totalReal).toLocaleString('en-US')} remaining</div>
           )}
         </div>
       </div>
@@ -1156,7 +1208,7 @@ const NotificationsPage = () => {
                 <div className="flex-grow-1">
                   <h6 className="mb-1">{n.title}</h6>
                   <p className="text-muted small mb-0">{n.message}</p>
-                  <small className="text-muted">{new Date(n.created_at).toLocaleString()}</small>
+                  <small className="text-muted">{new Date(n.created_at).toLocaleString('en-US')}</small>
                 </div>
                 {!n.is_read && <span className="rounded-circle bg-primary" style={{ width: 8, height: 8 }} />}
               </div>
