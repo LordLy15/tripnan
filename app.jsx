@@ -998,7 +998,7 @@ const ScheduleCard = ({ schedule }) => {
                 </label>
                 <div className="d-flex flex-nowrap gap-2">
                   <button className="btn btn-success btn-sm flex-grow-1" onClick={() => setShowComplete(true)}><Icon name="check-circle" size={14} /> Complete</button>
-                  <button className="btn btn-outline-secondary btn-sm" onClick={() => setIsEditing(true)}><Icon name="edit-2" size={14} /></button>
+                  <button className="btn btn-outline-secondary btn-sm" onClick={() => setIsEditing(true)}><Icon name="edit" size={14} /></button>
                   <button className="btn btn-outline-danger btn-sm" onClick={() => deleteSchedule(schedule.id)}><Icon name="trash" size={14} /></button>
                 </div>
               </>
@@ -1007,7 +1007,7 @@ const ScheduleCard = ({ schedule }) => {
             <div className="w-100 d-flex justify-content-between align-items-center">
               <span className="badge bg-success"><Icon name="check-circle" size={12} /> Completed</span>
               <div>
-                <button className="btn btn-outline-secondary btn-sm me-2" onClick={() => setIsEditing(true)}><Icon name="edit-2" size={14} /></button>
+                <button className="btn btn-outline-secondary btn-sm me-2" onClick={() => setIsEditing(true)}><Icon name="edit" size={14} /></button>
                 <button className="btn btn-outline-danger btn-sm" onClick={() => deleteSchedule(schedule.id)}><Icon name="trash" size={14} /></button>
               </div>
             </div>
