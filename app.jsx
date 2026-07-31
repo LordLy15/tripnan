@@ -520,20 +520,20 @@ const MyTrips = () => {
             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
           {showCreate || showJoin ? (
-            <button className="btn btn-primary" onClick={() => { setShowCreate(false); setShowJoin(false); }}>
+            <button className="btn btn-outline-secondary" onClick={() => { setShowCreate(false); setShowJoin(false); }}>
               <Icon name="x" size={16} /> Cancel
             </button>
           ) : (
             <div className="position-relative" style={{ display: 'inline-block' }}>
-              <button className="btn btn-primary" type="button" onClick={() => setShowDropdown(!showDropdown)}>
-                <Icon name="plus" size={16} /> New Trip
+              <button className="btn btn-light border d-flex align-items-center gap-2" type="button" onClick={() => setShowDropdown(!showDropdown)} style={{ backgroundColor: '#f8f9fa' }}>
+                Add New <Icon name={showDropdown ? "chevron-up" : "chevron-down"} size={16} />
               </button>
               {showDropdown && (
                 <>
                   <div className="position-fixed top-0 start-0 w-100 h-100" style={{ zIndex: 999 }} onClick={() => setShowDropdown(false)}></div>
-                  <ul className="dropdown-menu shadow-sm show" style={{ position: 'absolute', right: 0, top: '100%', zIndex: 1000, marginTop: '4px' }}>
-                    <li><button className="dropdown-item" onClick={() => { setShowDropdown(false); setShowCreate(true); }}><Icon name="plus" size={14} className="me-2" />Create New Trip</button></li>
-                    <li><button className="dropdown-item" onClick={() => { setShowDropdown(false); setShowJoin(true); }}><Icon name="user-plus" size={14} className="me-2" />Join via Code</button></li>
+                  <ul className="dropdown-menu shadow show py-2" style={{ position: 'absolute', right: 0, top: '100%', zIndex: 1000, marginTop: '8px', minWidth: '180px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                    <li><button className="dropdown-item py-2 d-flex align-items-center" onClick={() => { setShowDropdown(false); setShowCreate(true); }}><Icon name="plus-circle" size={16} className="me-2 text-primary" />Create New Trip</button></li>
+                    <li><button className="dropdown-item py-2 d-flex align-items-center" onClick={() => { setShowDropdown(false); setShowJoin(true); }}><Icon name="users" size={16} className="me-2 text-success" />Join via Code</button></li>
                   </ul>
                 </>
               )}
