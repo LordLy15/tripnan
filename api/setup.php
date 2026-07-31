@@ -7,9 +7,9 @@ echo "<div class='container'><div class='card shadow'><div class='card-body'>";
 echo "<h2 class='text-center mb-4'>TripNan Database Setup (Supabase)</h2>";
 
 // Supabase Connection
-$host = 'db.xxxxxx.supabase.co'; // Ganti dengan Host Supabase Anda
-$user = 'postgres';
-$pass = 'password_supabase_anda'; // Ganti dengan Password Anda
+$host = 'aws-0-ap-southeast-2.pooler.supabase.com'; // Ganti dengan Host Supabase Anda
+$user = 'postgres.yzcnevaoeocpzyyhkaaj';
+$pass = 'AOJGXoijycm507dR'; // Ganti dengan Password Anda
 $dbname = 'postgres';
 $port = '5432';
 

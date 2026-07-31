@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // Supabase Database Connection
-$host = 'db.yzcnevaoeocpzyyhkaaj.supabase.co'; // Ganti dengan Host Supabase Anda
-$user = 'postgres';
+$host = 'aws-0-ap-southeast-2.pooler.supabase.com'; // Ganti dengan Host Supabase Anda
+$user = 'postgres.yzcnevaoeocpzyyhkaaj';
 $pass = 'AOJGXoijycm507dR'; // Ganti dengan Password Anda
 $dbname = 'postgres';
 $port = '5432';
