@@ -834,7 +834,6 @@ const Itinerary = () => {
         <div className="empty-state">
           <Icon name="calendar" size={64} />
           <h4 className="fw-bold">No activities yet</h4>
-          <button className="btn btn-primary mt-2" onClick={() => setShowAdd(true)}><Icon name="plus" size={16} /> Add First Activity</button>
         </div>
       ) : (
         <div className="d-flex flex-column gap-3">
