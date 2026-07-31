@@ -1,67 +1,63 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-echo "<html><head><title>TripNan Setup</title>";
+echo "<html><head><title>TripNan Setup (Supabase)</title>";
 echo "<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>";
 echo "<style>body{padding:50px;background:#f8f9fa}</style></head><body>";
 echo "<div class='container'><div class='card shadow'><div class='card-body'>";
-echo "<h2 class='text-center mb-4'>TripNan Database Setup</h2>";
+echo "<h2 class='text-center mb-4'>TripNan Database Setup (Supabase)</h2>";
 
-$host = 'localhost';
-$user = 'root';
-$pass = '';
+// Supabase Connection
+$host = 'db.xxxxxx.supabase.co'; // Ganti dengan Host Supabase Anda
+$user = 'postgres';
+$pass = 'password_supabase_anda'; // Ganti dengan Password Anda
+$dbname = 'postgres';
+$port = '5432';
 
 try {
-    $pdo = new PDO("mysql:host=$host", $user, $pass);
+    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $dbname = 'tripnan_db';
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbname` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-    echo "<div class='alert alert-success'>Database '$dbname' ready.</div>";
-
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    echo "<div class='alert alert-success'>Connected to Supabase successfully.</div>";
 
     // Drop old tables if exist
-    $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
-    $pdo->exec("DROP TABLE IF EXISTS notifications");
-    $pdo->exec("DROP TABLE IF EXISTS trip_shares");
-    $pdo->exec("DROP TABLE IF EXISTS trip_templates");
-    $pdo->exec("DROP TABLE IF EXISTS friends");
-    $pdo->exec("DROP TABLE IF EXISTS schedules");
-    $pdo->exec("DROP TABLE IF EXISTS trips");
-    $pdo->exec("DROP TABLE IF EXISTS trip_categories");
-    $pdo->exec("DROP TABLE IF EXISTS password_resets");
-    $pdo->exec("DROP TABLE IF EXISTS users");
-    $pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
+    $pdo->exec("DROP TABLE IF EXISTS notifications CASCADE");
+    $pdo->exec("DROP TABLE IF EXISTS trip_shares CASCADE");
+    $pdo->exec("DROP TABLE IF EXISTS trip_templates CASCADE");
+    $pdo->exec("DROP TABLE IF EXISTS friends CASCADE");
+    $pdo->exec("DROP TABLE IF EXISTS schedules CASCADE");
+    $pdo->exec("DROP TABLE IF EXISTS trips CASCADE");
+    $pdo->exec("DROP TABLE IF EXISTS trip_categories CASCADE");
+    $pdo->exec("DROP TABLE IF EXISTS password_resets CASCADE");
+    $pdo->exec("DROP TABLE IF EXISTS users CASCADE");
     echo "<div class='alert alert-info'>Old tables removed.</div>";
 
     // Create users table
     $pdo->exec("
         CREATE TABLE users (
-            id INT AUTO_INCREMENT PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
             username VARCHAR(50) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
             email VARCHAR(255) DEFAULT NULL,
             full_name VARCHAR(100) DEFAULT NULL,
             avatar VARCHAR(500) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
     ");
     echo "<div class='alert alert-success'>Table 'users' created.</div>";
 
     // Create password_resets table
     $pdo->exec("
         CREATE TABLE password_resets (
-            id INT AUTO_INCREMENT PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
             email VARCHAR(255) NOT NULL,
             token VARCHAR(255) NOT NULL,
             expires_at TIMESTAMP NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_email (email),
-            INDEX idx_token (token)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
     ");
+    $pdo->exec("CREATE INDEX idx_password_resets_email ON password_resets(email)");
+    $pdo->exec("CREATE INDEX idx_password_resets_token ON password_resets(token)");
     echo "<div class='alert alert-success'>Table 'password_resets' created.</div>";
 
     // Create trip_categories table
@@ -72,10 +68,10 @@ try {
             name VARCHAR(100) NOT NULL,
             color VARCHAR(20) DEFAULT '#0d6efd',
             icon VARCHAR(50) DEFAULT 'tag',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_owner (owner)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
     ");
+    $pdo->exec("CREATE INDEX idx_trip_categories_owner ON trip_categories(owner)");
     echo "<div class='alert alert-success'>Table 'trip_categories' created.</div>";
 
     // Insert default categories
@@ -95,10 +91,10 @@ try {
             totalPlanBudget DECIMAL(15,2) DEFAULT 0,
             tripCode VARCHAR(20) NOT NULL,
             category_id VARCHAR(50) DEFAULT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_owner (owner)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
     ");
+    $pdo->exec("CREATE INDEX idx_trips_owner ON trips(owner)");
     echo "<div class='alert alert-success'>Table 'trips' created.</div>";
 
     // Create schedules table
@@ -111,10 +107,10 @@ try {
             planBudget DECIMAL(15,2) DEFAULT 0,
             realBudget DECIMAL(15,2) DEFAULT 0,
             isCompleted BOOLEAN DEFAULT FALSE,
-            imageUrl MEDIUMTEXT DEFAULT NULL,
-            INDEX idx_trip_id (trip_id)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            imageUrl TEXT DEFAULT NULL
+        )
     ");
+    $pdo->exec("CREATE INDEX idx_schedules_trip_id ON schedules(trip_id)");
     echo "<div class='alert alert-success'>Table 'schedules' created.</div>";
 
     // Create friends table
@@ -123,10 +119,10 @@ try {
             id VARCHAR(50) PRIMARY KEY,
             trip_id VARCHAR(50) NOT NULL,
             name VARCHAR(100) NOT NULL,
-            email VARCHAR(100) NOT NULL,
-            INDEX idx_trip_id (trip_id)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            email VARCHAR(100) NOT NULL
+        )
     ");
+    $pdo->exec("CREATE INDEX idx_friends_trip_id ON friends(trip_id)");
     echo "<div class='alert alert-success'>Table 'friends' created.</div>";
 
     // Create trip_templates table
@@ -137,10 +133,10 @@ try {
             name VARCHAR(100) NOT NULL,
             description TEXT DEFAULT NULL,
             template_data TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_owner (owner)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
     ");
+    $pdo->exec("CREATE INDEX idx_trip_templates_owner ON trip_templates(owner)");
     echo "<div class='alert alert-success'>Table 'trip_templates' created.</div>";
 
     // Create trip_shares table
@@ -149,12 +145,12 @@ try {
             id VARCHAR(50) PRIMARY KEY,
             trip_id VARCHAR(50) NOT NULL,
             shared_with VARCHAR(50) NOT NULL,
-            permission ENUM('view', 'edit') DEFAULT 'view',
-            shared_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_trip_id (trip_id),
-            INDEX idx_shared_with (shared_with)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            permission VARCHAR(10) DEFAULT 'view',
+            shared_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
     ");
+    $pdo->exec("CREATE INDEX idx_trip_shares_trip_id ON trip_shares(trip_id)");
+    $pdo->exec("CREATE INDEX idx_trip_shares_shared_with ON trip_shares(shared_with)");
     echo "<div class='alert alert-success'>Table 'trip_shares' created.</div>";
 
     // Create notifications table
@@ -165,13 +161,13 @@ try {
             type VARCHAR(50) NOT NULL,
             title VARCHAR(255) NOT NULL,
             message TEXT DEFAULT NULL,
-            data JSON DEFAULT NULL,
+            data JSONB DEFAULT NULL,
             is_read BOOLEAN DEFAULT FALSE,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_user_id (user_id),
-            INDEX idx_is_read (is_read)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
     ");
+    $pdo->exec("CREATE INDEX idx_notifications_user_id ON notifications(user_id)");
+    $pdo->exec("CREATE INDEX idx_notifications_is_read ON notifications(is_read)");
     echo "<div class='alert alert-success'>Table 'notifications' created.</div>";
 
     echo "<hr><div class='text-center'>";
@@ -183,7 +179,7 @@ try {
     echo "<div class='alert alert-danger'>";
     echo "<h4>Setup Failed!</h4>";
     echo "<p><strong>Error:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
-    echo "<p>Make sure MySQL (XAMPP) is running.</p>";
+    echo "<p>Make sure your Supabase credentials are correct.</p>";
     echo "</div>";
 }
 

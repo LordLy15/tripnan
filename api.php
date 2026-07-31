@@ -12,17 +12,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
-// Database Connection
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$dbname = 'tripnan_db';
+// Supabase Database Connection
+$host = 'db.yzcnevaoeocpzyyhkaaj.supabase.co'; // Ganti dengan Host Supabase Anda
+$user = 'postgres';
+$pass = 'AOJGXoijycm507dR'; // Ganti dengan Password Anda
+$dbname = 'postgres';
+$port = '5432';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Database not found. Please run setup.php first: http://localhost/tripnan/setup.php', 'error' => 'DB_CONNECTION_FAILED']);
+    echo json_encode(['success' => false, 'message' => 'Database connection failed. Check your Supabase credentials.', 'error' => 'DB_CONNECTION_FAILED']);
     exit();
 }
 
