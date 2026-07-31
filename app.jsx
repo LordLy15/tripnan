@@ -686,22 +686,38 @@ const TripDashboard = () => {
         <Icon name="arrow-left" size={16} /> Back to Trips
       </button>
 
-      <div 
-        className="trip-hero mb-4"
-        style={activeTrip.coverUrl ? {
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${activeTrip.coverUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        } : {}}
-      >
-        <div style={{ position: 'relative' }}>
-          <span className="badge">Trip Workspace</span>
-          <h1 className="display-5 fw-bold mt-2 mb-1">{activeTrip.name}</h1>
-          <p className="mb-0" style={{ opacity: 0.8 }}>Budget: Rp {parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')}</p>
-          <div style={{ position: 'absolute', top: 0, right: 0, display: 'flex', gap: 8 }}>
-            <button className="btn btn-secondary" onClick={() => { setEdit(activeTrip); setEditing(true) }}><Icon name="edit" size={16} /></button>
-            <button className="btn btn-danger btn-sm" onClick={handleDelete}><Icon name="trash" size={16} /></button>
+      {activeTrip.coverUrl && (
+        <div 
+          className="mb-4 w-100" 
+          style={{ 
+            height: '240px', 
+            backgroundImage: `url(${activeTrip.coverUrl})`, 
+            backgroundSize: 'cover', 
+            backgroundPosition: 'center',
+            borderRadius: '16px',
+            boxShadow: 'var(--shadow-sm)'
+          }} 
+        />
+      )}
+
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+        <div>
+          <div className="d-flex align-items-center gap-2 mb-2">
+            <span className="badge bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-1">Workspace</span>
+            <span className="badge bg-light text-dark border px-2 py-1 rounded-1 fw-normal">{activeTrip.tripCode}</span>
           </div>
+          <h1 className="h2 fw-bold mb-1 text-dark">{activeTrip.name}</h1>
+          <p className="text-muted mb-0" style={{ fontSize: '1.1rem' }}>
+            Budget: <span className="fw-medium text-dark">Rp {parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')}</span>
+          </p>
+        </div>
+        <div className="d-flex gap-2">
+          <button className="btn btn-light border d-flex align-items-center gap-2 px-3" onClick={() => { setEdit(activeTrip); setEditing(true) }}>
+            <Icon name="edit" size={16} /> Edit
+          </button>
+          <button className="btn btn-outline-danger d-flex align-items-center gap-2 px-3" onClick={handleDelete}>
+            <Icon name="trash" size={16} /> Delete
+          </button>
         </div>
       </div>
 
