@@ -146,7 +146,8 @@ try {
                 $trip['friends'] = array_merge($manualFriends, $sharedFriends);
                 $trip['totalPlanBudget'] = (float)($trip['totalplanbudget'] ?? $trip['totalPlanBudget'] ?? 0);
                 $trip['tripCode'] = $trip['tripcode'] ?? $trip['tripCode'] ?? '';
-                unset($trip['totalplanbudget'], $trip['tripcode']);
+                $trip['coverUrl'] = $trip['coverurl'] ?? $trip['coverUrl'] ?? null;
+                unset($trip['totalplanbudget'], $trip['tripcode'], $trip['coverurl']);
             }
             echo json_encode(['success' => true, 'trips' => $trips]);
             break;
@@ -159,9 +160,10 @@ try {
             $budget = isset($input['totalPlanBudget']) ? $input['totalPlanBudget'] : 0;
             $code = isset($input['tripCode']) ? $input['tripCode'] : strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
             $category_id = isset($input['category_id']) ? $input['category_id'] : null;
+            $coverUrl = isset($input['coverUrl']) ? $input['coverUrl'] : null;
 
-            $stmt = $pdo->prepare("INSERT INTO trips (id, owner, name, totalPlanBudget, tripCode, category_id) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$id, $owner, $name, $budget, $code, $category_id]);
+            $stmt = $pdo->prepare("INSERT INTO trips (id, owner, name, totalPlanBudget, tripCode, category_id, coverurl) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$id, $owner, $name, $budget, $code, $category_id, $coverUrl]);
             echo json_encode(['success' => true]);
             break;
         }
@@ -175,6 +177,7 @@ try {
             if (isset($input['totalPlanBudget'])) { $updates[] = "totalPlanBudget = ?"; $params[] = $input['totalPlanBudget']; }
             if (isset($input['tripCode'])) { $updates[] = "tripCode = ?"; $params[] = $input['tripCode']; }
             if (isset($input['category_id'])) { $updates[] = "category_id = ?"; $params[] = $input['category_id']; }
+            if (isset($input['coverUrl'])) { $updates[] = "coverurl = ?"; $params[] = $input['coverUrl']; }
 
             if (!empty($updates)) {
                 $params[] = $id;
