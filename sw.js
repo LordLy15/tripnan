@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tripnan-cache-v1';
+const CACHE_NAME = 'tripnan-cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -32,24 +32,19 @@ self.addEventListener('fetch', (event) => {
   if (event.request.url.includes('api/api.php') || event.request.url.includes('api/setup.php')) return;
 
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        if (response) {
-          return response;
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
         }
-        return fetch(event.request).then(
-          (response) => {
-            if(!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            var responseToCache = response.clone();
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-            return response;
-          }
-        );
+        return networkResponse;
+      })
+      .catch(() => {
+        // Fallback to cache if network fails
+        return caches.match(event.request);
       })
   );
 });
