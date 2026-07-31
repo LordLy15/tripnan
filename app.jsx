@@ -900,7 +900,12 @@ const ScheduleCard = ({ schedule }) => {
   };
 
   const handleComplete = () => {
-    updateSchedule(schedule.id, { isCompleted: true, realBudget: parseCurrency(realBudget), photos });
+    updateSchedule(schedule.id, { 
+      isCompleted: true, 
+      realBudget: parseCurrency(realBudget), 
+      completed_at: new Date().toISOString(),
+      photos 
+    });
     setShowComplete(false);
   };
 
@@ -960,12 +965,14 @@ const ScheduleCard = ({ schedule }) => {
           </div>
         )}
 
-        <PhotoGallery
-          photos={photos}
-          editable={!schedule.isCompleted}
-          onAdd={handlePhotoAdd}
-          onDelete={handlePhotoDelete}
-        />
+        {(schedule.isCompleted || isEditing) && (
+          <PhotoGallery
+            photos={photos}
+            editable={isEditing}
+            onAdd={handlePhotoAdd}
+            onDelete={handlePhotoDelete}
+          />
+        )}
         
         {loadingPhotos && (
           <div className="text-center py-2">
@@ -991,21 +998,23 @@ const ScheduleCard = ({ schedule }) => {
                 </div>
               </div>
             ) : (
-              <>
-                <label className="btn btn-outline-primary btn-sm flex-grow-1 flex-md-grow-0 text-center mb-0">
-                  <Icon name="camera" size={14} /> Add Photos
-                  <input type="file" accept="image/*" onChange={handlePhotoAdd} style={{ display: 'none' }} multiple />
-                </label>
-                <div className="d-flex flex-nowrap gap-2">
+              <div className="w-100 d-flex flex-nowrap gap-2">
                   <button className="btn btn-success btn-sm flex-grow-1" onClick={() => setShowComplete(true)}><Icon name="check-circle" size={14} /> Complete</button>
                   <button className="btn btn-outline-secondary btn-sm" onClick={() => setIsEditing(true)}><Icon name="edit" size={14} /></button>
                   <button className="btn btn-outline-danger btn-sm" onClick={() => deleteSchedule(schedule.id)}><Icon name="trash" size={14} /></button>
-                </div>
-              </>
+              </div>
             )
           ) : (
             <div className="w-100 d-flex justify-content-between align-items-center">
-              <span className="badge bg-success"><Icon name="check-circle" size={12} /> Completed</span>
+              <div>
+                <span className="badge bg-success"><Icon name="check-circle" size={12} /> Completed</span>
+                {schedule.completed_at && (
+                  <span className="text-muted small ms-2" style={{ fontSize: '11px' }}>
+                    <Icon name="clock" size={10} className="me-1" />
+                    {new Date(schedule.completed_at).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' })}
+                  </span>
+                )}
+              </div>
               <div>
                 <button className="btn btn-outline-secondary btn-sm me-2" onClick={() => setIsEditing(true)}><Icon name="edit" size={14} /></button>
                 <button className="btn btn-outline-danger btn-sm" onClick={() => deleteSchedule(schedule.id)}><Icon name="trash" size={14} /></button>
