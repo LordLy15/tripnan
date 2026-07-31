@@ -1387,10 +1387,15 @@ const AppContent = () => {
       </div>
 
       {/* Main Content */}
-      <div className="main-content">
-        <div className="p-4 p-md-5">
+      <div className="main-content d-flex flex-column" style={{ minHeight: '100vh' }}>
+        <div className="p-4 p-md-5 flex-grow-1">
           {pages[activeView] || <MyTrips />}
         </div>
+        
+        {/* Footer */}
+        <footer className="text-center text-muted py-4 mt-auto" style={{ borderTop: '1px solid var(--border)' }}>
+          <small>&copy; {new Date().getFullYear()} Dnan Dev. All rights reserved.</small>
+        </footer>
       </div>
     </div>
   );
