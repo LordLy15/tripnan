@@ -675,6 +675,7 @@ const TripDashboard = () => {
   const [editing, setEditing] = useState(false);
   const [edit, setEdit] = useState({});
   const [coverPreview, setCoverPreview] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   if (!activeTrip) return null;
 
@@ -690,10 +691,6 @@ const TripDashboard = () => {
     if (!file) return;
     const compressed = await compressImage(file);
     setCoverPreview(compressed);
-  };
-
-  const handleDelete = () => {
-    if (confirm(`Delete "${activeTrip.name}"? All data will be lost.`)) deleteTrip(activeTrip.id);
   };
 
   return (
@@ -719,9 +716,17 @@ const TripDashboard = () => {
           <button className="btn btn-light border d-flex align-items-center gap-2 px-3" onClick={() => { setEdit(activeTrip); setEditing(true) }}>
             <Icon name="edit" size={16} /> Edit
           </button>
-          <button className="btn btn-outline-danger d-flex align-items-center gap-2 px-3" onClick={handleDelete}>
-            <Icon name="trash" size={16} /> Delete
-          </button>
+          {showDeleteConfirm ? (
+            <div className="d-flex align-items-center gap-2 bg-white border border-danger rounded px-2">
+              <span className="text-danger small fw-bold mb-0">Hapus Trip ini?</span>
+              <button className="btn btn-danger btn-sm" onClick={() => deleteTrip(activeTrip.id)}>Ya</button>
+              <button className="btn btn-outline-secondary btn-sm" onClick={() => setShowDeleteConfirm(false)}>Tidak</button>
+            </div>
+          ) : (
+            <button className="btn btn-outline-danger d-flex align-items-center gap-2 px-3" onClick={() => setShowDeleteConfirm(true)}>
+              <Icon name="trash" size={16} /> Delete
+            </button>
+          )}
         </div>
       </div>
 
@@ -856,6 +861,7 @@ const ScheduleCard = ({ schedule }) => {
   const [photos, setPhotos] = useState(schedule.photos || []);
   const [loadingPhotos, setLoadingPhotos] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [editForm, setEditForm] = useState({ 
     title: schedule.title, 
     date: schedule.date, 
@@ -1001,7 +1007,15 @@ const ScheduleCard = ({ schedule }) => {
               <div className="w-100 d-flex flex-nowrap gap-2">
                   <button className="btn btn-success btn-sm flex-grow-1" onClick={() => setShowComplete(true)}><Icon name="check-circle" size={14} /> Complete</button>
                   <button className="btn btn-outline-secondary btn-sm" onClick={() => setIsEditing(true)}><Icon name="edit" size={14} /></button>
-                  <button className="btn btn-outline-danger btn-sm" onClick={() => deleteSchedule(schedule.id)}><Icon name="trash" size={14} /></button>
+                  {showDeleteConfirm ? (
+                    <div className="d-flex align-items-center gap-1 border border-danger rounded px-1">
+                      <span className="text-danger small ms-1 me-1 fw-bold">Hapus?</span>
+                      <button className="btn btn-danger btn-sm px-2 py-0" onClick={() => deleteSchedule(schedule.id)}>Ya</button>
+                      <button className="btn btn-secondary btn-sm px-2 py-0" onClick={() => setShowDeleteConfirm(false)}>Tidak</button>
+                    </div>
+                  ) : (
+                    <button className="btn btn-outline-danger btn-sm" onClick={() => setShowDeleteConfirm(true)}><Icon name="trash" size={14} /></button>
+                  )}
               </div>
             )
           ) : (
@@ -1017,7 +1031,15 @@ const ScheduleCard = ({ schedule }) => {
               </div>
               <div>
                 <button className="btn btn-outline-secondary btn-sm me-2" onClick={() => setIsEditing(true)}><Icon name="edit" size={14} /></button>
-                <button className="btn btn-outline-danger btn-sm" onClick={() => deleteSchedule(schedule.id)}><Icon name="trash" size={14} /></button>
+                {showDeleteConfirm ? (
+                  <div className="d-inline-flex align-items-center gap-1 border border-danger rounded px-1 py-1">
+                    <span className="text-danger small ms-1 me-1 fw-bold">Hapus?</span>
+                    <button className="btn btn-danger btn-sm px-2 py-0" onClick={() => deleteSchedule(schedule.id)}>Ya</button>
+                    <button className="btn btn-secondary btn-sm px-2 py-0" onClick={() => setShowDeleteConfirm(false)}>Tidak</button>
+                  </div>
+                ) : (
+                  <button className="btn btn-outline-danger btn-sm" onClick={() => setShowDeleteConfirm(true)}><Icon name="trash" size={14} /></button>
+                )}
               </div>
             </div>
           )}
