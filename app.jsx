@@ -855,6 +855,13 @@ const ScheduleCard = ({ schedule }) => {
   const [realBudget, setRealBudget] = useState(formatCurrency(schedule.realBudget || ''));
   const [photos, setPhotos] = useState(schedule.photos || []);
   const [loadingPhotos, setLoadingPhotos] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({ 
+    title: schedule.title, 
+    date: schedule.date, 
+    time: schedule.time || '', 
+    planBudget: formatCurrency(schedule.planBudget) 
+  });
 
   useEffect(() => {
     // If photos are not loaded yet, but schedule has photos, fetch them lazily
@@ -897,24 +904,61 @@ const ScheduleCard = ({ schedule }) => {
     setShowComplete(false);
   };
 
+  const handleSaveEdit = () => {
+    updateSchedule(schedule.id, { 
+      title: editForm.title, 
+      date: editForm.date, 
+      time: editForm.time, 
+      planBudget: parseCurrency(editForm.planBudget) 
+    });
+    setIsEditing(false);
+  };
+
   return (
     <div className={`schedule-item ${schedule.isCompleted ? 'completed' : ''}`}>
       <div className="card-body">
-        <div className="d-flex justify-content-between align-items-start mb-3">
-          <div>
-            <h5 className="fw-bold mb-1">{schedule.title}</h5>
-            <span className="badge bg-light text-dark"><Icon name="calendar" size={12} /> {new Date(schedule.date).toLocaleDateString()}</span>
-            {schedule.time && <span className="badge bg-light text-dark ms-2"><Icon name="clock" size={12} /> {schedule.time}</span>}
+        {isEditing ? (
+          <div className="mb-3 p-3 bg-light rounded border">
+            <h6 className="fw-bold mb-3">Edit Activity</h6>
+            <div className="row g-2 mb-3">
+              <div className="col-12">
+                <input type="text" className="form-control" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} placeholder="Title" />
+              </div>
+              <div className="col-6">
+                <input type="date" className="form-control" value={editForm.date} onChange={e => setEditForm({...editForm, date: e.target.value})} />
+              </div>
+              <div className="col-6">
+                <input type="time" className="form-control" value={editForm.time} onChange={e => setEditForm({...editForm, time: e.target.value})} />
+              </div>
+              <div className="col-12">
+                 <div className="input-group">
+                   <span className="input-group-text">Rp</span>
+                   <input type="text" inputMode="numeric" className="form-control" placeholder="Plan Budget" value={editForm.planBudget} onChange={e => setEditForm({...editForm, planBudget: formatCurrency(e.target.value)})} />
+                 </div>
+              </div>
+            </div>
+            <div className="d-flex justify-content-end gap-2">
+              <button className="btn btn-sm btn-outline-secondary" onClick={() => setIsEditing(false)}>Cancel</button>
+              <button className="btn btn-sm btn-primary" onClick={handleSaveEdit}>Save</button>
+            </div>
           </div>
-          <div className="text-end">
-            <p className="text-muted small mb-1">Plan: Rp {parseFloat(schedule.planBudget || 0).toLocaleString('en-US')}</p>
-            {schedule.isCompleted && (
-              <p className={`fw-bold mb-0 ${schedule.realBudget > schedule.planBudget ? 'text-danger' : 'text-success'}`}>
-                Real: Rp {parseFloat(schedule.realBudget || 0).toLocaleString('en-US')}
-              </p>
-            )}
+        ) : (
+          <div className="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h5 className="fw-bold mb-1">{schedule.title}</h5>
+              <span className="badge bg-light text-dark"><Icon name="calendar" size={12} /> {new Date(schedule.date).toLocaleDateString()}</span>
+              {schedule.time && <span className="badge bg-light text-dark ms-2"><Icon name="clock" size={12} /> {schedule.time}</span>}
+            </div>
+            <div className="text-end">
+              <p className="text-muted small mb-1">Plan: Rp {parseFloat(schedule.planBudget || 0).toLocaleString('en-US')}</p>
+              {schedule.isCompleted && (
+                <p className={`fw-bold mb-0 ${schedule.realBudget > schedule.planBudget ? 'text-danger' : 'text-success'}`}>
+                  Real: Rp {parseFloat(schedule.realBudget || 0).toLocaleString('en-US')}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         <PhotoGallery
           photos={photos}
@@ -954,6 +998,7 @@ const ScheduleCard = ({ schedule }) => {
                 </label>
                 <div className="d-flex flex-nowrap gap-2">
                   <button className="btn btn-success btn-sm flex-grow-1" onClick={() => setShowComplete(true)}><Icon name="check-circle" size={14} /> Complete</button>
+                  <button className="btn btn-outline-secondary btn-sm" onClick={() => setIsEditing(true)}><Icon name="edit-2" size={14} /></button>
                   <button className="btn btn-outline-danger btn-sm" onClick={() => deleteSchedule(schedule.id)}><Icon name="trash" size={14} /></button>
                 </div>
               </>
@@ -961,7 +1006,10 @@ const ScheduleCard = ({ schedule }) => {
           ) : (
             <div className="w-100 d-flex justify-content-between align-items-center">
               <span className="badge bg-success"><Icon name="check-circle" size={12} /> Completed</span>
-              <button className="btn btn-outline-danger btn-sm" onClick={() => deleteSchedule(schedule.id)}><Icon name="trash" size={14} /></button>
+              <div>
+                <button className="btn btn-outline-secondary btn-sm me-2" onClick={() => setIsEditing(true)}><Icon name="edit-2" size={14} /></button>
+                <button className="btn btn-outline-danger btn-sm" onClick={() => deleteSchedule(schedule.id)}><Icon name="trash" size={14} /></button>
+              </div>
             </div>
           )}
         </div>
