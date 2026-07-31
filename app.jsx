@@ -686,19 +686,7 @@ const TripDashboard = () => {
         <Icon name="arrow-left" size={16} /> Back to Trips
       </button>
 
-      {activeTrip.coverUrl && (
-        <div 
-          className="mb-4 w-100" 
-          style={{ 
-            height: '240px', 
-            backgroundImage: `url(${activeTrip.coverUrl})`, 
-            backgroundSize: 'cover', 
-            backgroundPosition: 'center',
-            borderRadius: '16px',
-            boxShadow: 'var(--shadow-sm)'
-          }} 
-        />
-      )}
+
 
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
         <div>
