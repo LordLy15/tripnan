@@ -98,9 +98,23 @@ try {
                 break;
             }
 
+            // Get owned trips
             $stmt = $pdo->prepare("SELECT * FROM trips WHERE owner = ?");
             $stmt->execute([$owner]);
-            $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $ownedTrips = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($ownedTrips as &$t) $t['isOwner'] = true;
+
+            // Get shared trips
+            $stmt = $pdo->prepare("
+                SELECT t.* FROM trips t 
+                JOIN trip_shares ts ON t.id = ts.trip_id 
+                WHERE ts.shared_with = ?
+            ");
+            $stmt->execute([$owner]);
+            $sharedTrips = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($sharedTrips as &$t) $t['isOwner'] = false;
+
+            $trips = array_merge($ownedTrips, $sharedTrips);
 
             foreach ($trips as &$trip) {
                 $schStmt = $pdo->prepare("SELECT * FROM schedules WHERE trip_id = ?");
@@ -110,7 +124,6 @@ try {
                     $s['isCompleted'] = (bool)$s['isCompleted'];
                     $s['planBudget'] = (float)$s['planBudget'];
                     $s['realBudget'] = (float)$s['realBudget'];
-                    // Decode photos JSON to array
                     if ($s['imageUrl']) {
                         $decoded = json_decode($s['imageUrl'], true);
                         $s['photos'] = is_array($decoded) ? $decoded : [$s['imageUrl']];
@@ -124,7 +137,6 @@ try {
                 $frStmt->execute([$trip['id']]);
                 $trip['friends'] = $frStmt->fetchAll(PDO::FETCH_ASSOC);
                 $trip['totalPlanBudget'] = (float)$trip['totalPlanBudget'];
-                $trip['isOwner'] = true;
             }
             echo json_encode(['success' => true, 'trips' => $trips]);
             break;

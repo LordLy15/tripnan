@@ -457,6 +457,7 @@ const MyTrips = () => {
   const { trips, createTrip, joinTrip, navigateTo, isLoading, categories } = useTrip();
   const [showCreate, setShowCreate] = useState(false);
   const [showJoin, setShowJoin] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [newTrip, setNewTrip] = useState({ name: '', budget: '', category_id: '' });
   const [joinCode, setJoinCode] = useState('');
   const [joinError, setJoinError] = useState('');
@@ -513,14 +514,19 @@ const MyTrips = () => {
               <Icon name="x" size={16} /> Cancel
             </button>
           ) : (
-            <div className="dropdown">
-              <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div className="position-relative" style={{ display: 'inline-block' }}>
+              <button className="btn btn-primary" type="button" onClick={() => setShowDropdown(!showDropdown)}>
                 <Icon name="plus" size={16} /> New Trip
               </button>
-              <ul className="dropdown-menu dropdown-menu-end shadow-sm">
-                <li><button className="dropdown-item" onClick={() => setShowCreate(true)}><Icon name="plus" size={14} className="me-2" />Create New Trip</button></li>
-                <li><button className="dropdown-item" onClick={() => setShowJoin(true)}><Icon name="user-plus" size={14} className="me-2" />Join via Code</button></li>
-              </ul>
+              {showDropdown && (
+                <>
+                  <div className="position-fixed top-0 start-0 w-100 h-100" style={{ zIndex: 999 }} onClick={() => setShowDropdown(false)}></div>
+                  <ul className="dropdown-menu shadow-sm show" style={{ position: 'absolute', right: 0, top: '100%', zIndex: 1000, marginTop: '4px' }}>
+                    <li><button className="dropdown-item" onClick={() => { setShowDropdown(false); setShowCreate(true); }}><Icon name="plus" size={14} className="me-2" />Create New Trip</button></li>
+                    <li><button className="dropdown-item" onClick={() => { setShowDropdown(false); setShowJoin(true); }}><Icon name="user-plus" size={14} className="me-2" />Join via Code</button></li>
+                  </ul>
+                </>
+              )}
             </div>
           )}
         </div>
