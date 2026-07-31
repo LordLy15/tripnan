@@ -927,7 +927,7 @@ const ScheduleCard = ({ schedule }) => {
           </div>
         )}
 
-        <div className="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
+        <div className="mt-3 pt-3 border-top d-flex flex-wrap justify-content-between align-items-center gap-2">
           {!schedule.isCompleted ? (
             showComplete ? (
               <div className="w-100">
@@ -943,13 +943,13 @@ const ScheduleCard = ({ schedule }) => {
               </div>
             ) : (
               <>
-                <label className="btn btn-outline-primary btn-sm">
+                <label className="btn btn-outline-primary btn-sm flex-grow-1 flex-md-grow-0 text-center mb-0">
                   <Icon name="camera" size={14} /> Add Photos
                   <input type="file" accept="image/*" onChange={handlePhotoAdd} style={{ display: 'none' }} multiple />
                 </label>
-                <div>
-                  <button className="btn btn-success btn-sm" onClick={() => setShowComplete(true)}><Icon name="check-circle" size={14} /> Complete</button>
-                  <button className="btn btn-outline-danger btn-sm ms-2" onClick={() => deleteSchedule(schedule.id)}><Icon name="trash" size={14} /></button>
+                <div className="d-flex flex-nowrap gap-2">
+                  <button className="btn btn-success btn-sm flex-grow-1" onClick={() => setShowComplete(true)}><Icon name="check-circle" size={14} /> Complete</button>
+                  <button className="btn btn-outline-danger btn-sm" onClick={() => deleteSchedule(schedule.id)}><Icon name="trash" size={14} /></button>
                 </div>
               </>
             )

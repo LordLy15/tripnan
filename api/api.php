@@ -209,13 +209,26 @@ try {
             break;
         }
 
-        case 'complete_schedule': {
+        case 'update_schedule': {
             $id = isset($input['id']) ? $input['id'] : '';
-            $realBudget = isset($input['realBudget']) ? $input['realBudget'] : 0;
-            $photos = isset($input['photos']) ? json_encode($input['photos']) : null;
+            
+            $updates = [];
+            $params = [];
 
-            $stmt = $pdo->prepare("UPDATE schedules SET isCompleted = 1, realBudget = ?, imageUrl = ? WHERE id = ?");
-            $stmt->execute([$realBudget, $photos, $id]);
+            if (isset($input['date'])) { $updates[] = "date = ?"; $params[] = $input['date']; }
+            if (isset($input['title'])) { $updates[] = "title = ?"; $params[] = $input['title']; }
+            if (isset($input['planBudget'])) { $updates[] = "planBudget = ?"; $params[] = $input['planBudget']; }
+            if (isset($input['realBudget'])) { $updates[] = "realBudget = ?"; $params[] = $input['realBudget']; }
+            if (isset($input['isCompleted'])) { $updates[] = "isCompleted = ?"; $params[] = $input['isCompleted'] ? 1 : 0; }
+            if (isset($input['photos'])) { $updates[] = "imageUrl = ?"; $params[] = json_encode($input['photos']); }
+
+            if (!empty($updates)) {
+                $params[] = $id;
+                $sql = "UPDATE schedules SET " . implode(", ", $updates) . " WHERE id = ?";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute($params);
+            }
+            
             echo json_encode(['success' => true]);
             break;
         }
