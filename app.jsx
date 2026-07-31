@@ -508,13 +508,13 @@ const MyTrips = () => {
   if (isLoading) return <div className="text-center p-5"><Icon name="loader" size={24} className="spin me-2" /> Loading...</div>;
 
   return (
-    <div className="animate-fade-in">
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-        <div>
+    <div className="animate-fade-in pt-md-0 pt-4 mt-md-0 mt-3">
+      <div className="row align-items-center mb-4 gap-3 gap-md-0">
+        <div className="col-12 col-md-auto">
           <h1 className="h3 fw-bold mb-1">My Trips</h1>
           <p className="text-muted mb-0">{trips.length} trips planned</p>
         </div>
-        <div className="d-flex flex-wrap gap-2">
+        <div className="col-12 col-md d-flex justify-content-md-end flex-wrap gap-2">
           <select className="form-select" value={filterCat} onChange={e => setFilterCat(e.target.value)} style={{ width: 'auto', flexGrow: 1 }}>
             <option value="">All Categories</option>
             {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
