@@ -394,6 +394,47 @@ try {
             break;
         }
 
+        case 'use_template': {
+            $template_id = isset($input['template_id']) ? $input['template_id'] : '';
+            $owner = isset($input['owner']) ? $input['owner'] : '';
+
+            $stmt = $pdo->prepare("SELECT template_data FROM trip_templates WHERE id = ?");
+            $stmt->execute([$template_id]);
+            $template = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($template) {
+                $data = json_decode($template['template_data'], true);
+                
+                $new_trip_id = generateId();
+                $tripCode = strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
+                $tripName = (isset($data['name']) ? $data['name'] : 'Template Trip') . ' (Copy)';
+
+                $pdo->beginTransaction();
+                try {
+                    $insTrip = $pdo->prepare("INSERT INTO trips (id, owner, name, tripCode) VALUES (?, ?, ?, ?)");
+                    $insTrip->execute([$new_trip_id, $owner, $tripName, $tripCode]);
+
+                    if (isset($data['schedules']) && is_array($data['schedules'])) {
+                        $insSch = $pdo->prepare("INSERT INTO schedules (id, trip_id, date, title) VALUES (?, ?, ?, ?)");
+                        foreach ($data['schedules'] as $sch) {
+                            $sch_id = generateId();
+                            $date = isset($sch['date']) ? $sch['date'] : date('Y-m-d');
+                            $title = isset($sch['title']) ? $sch['title'] : 'Activity';
+                            $insSch->execute([$sch_id, $new_trip_id, $date, $title]);
+                        }
+                    }
+                    $pdo->commit();
+                    echo json_encode(['success' => true, 'new_trip_id' => $new_trip_id]);
+                } catch (Exception $e) {
+                    $pdo->rollBack();
+                    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+                }
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Template not found']);
+            }
+            break;
+        }
+
         case 'get_template': {
             $id = isset($_GET['id']) ? $_GET['id'] : '';
             $stmt = $pdo->prepare("SELECT * FROM trip_templates WHERE id = ?");

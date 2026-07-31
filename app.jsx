@@ -232,6 +232,22 @@ const TripProvider = ({ children }) => {
     setTemplates(templates.filter(t => t.id !== id));
   };
 
+  const useTemplate = async (template_id) => {
+    const res = await fetchAPI('use_template', { template_id, owner: currentUser });
+    if (res.success && res.new_trip_id) {
+      // Re-fetch trips to get the newly created trip
+      const data = await fetchAPI('get_trips', { owner: currentUser });
+      if (data.success) {
+        setTrips(data.trips);
+        setActiveTripId(res.new_trip_id);
+        setNavStack([...navStack, 'trip']);
+        setActiveView('trip');
+      }
+    } else {
+      alert(res.error || 'Failed to use template');
+    }
+  };
+
   const createCategory = async (name, color, icon) => {
     const id = generateId();
     await fetchAPI('create_category', { id, owner: currentUser, name, color, icon });
@@ -273,7 +289,7 @@ const TripProvider = ({ children }) => {
     addFriend, removeFriend,
     joinTrip,
     exportTrip, importTrip,
-    saveTemplate, deleteTemplate,
+    saveTemplate, deleteTemplate, useTemplate,
     createCategory, deleteCategory,
     updateProfile,
     markNotificationRead, markAllNotificationsRead,
@@ -1179,7 +1195,7 @@ const CategoriesPage = () => {
 
 // Templates Page
 const TemplatesPage = () => {
-  const { templates, saveTemplate, deleteTemplate, activeTrip, navigateTo } = useTrip();
+  const { templates, saveTemplate, deleteTemplate, useTemplate, activeTrip, navigateTo } = useTrip();
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
   const [desc, setDesc] = useState('');
@@ -1235,7 +1251,7 @@ const TemplatesPage = () => {
                   <p className="text-muted small">{t.description || 'No description'}</p>
                   <small className="text-muted">{new Date(t.created_at).toLocaleDateString()}</small>
                   <div className="mt-3">
-                    <button className="btn btn-sm btn-primary me-2">Use</button>
+                    <button className="btn btn-sm btn-primary me-2" onClick={() => useTemplate(t.id)}>Use</button>
                     <button className="btn btn-sm btn-outline-danger" onClick={() => deleteTemplate(t.id)}><Icon name="trash" size={14} /></button>
                   </div>
                 </div>
