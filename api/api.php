@@ -20,10 +20,10 @@ $dbname = 'postgres';
 $port = '5432';
 
 try {
-    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $pass);
+    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Database connection failed. Check your Supabase credentials.', 'error' => 'DB_CONNECTION_FAILED']);
+    echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $e->getMessage(), 'error' => 'DB_CONNECTION_FAILED']);
     exit();
 }
 
