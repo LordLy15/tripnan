@@ -780,13 +780,13 @@ const TripDashboard = () => {
 const Itinerary = () => {
   const { activeTrip, addSchedule, navigateTo } = useTrip();
   const [showAdd, setShowAdd] = useState(false);
-  const [newSch, setNewSch] = useState({ date: '', title: '', planBudget: '' });
+  const [newSch, setNewSch] = useState({ date: '', time: '', title: '', planBudget: '' });
 
   const handleAdd = async (e) => {
     e.preventDefault();
     if (!newSch.date || !newSch.title) return;
-    await addSchedule({ date: newSch.date, title: newSch.title, planBudget: parseCurrency(newSch.planBudget) });
-    setNewSch({ date: '', title: '', planBudget: '' });
+    await addSchedule({ date: newSch.date, time: newSch.time, title: newSch.title, planBudget: parseCurrency(newSch.planBudget) });
+    setNewSch({ date: '', time: '', title: '', planBudget: '' });
     setShowAdd(false);
   };
 
@@ -808,11 +808,15 @@ const Itinerary = () => {
             <h5 className="fw-bold mb-3">New Activity</h5>
             <form onSubmit={handleAdd}>
               <div className="row g-3">
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <label className="form-label">Date</label>
                   <input type="date" className="form-control" value={newSch.date} onChange={e => setNewSch({...newSch, date: e.target.value})} required />
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-3">
+                  <label className="form-label">Time <span className="text-muted fw-normal">(Opt)</span></label>
+                  <input type="time" className="form-control" value={newSch.time} onChange={e => setNewSch({...newSch, time: e.target.value})} />
+                </div>
+                <div className="col-md-6">
                   <label className="form-label">Title</label>
                   <input type="text" className="form-control" placeholder="Visit amazing places" value={newSch.title} onChange={e => setNewSch({...newSch, title: e.target.value})} required />
                 </div>
@@ -899,7 +903,8 @@ const ScheduleCard = ({ schedule }) => {
         <div className="d-flex justify-content-between align-items-start mb-3">
           <div>
             <h5 className="fw-bold mb-1">{schedule.title}</h5>
-            <span className="badge bg-light"><Icon name="calendar" size={12} /> {new Date(schedule.date).toLocaleDateString()}</span>
+            <span className="badge bg-light text-dark"><Icon name="calendar" size={12} /> {new Date(schedule.date).toLocaleDateString()}</span>
+            {schedule.time && <span className="badge bg-light text-dark ms-2"><Icon name="clock" size={12} /> {schedule.time}</span>}
           </div>
           <div className="text-end">
             <p className="text-muted small mb-1">Plan: Rp {parseFloat(schedule.planBudget || 0).toLocaleString('en-US')}</p>

@@ -117,7 +117,7 @@ try {
             $trips = array_merge($ownedTrips, $sharedTrips);
 
             foreach ($trips as &$trip) {
-                $schStmt = $pdo->prepare("SELECT id, trip_id, date, title, planbudget, realbudget, iscompleted, (CASE WHEN imageurl IS NOT NULL AND imageurl != '[]' THEN 1 ELSE 0 END) as has_photos FROM schedules WHERE trip_id = ?");
+                $schStmt = $pdo->prepare("SELECT id, trip_id, date, time, title, planbudget, realbudget, iscompleted, (CASE WHEN imageurl IS NOT NULL AND imageurl != '[]' THEN 1 ELSE 0 END) as has_photos FROM schedules WHERE trip_id = ?");
                 $schStmt->execute([$trip['id']]);
                 $schedules = $schStmt->fetchAll(PDO::FETCH_ASSOC);
                 foreach($schedules as &$s) {
@@ -199,13 +199,14 @@ try {
         case 'add_schedule': {
             $id = isset($input['id']) ? $input['id'] : generateId();
             $trip_id = isset($input['trip_id']) ? $input['trip_id'] : '';
-            $date = isset($input['date']) ? $input['date'] : '';
-            $title = isset($input['title']) ? $input['title'] : '';
+            $date = isset($input['date']) ? $input['date'] : date('Y-m-d');
+            $time = isset($input['time']) ? $input['time'] : null;
+            $title = isset($input['title']) ? $input['title'] : 'New Activity';
             $planBudget = isset($input['planBudget']) ? $input['planBudget'] : 0;
 
-            $stmt = $pdo->prepare("INSERT INTO schedules (id, trip_id, date, title, planBudget) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$id, $trip_id, $date, $title, $planBudget]);
-            echo json_encode(['success' => true]);
+            $stmt = $pdo->prepare("INSERT INTO schedules (id, trip_id, date, time, title, planBudget) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$id, $trip_id, $date, $time, $title, $planBudget]);
+            echo json_encode(['success' => true, 'id' => $id]);
             break;
         }
 
@@ -216,6 +217,7 @@ try {
             $params = [];
 
             if (isset($input['date'])) { $updates[] = "date = ?"; $params[] = $input['date']; }
+            if (isset($input['time'])) { $updates[] = "time = ?"; $params[] = $input['time']; }
             if (isset($input['title'])) { $updates[] = "title = ?"; $params[] = $input['title']; }
             if (isset($input['planBudget'])) { $updates[] = "planBudget = ?"; $params[] = $input['planBudget']; }
             if (isset($input['realBudget'])) { $updates[] = "realBudget = ?"; $params[] = $input['realBudget']; }
@@ -428,12 +430,13 @@ try {
                     $insTrip->execute([$new_trip_id, $owner, $tripName, $tripCode]);
 
                     if (isset($data['schedules']) && is_array($data['schedules'])) {
-                        $insSch = $pdo->prepare("INSERT INTO schedules (id, trip_id, date, title) VALUES (?, ?, ?, ?)");
+                        $insSch = $pdo->prepare("INSERT INTO schedules (id, trip_id, date, time, title) VALUES (?, ?, ?, ?, ?)");
                         foreach ($data['schedules'] as $sch) {
                             $sch_id = generateId();
                             $date = isset($sch['date']) ? $sch['date'] : date('Y-m-d');
+                            $time = isset($sch['time']) ? $sch['time'] : null;
                             $title = isset($sch['title']) ? $sch['title'] : 'Activity';
-                            $insSch->execute([$sch_id, $new_trip_id, $date, $title]);
+                            $insSch->execute([$sch_id, $new_trip_id, $date, $time, $title]);
                         }
                     }
                     $pdo->commit();
@@ -596,10 +599,12 @@ try {
 
             foreach ($importData['schedules'] as $schedule) {
                 $newScheduleId = generateId();
-                $stmt = $pdo->prepare("INSERT INTO schedules (id, trip_id, date, title, planBudget, realBudget, isCompleted, imageUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $pdo->prepare("INSERT INTO schedules (id, trip_id, date, time, title, planBudget, realBudget, isCompleted, imageUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 $stmt->execute([
                     $newScheduleId, $newTripId,
-                    $schedule['date'], $schedule['title'], $schedule['planBudget'],
+                    $schedule['date'], 
+                    isset($schedule['time']) ? $schedule['time'] : null,
+                    $schedule['title'], $schedule['planBudget'],
                     isset($schedule['realBudget']) ? $schedule['realBudget'] : 0,
                     isset($schedule['isCompleted']) && $schedule['isCompleted'] ? 1 : 0,
                     isset($schedule['imageUrl']) ? $schedule['imageUrl'] : null
