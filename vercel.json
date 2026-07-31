@@ -1,20 +1,13 @@
 {
   "functions": {
-    "api.php": {
-      "runtime": "vercel-php@0.6.1"
-    },
-    "setup.php": {
+    "api/*.php": {
       "runtime": "vercel-php@0.6.1"
     }
   },
   "rewrites": [
     {
-      "source": "/api.php",
-      "destination": "/api.php"
-    },
-    {
-      "source": "/setup.php",
-      "destination": "/setup.php"
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     },
     {
       "source": "/(.*\\.jsx|.*\\.css|.*\\.png|.*\\.svg|.*\\.js|.*\\.json)",

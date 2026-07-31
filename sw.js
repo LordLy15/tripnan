@@ -29,7 +29,7 @@ self.addEventListener('fetch', (event) => {
   // Only cache GET requests
   if (event.request.method !== 'GET') return;
   // Ignore API requests
-  if (event.request.url.includes('api.php') || event.request.url.includes('setup.php')) return;
+  if (event.request.url.includes('api/api.php') || event.request.url.includes('api/setup.php')) return;
 
   event.respondWith(
     caches.match(event.request)

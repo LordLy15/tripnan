@@ -21,7 +21,7 @@ const TripProvider = ({ children }) => {
 
   const fetchAPI = async (action, data = {}) => {
     try {
-      const res = await fetch(`api.php?action=${action}${action === 'get_trips' || action === 'get_categories' || action === 'get_templates' || action === 'get_notifications' || action === 'get_unread_count' || action === 'get_profile' || action === 'find_trip_by_code' ? `&${Object.entries(data).map(([k,v]) => `${k}=${encodeURIComponent(v)}`).join('&')}` : ''}`, {
+      const res = await fetch(`api/api.php?action=${action}${action === 'get_trips' || action === 'get_categories' || action === 'get_templates' || action === 'get_notifications' || action === 'get_unread_count' || action === 'get_profile' || action === 'find_trip_by_code' ? `&${Object.entries(data).map(([k,v]) => `${k}=${encodeURIComponent(v)}`).join('&')}` : ''}`, {
         method: action.includes('get') ? 'GET' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: action.includes('get') ? undefined : JSON.stringify(data)
