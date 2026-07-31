@@ -132,60 +132,61 @@ const TripProvider = ({ children }) => {
       coverUrl: coverUrl,
       schedules: [], friends: []
     };
-    const data = await fetchAPI('create_trip', trip);
-    if (data.success) setTrips([...trips, { ...trip, isOwner: true }]);
-    return data;
+    setTrips([...trips, { ...trip, isOwner: true }]);
+    fetchAPI('create_trip', trip);
+    return { success: true };
   };
 
   const updateTrip = async (id, fields) => {
-    await fetchAPI('update_trip', { id, ...fields });
     setTrips(trips.map(t => t.id === id ? { ...t, ...fields } : t));
+    fetchAPI('update_trip', { id, ...fields });
   };
 
   const deleteTrip = async (id) => {
-    await fetchAPI('delete_trip', { id });
     setTrips(trips.filter(t => t.id !== id));
     setActiveView('my-trips');
     setActiveTripId(null);
+    fetchAPI('delete_trip', { id });
   };
 
   const addSchedule = async (schedule) => {
     const newSch = { ...schedule, id: generateId(), trip_id: activeTripId, photos: [] };
-    await fetchAPI('add_schedule', newSch);
     setTrips(trips.map(t => t.id === activeTripId ? { ...t, schedules: [...t.schedules, newSch] } : t));
+    fetchAPI('add_schedule', newSch);
   };
 
   const updateSchedulePhotos = async (id, photos) => {
-    await fetchAPI('update_schedule_photos', { id, photos });
     setTrips(trips.map(t => t.id === activeTripId ? {
       ...t, schedules: t.schedules.map(s => s.id === id ? { ...s, photos } : s)
     } : t));
+    fetchAPI('update_schedule_photos', { id, photos });
   };
 
   const updateSchedule = async (id, fields) => {
-    if (fields.photos !== undefined) {
-      await fetchAPI('update_schedule_photos', { id, photos: fields.photos });
-    }
-    await fetchAPI('update_schedule', { id, ...fields });
     setTrips(trips.map(t => t.id === activeTripId ? {
       ...t, schedules: t.schedules.map(s => s.id === id ? { ...s, ...fields } : s)
     } : t));
+    
+    if (fields.photos !== undefined) {
+      fetchAPI('update_schedule_photos', { id, photos: fields.photos });
+    }
+    fetchAPI('update_schedule', { id, ...fields });
   };
 
   const deleteSchedule = async (id) => {
-    await fetchAPI('delete_schedule', { id });
     setTrips(trips.map(t => t.id === activeTripId ? { ...t, schedules: t.schedules.filter(s => s.id !== id) } : t));
+    fetchAPI('delete_schedule', { id });
   };
 
   const addFriend = async (name, email) => {
     const friend = { id: generateId(), trip_id: activeTripId, name, email };
-    await fetchAPI('add_friend', friend);
     setTrips(trips.map(t => t.id === activeTripId ? { ...t, friends: [...t.friends, friend] } : t));
+    fetchAPI('add_friend', friend);
   };
 
   const removeFriend = async (id) => {
-    await fetchAPI('delete_friend', { id });
     setTrips(trips.map(t => t.id === activeTripId ? { ...t, friends: t.friends.filter(f => f.id !== id) } : t));
+    fetchAPI('delete_friend', { id });
   };
 
   const joinTrip = async (tripCode) => {
@@ -817,10 +818,26 @@ const Itinerary = () => {
 
 // Schedule Card with Enhanced Multi-Photo Support
 const ScheduleCard = ({ schedule }) => {
-  const { updateSchedule, deleteSchedule } = useTrip();
+  const { updateSchedule, deleteSchedule, fetchAPI, updateSchedulePhotos } = useTrip();
   const [showComplete, setShowComplete] = useState(false);
   const [realBudget, setRealBudget] = useState(formatCurrency(schedule.realBudget || ''));
   const [photos, setPhotos] = useState(schedule.photos || []);
+  const [loadingPhotos, setLoadingPhotos] = useState(false);
+
+  useEffect(() => {
+    // If photos are not loaded yet, but schedule has photos, fetch them lazily
+    if (schedule.has_photos && photos.length === 0 && !loadingPhotos) {
+      setLoadingPhotos(true);
+      fetchAPI('get_schedule_photos', { id: schedule.id }).then(res => {
+        if (res.success && res.photos) {
+          setPhotos(res.photos);
+          // Only update local array to avoid triggering another API update call
+          schedule.photos = res.photos;
+        }
+        setLoadingPhotos(false);
+      });
+    }
+  }, [schedule.id, schedule.has_photos]);
 
   // Handle multiple file uploads
   const handlePhotoAdd = async (e) => {
@@ -872,6 +889,15 @@ const ScheduleCard = ({ schedule }) => {
           onAdd={handlePhotoAdd}
           onDelete={handlePhotoDelete}
         />
+        
+        {loadingPhotos && (
+          <div className="text-center py-2">
+            <div className="spinner-border spinner-border-sm text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <span className="ms-2 text-muted small">Loading photos...</span>
+          </div>
+        )}
 
         <div className="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
           {!schedule.isCompleted ? (

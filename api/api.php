@@ -117,21 +117,16 @@ try {
             $trips = array_merge($ownedTrips, $sharedTrips);
 
             foreach ($trips as &$trip) {
-                $schStmt = $pdo->prepare("SELECT * FROM schedules WHERE trip_id = ?");
+                $schStmt = $pdo->prepare("SELECT id, trip_id, date, title, planbudget, realbudget, iscompleted, (CASE WHEN imageurl IS NOT NULL AND imageurl != '[]' THEN 1 ELSE 0 END) as has_photos FROM schedules WHERE trip_id = ?");
                 $schStmt->execute([$trip['id']]);
                 $schedules = $schStmt->fetchAll(PDO::FETCH_ASSOC);
                 foreach($schedules as &$s) {
                     $s['isCompleted'] = (bool)($s['iscompleted'] ?? $s['isCompleted'] ?? 0);
                     $s['planBudget'] = (float)($s['planbudget'] ?? $s['planBudget'] ?? 0);
                     $s['realBudget'] = (float)($s['realbudget'] ?? $s['realBudget'] ?? 0);
-                    $s['imageUrl'] = $s['imageurl'] ?? $s['imageUrl'] ?? null;
-                    if ($s['imageUrl']) {
-                        $decoded = json_decode($s['imageUrl'], true);
-                        $s['photos'] = is_array($decoded) ? $decoded : [$s['imageUrl']];
-                    } else {
-                        $s['photos'] = [];
-                    }
-                    unset($s['iscompleted'], $s['planbudget'], $s['realbudget'], $s['imageurl']);
+                    $s['has_photos'] = (bool)($s['has_photos'] ?? 0);
+                    $s['photos'] = [];
+                    unset($s['iscompleted'], $s['planbudget'], $s['realbudget'], $s['has_photos']);
                 }
                 $trip['schedules'] = $schedules;
 
@@ -237,6 +232,21 @@ try {
             $stmt = $pdo->prepare("UPDATE schedules SET imageUrl = ? WHERE id = ?");
             $stmt->execute([$photos, $id]);
             echo json_encode(['success' => true]);
+            break;
+        }
+
+        case 'get_schedule_photos': {
+            $id = isset($_GET['id']) ? $_GET['id'] : '';
+            $stmt = $pdo->prepare("SELECT imageurl FROM schedules WHERE id = ?");
+            $stmt->execute([$id]);
+            $schedule = $stmt->fetch(PDO::FETCH_ASSOC);
+            $photos = [];
+            $imageurl = $schedule['imageurl'] ?? $schedule['imageUrl'] ?? null;
+            if ($imageurl) {
+                $decoded = json_decode($imageurl, true);
+                $photos = is_array($decoded) ? $decoded : [$imageurl];
+            }
+            echo json_encode(['success' => true, 'photos' => $photos]);
             break;
         }
 
