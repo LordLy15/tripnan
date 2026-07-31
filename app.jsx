@@ -686,7 +686,14 @@ const TripDashboard = () => {
         <Icon name="arrow-left" size={16} /> Back to Trips
       </button>
 
-      <div className="trip-hero mb-4">
+      <div 
+        className="trip-hero mb-4"
+        style={activeTrip.coverUrl ? {
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${activeTrip.coverUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        } : {}}
+      >
         <div style={{ position: 'relative' }}>
           <span className="badge">Trip Workspace</span>
           <h1 className="display-5 fw-bold mt-2 mb-1">{activeTrip.name}</h1>
