@@ -121,15 +121,17 @@ try {
                 $schStmt->execute([$trip['id']]);
                 $schedules = $schStmt->fetchAll(PDO::FETCH_ASSOC);
                 foreach($schedules as &$s) {
-                    $s['isCompleted'] = (bool)$s['isCompleted'];
-                    $s['planBudget'] = (float)$s['planBudget'];
-                    $s['realBudget'] = (float)$s['realBudget'];
+                    $s['isCompleted'] = (bool)($s['iscompleted'] ?? $s['isCompleted'] ?? 0);
+                    $s['planBudget'] = (float)($s['planbudget'] ?? $s['planBudget'] ?? 0);
+                    $s['realBudget'] = (float)($s['realbudget'] ?? $s['realBudget'] ?? 0);
+                    $s['imageUrl'] = $s['imageurl'] ?? $s['imageUrl'] ?? null;
                     if ($s['imageUrl']) {
                         $decoded = json_decode($s['imageUrl'], true);
                         $s['photos'] = is_array($decoded) ? $decoded : [$s['imageUrl']];
                     } else {
                         $s['photos'] = [];
                     }
+                    unset($s['iscompleted'], $s['planbudget'], $s['realbudget'], $s['imageurl']);
                 }
                 $trip['schedules'] = $schedules;
 
@@ -147,7 +149,9 @@ try {
                 $sharedFriends = $shStmt->fetchAll(PDO::FETCH_ASSOC);
 
                 $trip['friends'] = array_merge($manualFriends, $sharedFriends);
-                $trip['totalPlanBudget'] = (float)$trip['totalPlanBudget'];
+                $trip['totalPlanBudget'] = (float)($trip['totalplanbudget'] ?? $trip['totalPlanBudget'] ?? 0);
+                $trip['tripCode'] = $trip['tripcode'] ?? $trip['tripCode'] ?? '';
+                unset($trip['totalplanbudget'], $trip['tripcode']);
             }
             echo json_encode(['success' => true, 'trips' => $trips]);
             break;
@@ -471,15 +475,23 @@ try {
             $stmt->execute([$trip_id]);
             $friends = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            $trip['totalPlanBudget'] = (float)($trip['totalplanbudget'] ?? $trip['totalPlanBudget'] ?? 0);
+            $trip['tripCode'] = $trip['tripcode'] ?? $trip['tripCode'] ?? '';
+            unset($trip['totalplanbudget'], $trip['tripcode']);
+
             foreach($schedules as &$s) {
-                $s['isCompleted'] = (bool)$s['isCompleted'];
-                // Decode photos JSON to array for export
+                $s['isCompleted'] = (bool)($s['iscompleted'] ?? $s['isCompleted'] ?? 0);
+                $s['planBudget'] = (float)($s['planbudget'] ?? $s['planBudget'] ?? 0);
+                $s['realBudget'] = (float)($s['realbudget'] ?? $s['realBudget'] ?? 0);
+                $s['imageUrl'] = $s['imageurl'] ?? $s['imageUrl'] ?? null;
+                // Decode photos JSON for export
                 if ($s['imageUrl']) {
                     $decoded = json_decode($s['imageUrl'], true);
                     $s['photos'] = is_array($decoded) ? $decoded : [$s['imageUrl']];
                 } else {
                     $s['photos'] = [];
                 }
+                unset($s['iscompleted'], $s['planbudget'], $s['realbudget'], $s['imageurl']);
             }
 
             $exportData = [
