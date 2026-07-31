@@ -3,6 +3,30 @@ const { useState, useEffect, createContext, useContext } = React;
 // Helper Functions
 const generateId = () => Math.random().toString(36).substr(2, 9);
 const generateTripCode = () => Math.random().toString(36).substr(2, 6).toUpperCase();
+const compressImage = (file, maxWidth = 800) => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.6));
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+};
 
 // Context
 const TripContext = createContext();
@@ -461,12 +485,11 @@ const MyTrips = () => {
     }
   };
 
-  const handleCoverUpload = (e) => {
+  const handleCoverUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => setCoverPreview(ev.target.result);
-    reader.readAsDataURL(file);
+    const compressed = await compressImage(file);
+    setCoverPreview(compressed);
   };
 
   const filtered = filterCat ? trips.filter(t => t.category_id === filterCat) : trips;
@@ -628,12 +651,11 @@ const TripDashboard = () => {
     setCoverPreview(null);
   };
 
-  const handleCoverChange = (e) => {
+  const handleCoverChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => setCoverPreview(ev.target.result);
-    reader.readAsDataURL(file);
+    const compressed = await compressImage(file);
+    setCoverPreview(compressed);
   };
 
   const handleDelete = () => {
@@ -787,25 +809,17 @@ const ScheduleCard = ({ schedule }) => {
   const [photos, setPhotos] = useState(schedule.photos || []);
 
   // Handle multiple file uploads
-  const handlePhotoAdd = (e) => {
+  const handlePhotoAdd = async (e) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    let processed = 0;
     const newPhotos = [...photos];
-
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        newPhotos.push(ev.target.result);
-        processed++;
-        if (processed === files.length) {
-          setPhotos(newPhotos);
-          updateSchedule(schedule.id, { photos: newPhotos });
-        }
-      };
-      reader.readAsDataURL(file);
-    });
+    for (const file of Array.from(files)) {
+      const compressed = await compressImage(file);
+      newPhotos.push(compressed);
+    }
+    setPhotos(newPhotos);
+    updateSchedule(schedule.id, { photos: newPhotos });
     e.target.value = '';
   };
 
