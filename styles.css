@@ -465,7 +465,6 @@ a:hover {
 
 /* Sidebar Container */
 .sidebar {
-  min-height: 100vh;
   background: var(--bg-card);
   padding: 1.5rem;
   position: fixed;
@@ -478,6 +477,7 @@ a:hover {
   width: 280px;
   z-index: 1000;
   transition: transform 0.3s ease;
+  overflow-y: auto;
 }
 
 /* Mobile Sidebar - Hidden by default */
