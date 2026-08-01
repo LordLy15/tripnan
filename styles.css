@@ -466,8 +466,8 @@ a:hover {
   padding: 1.5rem;
   position: fixed;
   left: 0;
-  top: 0;
-  bottom: 0;
+  top: 73px;
+  height: calc(100vh - 73px);
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--border);
