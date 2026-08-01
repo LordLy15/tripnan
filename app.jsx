@@ -1401,7 +1401,7 @@ const NotificationsPage = () => {
 // App Content
 const AppContent = () => {
   const { currentUser, activeView, navigateTo, logout, unreadCount } = useTrip();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
 
   // Toggle sidebar
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -1432,7 +1432,7 @@ const AppContent = () => {
       {/* Global Header */}
       <div className="d-flex align-items-center justify-content-between p-3 border-bottom bg-white sticky-top shadow-sm" style={{ zIndex: 1030 }}>
         <div className="d-flex align-items-center">
-          <button onClick={toggleSidebar} className="btn p-2 me-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center d-md-none">
+          <button onClick={toggleSidebar} className="btn p-2 me-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center">
             <Icon name="menu" size={24} />
           </button>
           <div className="fw-bold fs-5 d-flex align-items-center gap-2" style={{ color: 'var(--primary)' }}>

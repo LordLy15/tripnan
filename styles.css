@@ -429,10 +429,14 @@ a:hover {
    Sidebar
    ============================================ */
 
-/* Desktop - sidebar always visible */
+/* Desktop - sidebar collapsable */
 @media (min-width: 769px) {
-  .sidebar {
-    transform: translateX(0) !important;
+  .sidebar:not(.open) {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
   }
 
   .mobile-menu-btn {
@@ -443,8 +447,8 @@ a:hover {
     display: none !important;
   }
 
-  .main-content {
-    margin-left: 280px !important;
+  .sidebar.open ~ .main-content {
+    margin-left: 280px;
   }
 }
 
