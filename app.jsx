@@ -656,7 +656,7 @@ const MyTrips = () => {
             const progress = total ? Math.round((completed / total) * 100) : 0;
             const cat = categories.find(c => c.id === trip.category_id);
             return (
-              <div key={trip.id} className={viewMode === 'grid' ? 'col-md-6 col-lg-4' : 'col-12'}>
+              <div key={trip.id} className={viewMode === 'grid' ? 'col-6 col-md-4' : 'col-12'}>
                 <div className="card-trip trip-card" onClick={() => navigateTo('trip-dashboard', trip.id)}>
                   <div className="trip-cover" style={{ backgroundImage: trip.coverUrl ? `url(${trip.coverUrl})` : 'linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%)' }}>
                     <span className="trip-code">{trip.tripCode}</span>
@@ -1429,26 +1429,7 @@ const AppContent = () => {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Mobile Header */}
-      <div className="d-md-none d-flex align-items-center justify-content-between p-3 border-bottom bg-white sticky-top shadow-sm z-3">
-        <div className="d-flex align-items-center">
-          <button onClick={toggleSidebar} className="btn p-2 me-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center">
-            <Icon name="menu" size={24} />
-          </button>
-          <div className="fw-bold fs-5 d-flex align-items-center gap-2" style={{ color: 'var(--primary)' }}>
-            <Icon name="map" size={20} /> TripNan
-          </div>
-        </div>
-        <div className="d-flex align-items-center gap-1">
-          <button className="btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center" onClick={() => { navigateTo('notifications'); closeSidebar(); }} title="Notifications">
-            <Icon name="bell" size={22} />
-            {unreadCount > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.6rem', padding: '0.25em 0.4em', transform: 'translate(-60%, 20%)' }}>{unreadCount}</span>}
-          </button>
-          <button className="btn p-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center" onClick={logout} title="Logout">
-            <Icon name="log-out" size={22} />
-          </button>
-        </div>
-      </div>
+
 
       {/* Sidebar Overlay (Mobile only) */}
       <div
@@ -1502,6 +1483,28 @@ const AppContent = () => {
 
       {/* Main Content */}
       <div className="main-content d-flex flex-column flex-grow-1">
+        {/* Global Header */}
+        <div className="d-flex align-items-center justify-content-between p-3 border-bottom bg-white sticky-top shadow-sm" style={{ zIndex: 1030 }}>
+          <div className="d-flex align-items-center d-md-none">
+            <button onClick={toggleSidebar} className="btn p-2 me-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center">
+              <Icon name="menu" size={24} />
+            </button>
+            <div className="fw-bold fs-5 d-flex align-items-center gap-2" style={{ color: 'var(--primary)' }}>
+              <Icon name="map" size={20} /> TripNan
+            </div>
+          </div>
+          <div className="d-none d-md-block"></div> {/* Spacer for desktop left */}
+          <div className="d-flex align-items-center gap-1 ms-auto">
+            <button className="btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center" onClick={() => { navigateTo('notifications'); closeSidebar(); }} title="Notifications">
+              <Icon name="bell" size={22} />
+              {unreadCount > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.6rem', padding: '0.25em 0.4em', transform: 'translate(-60%, 20%)' }}>{unreadCount}</span>}
+            </button>
+            <button className="btn p-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center" onClick={logout} title="Logout">
+              <Icon name="log-out" size={22} />
+            </button>
+          </div>
+        </div>
+
         <div className="px-3 px-md-5 pt-3 pt-md-4 pb-5 flex-grow-1">
           {pages[activeView] || <MyTrips />}
         </div>
