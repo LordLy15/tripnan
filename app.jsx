@@ -1399,6 +1399,104 @@ const NotificationsPage = () => {
   );
 };
 
+// ---------------------------------------------------------
+// NEW COMPONENT: All Budgets Report
+// ---------------------------------------------------------
+const AllBudgetsReport = () => {
+  const { trips } = useTrip();
+  
+  const tripBudgets = trips.map(trip => {
+    const schedules = trip.schedules || [];
+    const totalPlan = schedules.reduce((a, c) => a + parseFloat(c.planBudget || 0), 0);
+    const totalReal = schedules.filter(s => s.isCompleted).reduce((a, c) => a + parseFloat(c.realBudget || 0), 0);
+    const diff = totalReal - totalPlan;
+    const isOver = diff > 0;
+    
+    return {
+      id: trip.id,
+      name: trip.name,
+      totalPlan,
+      totalReal,
+      diff,
+      isOver,
+      hasSchedules: schedules.length > 0
+    };
+  });
+
+  const overallPlan = tripBudgets.reduce((a, t) => a + t.totalPlan, 0);
+  const overallReal = tripBudgets.reduce((a, t) => a + t.totalReal, 0);
+  const overallDiff = overallReal - overallPlan;
+  const overallIsOver = overallDiff > 0;
+
+  return (
+    <div className="animate-fade-in">
+      <h2 className="fw-bold mb-4">All Budgets</h2>
+      
+      {/* Overall Summary Card */}
+      <div className="card-trip mb-4 overflow-hidden border">
+        <div className="card-body p-4 text-center border-bottom" style={{ background: overallIsOver ? 'linear-gradient(135deg, #fff, #fef2f2)' : 'linear-gradient(135deg, #fff, #f0fdf4)' }}>
+          <h4 className="mb-3 text-muted">Overall Budget Status</h4>
+          <h2 className={`fw-bold ${overallIsOver ? 'text-danger' : 'text-success'}`}>{overallIsOver ? 'OVER BUDGET' : 'ON BUDGET'}</h2>
+          <p className="fs-5 text-muted mb-0">
+            {overallIsOver ? <>Total Overspend <strong className="text-danger">Rp {overallDiff.toLocaleString('en-US')}</strong></> : <>Total Savings <strong className="text-success">Rp {Math.abs(overallDiff).toLocaleString('en-US')}</strong></>}
+          </p>
+        </div>
+        <div className="card-body p-3">
+          <div className="row text-center">
+            <div className="col-6 border-end">
+              <p className="text-muted small fw-bold mb-1">TOTAL PLANNED</p>
+              <h5 className="fw-bold" style={{ color: 'var(--primary)' }}>Rp {overallPlan.toLocaleString('en-US')}</h5>
+            </div>
+            <div className="col-6">
+              <p className="text-muted small fw-bold mb-1">TOTAL ACTUAL</p>
+              <h5 className={`fw-bold ${overallIsOver ? 'text-danger' : 'text-success'}`}>Rp {overallReal.toLocaleString('en-US')}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* List of Trip Budgets */}
+      <h4 className="fw-bold mb-3">Trips Breakdown</h4>
+      {tripBudgets.length === 0 ? (
+        <div className="text-center text-muted py-5">
+          <Icon name="folder" size={48} className="opacity-50 mb-3" />
+          <p>No trips available.</p>
+        </div>
+      ) : (
+        <div className="row g-3">
+          {tripBudgets.map(trip => (
+            <div className="col-12 col-md-6 col-lg-4" key={trip.id}>
+              <div className="card-trip h-100 border p-3" style={{ borderLeft: `4px solid ${trip.isOver ? 'var(--bs-danger)' : 'var(--bs-success)'}` }}>
+                <h5 className="fw-bold text-truncate mb-3">{trip.name}</h5>
+                
+                <div className="d-flex justify-content-between mb-2 small">
+                  <span className="text-muted">Plan:</span>
+                  <span className="fw-bold">Rp {trip.totalPlan.toLocaleString('en-US')}</span>
+                </div>
+                <div className="d-flex justify-content-between mb-2 small">
+                  <span className="text-muted">Actual:</span>
+                  <span className={`fw-bold ${trip.isOver ? 'text-danger' : 'text-success'}`}>Rp {trip.totalReal.toLocaleString('en-US')}</span>
+                </div>
+                
+                <hr className="my-2" />
+                
+                <div className="d-flex justify-content-between align-items-center">
+                  <span className={`badge ${trip.isOver ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success'}`}>
+                    {trip.isOver ? 'Over Budget' : 'On Budget'}
+                  </span>
+                  <span className={`small fw-bold ${trip.isOver ? 'text-danger' : 'text-success'}`}>
+                    {trip.isOver ? '+' : '-'}Rp {Math.abs(trip.diff).toLocaleString('en-US')}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // App Content
 const AppContent = () => {
   const { currentUser, activeView, navigateTo, logout, unreadCount } = useTrip();
@@ -1425,7 +1523,8 @@ const AppContent = () => {
     profile: <ProfilePage />,
     categories: <CategoriesPage />,
     templates: <TemplatesPage />,
-    notifications: <NotificationsPage />
+    notifications: <NotificationsPage />,
+    'all-budgets': <AllBudgetsReport />
   };
 
   return (
@@ -1462,6 +1561,7 @@ const AppContent = () => {
         <nav className="sidebar-nav pt-3">
           {[
             { key: 'my-trips', icon: 'map', label: 'My Trips' },
+            { key: 'all-budgets', icon: 'dollar-sign', label: 'All Budgets' },
             { key: 'profile', icon: 'user', label: 'Profile' },
             { key: 'categories', icon: 'tag', label: 'Categories' },
             { key: 'templates', icon: 'layout', label: 'Templates' }
