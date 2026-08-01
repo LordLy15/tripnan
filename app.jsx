@@ -482,7 +482,7 @@ const PhotoGallery = ({ photos = [], onAdd, onDelete, editable = false, showHead
 
 // My Trips Page
 const MyTrips = () => {
-  const { trips, createTrip, joinTrip, navigateTo, isLoading, categories, logout, unreadCount } = useTrip();
+  const { trips, createTrip, joinTrip, navigateTo, isLoading, categories, logout, unreadCount, currentUser } = useTrip();
   const [showCreate, setShowCreate] = useState(false);
   const [showJoin, setShowJoin] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
