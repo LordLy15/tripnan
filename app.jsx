@@ -482,7 +482,7 @@ const PhotoGallery = ({ photos = [], onAdd, onDelete, editable = false, showHead
 
 // My Trips Page
 const MyTrips = () => {
-  const { trips, createTrip, joinTrip, navigateTo, isLoading, categories } = useTrip();
+  const { trips, createTrip, joinTrip, navigateTo, isLoading, categories, logout, unreadCount } = useTrip();
   const [showCreate, setShowCreate] = useState(false);
   const [showJoin, setShowJoin] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -557,6 +557,13 @@ const MyTrips = () => {
               )}
             </div>
           )}
+          <button className="btn btn-light border position-relative text-secondary d-flex align-items-center justify-content-center" style={{ width: 40, height: 40, borderRadius: '8px' }} onClick={() => navigateTo('notifications')} title="Notifications">
+            <Icon name="bell" size={18} />
+            {unreadCount > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.65rem' }}>{unreadCount}</span>}
+          </button>
+          <button className="btn btn-outline-danger d-flex align-items-center justify-content-center" style={{ width: 40, height: 40, borderRadius: '8px' }} onClick={logout} title="Logout">
+            <Icon name="log-out" size={18} />
+          </button>
         </div>
       </div>
 
@@ -1140,53 +1147,48 @@ const BudgetReport = () => {
 
   return (
     <div className="animate-fade-in">
-      <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('trip-dashboard')}><Icon name="arrow-left" size={16} /> Back</button>
+      <button className="btn btn-link text-muted p-0 mb-4 d-flex align-items-center gap-1" onClick={() => navigateTo('trip-dashboard')}><Icon name="arrow-left" size={16} /> Back</button>
       <h2 className="fw-bold mb-4">Budget Analytics</h2>
-      <div className={`card-trip text-center mb-4`} style={{ background: isOver ? 'linear-gradient(135deg, #fff, #fef2f2)' : 'linear-gradient(135deg, #fff, #f0fdf4)' }}>
-        <div className="card-body p-5">
+      
+      <div className="card-trip mb-4 overflow-hidden border">
+        <div className="card-body p-4 p-md-5 text-center border-bottom" style={{ background: isOver ? 'linear-gradient(135deg, #fff, #fef2f2)' : 'linear-gradient(135deg, #fff, #f0fdf4)' }}>
           {completion === 0 ? (
-            <div className="text-muted">
+            <div className="text-muted py-4">
               <Icon name="pie-chart" size={60} className="opacity-25 mb-3" />
               <h4>No Data</h4>
             </div>
           ) : (
-            <div>
+            <div className="py-2">
               {isOver ? <Icon name="alert-circle" size={60} className="text-danger mb-3" /> : <Icon name="check-circle" size={60} className="text-success mb-3" />}
               <h1 className={`display-4 fw-bold ${isOver ? 'text-danger' : 'text-success'}`}>{isOver ? 'OVER BUDGET' : 'ON BUDGET'}</h1>
-              <p className="fs-5 text-muted">
+              <p className="fs-5 text-muted mb-0">
                 {isOver ? <>Over by <strong className="text-danger">Rp {diff.toLocaleString('en-US')}</strong></> : <>Saving <strong className="text-success">Rp {Math.abs(diff).toLocaleString('en-US')}</strong></>}
               </p>
             </div>
           )}
         </div>
-      </div>
-      <div className="row g-4 mb-4">
-        <div className="col-md-6">
-          <div className="card-trip text-center">
-            <div className="card-body p-4">
+        
+        <div className="card-body p-4 p-md-5">
+          <div className="row g-4 mb-4 text-center">
+            <div className="col-6 border-end">
               <p className="text-muted small fw-bold mb-2">PLANNED</p>
-              <h2 className="fw-bold" style={{ color: 'var(--primary)' }}>Rp {totalPlan.toLocaleString('en-US')}</h2>
+              <h3 className="fw-bold" style={{ color: 'var(--primary)' }}>Rp {totalPlan.toLocaleString('en-US')}</h3>
             </div>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="card-trip text-center">
-            <div className="card-body p-4">
+            <div className="col-6">
               <p className="text-muted small fw-bold mb-2">ACTUAL</p>
-              <h2 className={`fw-bold ${isOver ? 'text-danger' : 'text-success'}`}>Rp {totalReal.toLocaleString('en-US')}</h2>
+              <h3 className={`fw-bold ${isOver ? 'text-danger' : 'text-success'}`}>Rp {totalReal.toLocaleString('en-US')}</h3>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="card-trip">
-        <div className="card-body p-4">
-          <h5 className="fw-bold mb-1">Trip Allowance</h5>
-          <p className="text-muted small">Budget: Rp {parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')}</p>
-          {totalReal > activeTrip.totalPlanBudget ? (
-            <div className="alert alert-danger"><Icon name="alert-triangle" size={20} /> Exceeded by Rp {(totalReal - activeTrip.totalPlanBudget).toLocaleString('en-US')}</div>
-          ) : (
-            <div className="alert alert-success"><Icon name="check-circle" size={20} /> Rp {(activeTrip.totalPlanBudget - totalReal).toLocaleString('en-US')} remaining</div>
-          )}
+          
+          <div className="p-4 bg-light rounded-3 border">
+            <h5 className="fw-bold mb-1">Trip Allowance</h5>
+            <p className="text-muted small mb-3">Total Budget: Rp {parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')}</p>
+            {totalReal > activeTrip.totalPlanBudget ? (
+              <div className="alert alert-danger mb-0 py-2 px-3 d-flex align-items-center gap-2"><Icon name="alert-triangle" size={18} /> Exceeded by Rp {(totalReal - activeTrip.totalPlanBudget).toLocaleString('en-US')}</div>
+            ) : (
+              <div className="alert alert-success mb-0 py-2 px-3 d-flex align-items-center gap-2"><Icon name="check-circle" size={18} /> Rp {(activeTrip.totalPlanBudget - totalReal).toLocaleString('en-US')} remaining</div>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -1416,17 +1418,16 @@ const AppContent = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh' }}>
-      {/* Toggle Button - Hamburger Style */}
-      <button
-        onClick={toggleSidebar}
-        className="mobile-menu-btn"
-        aria-label="Toggle menu"
-      >
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-      </button>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* Mobile Header */}
+      <div className="d-md-none d-flex align-items-center p-3 border-bottom bg-white sticky-top shadow-sm z-3">
+        <button onClick={toggleSidebar} className="btn p-2 me-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center">
+          <Icon name="menu" size={24} />
+        </button>
+        <div className="fw-bold fs-5 d-flex align-items-center gap-2" style={{ color: 'var(--primary)' }}>
+          <Icon name="map" size={20} /> TripNan
+        </div>
+      </div>
 
       {/* Sidebar Overlay (Mobile only) */}
       <div
@@ -1464,8 +1465,7 @@ const AppContent = () => {
             { key: 'my-trips', icon: 'map', label: 'My Trips' },
             { key: 'profile', icon: 'user', label: 'Profile' },
             { key: 'categories', icon: 'tag', label: 'Categories' },
-            { key: 'templates', icon: 'layout', label: 'Templates' },
-            { key: 'notifications', icon: 'bell', label: 'Notifications', badge: unreadCount }
+            { key: 'templates', icon: 'layout', label: 'Templates' }
           ].map(item => (
             <button
               key={item.key}
@@ -1477,17 +1477,11 @@ const AppContent = () => {
             </button>
           ))}
         </nav>
-
-        <div className="sidebar-logout">
-          <button className="sidebar-nav-item" onClick={logout}>
-            <Icon name="log-out" size={18} /> Logout
-          </button>
-        </div>
       </div>
 
       {/* Main Content */}
-      <div className="main-content d-flex flex-column" style={{ minHeight: '100vh' }}>
-        <div className="p-4 p-md-5 flex-grow-1">
+      <div className="main-content d-flex flex-column flex-grow-1">
+        <div className="p-3 p-md-5 flex-grow-1">
           {pages[activeView] || <MyTrips />}
         </div>
         
