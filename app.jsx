@@ -534,7 +534,7 @@ const MyTrips = () => {
   };
 
   return (
-    <div className="animate-fade-in pt-md-0 pt-4 mt-md-0 mt-3">
+    <div className="animate-fade-in">
       <div className="row align-items-center mb-4 gap-3 gap-md-0">
         <div className="col-12 col-md-auto">
           <h4 className="text-muted mb-2 fw-normal">{getGreeting()}, <span className="fw-bold" style={{ color: 'var(--primary)' }}>{currentUser}</span>!</h4>
