@@ -491,7 +491,7 @@ const MyTrips = () => {
   const [joinError, setJoinError] = useState('');
   const [coverPreview, setCoverPreview] = useState(null);
   const [filterCat, setFilterCat] = useState('');
-  const [viewMode, setViewMode] = useState('list'); // list or grid
+  const [viewMode, setViewMode] = useState('grid'); // list or grid
 
   const handleCreate = async (e) => {
     e.preventDefault();
