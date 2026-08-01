@@ -491,6 +491,7 @@ const MyTrips = () => {
   const [joinError, setJoinError] = useState('');
   const [coverPreview, setCoverPreview] = useState(null);
   const [filterCat, setFilterCat] = useState('');
+  const [viewMode, setViewMode] = useState('list'); // list or grid
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -525,10 +526,18 @@ const MyTrips = () => {
 
   if (isLoading) return <div className="text-center p-5"><Icon name="loader" size={24} className="spin me-2" /> Loading...</div>;
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Selamat Pagi';
+    if (hour < 18) return 'Selamat Sore';
+    return 'Selamat Malam';
+  };
+
   return (
     <div className="animate-fade-in pt-md-0 pt-4 mt-md-0 mt-3">
       <div className="row align-items-center mb-4 gap-3 gap-md-0">
         <div className="col-12 col-md-auto">
+          <h4 className="text-muted mb-2 fw-normal">{getGreeting()}, <span className="fw-bold" style={{ color: 'var(--primary)' }}>{currentUser}</span>!</h4>
           <h1 className="h3 fw-bold mb-1">My Trips</h1>
           <p className="text-muted mb-0">{trips.length} trips planned</p>
         </div>
@@ -557,13 +566,14 @@ const MyTrips = () => {
               )}
             </div>
           )}
-          <button className="btn btn-light border position-relative text-secondary d-none d-md-flex align-items-center justify-content-center" style={{ width: 40, height: 40, borderRadius: '8px' }} onClick={() => navigateTo('notifications')} title="Notifications">
-            <Icon name="bell" size={18} />
-            {unreadCount > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.65rem' }}>{unreadCount}</span>}
-          </button>
-          <button className="btn btn-outline-danger d-none d-md-flex align-items-center justify-content-center" style={{ width: 40, height: 40, borderRadius: '8px' }} onClick={logout} title="Logout">
-            <Icon name="log-out" size={18} />
-          </button>
+          <div className="btn-group border bg-white rounded-3 shadow-sm d-flex" style={{ padding: '2px' }}>
+            <button className={`btn btn-sm ${viewMode === 'grid' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted border-0'}`} onClick={() => setViewMode('grid')} style={{ padding: '6px 12px' }} title="Grid View">
+              <Icon name="grid" size={16} />
+            </button>
+            <button className={`btn btn-sm ${viewMode === 'list' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted border-0'}`} onClick={() => setViewMode('list')} style={{ padding: '6px 12px' }} title="List View">
+              <Icon name="list" size={16} />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -646,7 +656,7 @@ const MyTrips = () => {
             const progress = total ? Math.round((completed / total) * 100) : 0;
             const cat = categories.find(c => c.id === trip.category_id);
             return (
-              <div key={trip.id} className="col-md-6 col-lg-4">
+              <div key={trip.id} className={viewMode === 'grid' ? 'col-md-6 col-lg-4' : 'col-12'}>
                 <div className="card-trip trip-card" onClick={() => navigateTo('trip-dashboard', trip.id)}>
                   <div className="trip-cover" style={{ backgroundImage: trip.coverUrl ? `url(${trip.coverUrl})` : 'linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%)' }}>
                     <span className="trip-code">{trip.tripCode}</span>
@@ -1461,16 +1471,6 @@ const AppContent = () => {
           </button>
         </div>
 
-        <div className="sidebar-user-card">
-          <div className="d-flex align-items-center gap-3">
-            <div className="sidebar-user-avatar">{currentUser?.charAt(0).toUpperCase()}</div>
-            <div>
-              <p className="small mb-0" style={{ color: 'var(--text-muted)' }}>Logged in as</p>
-              <p className="fw-bold mb-0" style={{ color: 'var(--text-primary)' }}>{currentUser}</p>
-            </div>
-          </div>
-        </div>
-
         <nav className="sidebar-nav">
           {[
             { key: 'my-trips', icon: 'map', label: 'My Trips' },
@@ -1488,6 +1488,16 @@ const AppContent = () => {
             </button>
           ))}
         </nav>
+
+        <div className="sidebar-user-card mt-auto" style={{ marginBottom: 0 }}>
+          <div className="d-flex align-items-center gap-3">
+            <div className="sidebar-user-avatar">{currentUser?.charAt(0).toUpperCase()}</div>
+            <div>
+              <p className="small mb-0" style={{ color: 'var(--text-muted)' }}>Logged in as</p>
+              <p className="fw-bold mb-0" style={{ color: 'var(--text-primary)' }}>{currentUser}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}
