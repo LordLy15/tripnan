@@ -1502,7 +1502,7 @@ const AppContent = () => {
 
       {/* Main Content */}
       <div className="main-content d-flex flex-column flex-grow-1">
-        <div className="p-3 p-md-5 flex-grow-1">
+        <div className="px-3 px-md-5 pt-3 pt-md-4 pb-5 flex-grow-1">
           {pages[activeView] || <MyTrips />}
         </div>
         
