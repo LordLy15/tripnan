@@ -1455,6 +1455,217 @@ const BudgetReport = () => {
   );
 };
 
+// Settings Page
+const SettingsPage = () => {
+  const { currentUser, navigateTo, updateUser, darkMode, toggleDarkMode, logout, categories, createCategory, deleteCategory, updateCategory } = useTrip();
+  
+  // Tab state
+  const [activeTab, setActiveTab] = useState('account');
+
+  // Account state
+  const [fullName, setFullName] = useState(currentUser || '');
+  const [password, setPassword] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Category state
+  const [catName, setCatName] = useState('');
+  const [catColor, setCatColor] = useState('#0d6efd');
+  const [showCatForm, setShowCatForm] = useState(false);
+  const [editCatId, setEditCatId] = useState(null);
+  const [editCatName, setEditCatName] = useState('');
+  const [editCatColor, setEditCatColor] = useState('');
+
+  const handleSaveAccount = async (e) => {
+    e.preventDefault();
+    setIsSaving(true);
+    const res = await updateUser(fullName, password);
+    setIsSaving(false);
+    if (res.success) {
+      alert('Settings saved successfully!');
+      setPassword('');
+    } else {
+      alert(res.message || 'Failed to save settings');
+    }
+  };
+
+  const handleCreateCategory = async (e) => {
+    e.preventDefault();
+    await createCategory(catName, catColor, 'tag');
+    setCatName('');
+    setShowCatForm(false);
+  };
+
+  const startEditCategory = (cat) => {
+    setEditCatId(cat.id);
+    setEditCatName(cat.name);
+    setEditCatColor(cat.color);
+  };
+
+  const handleUpdateCategory = async (id) => {
+    await updateCategory(id, editCatName, editCatColor, 'tag');
+    setEditCatId(null);
+  };
+
+  return (
+    <div className="animate-fade-in">
+      <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('my-trips')}><Icon name="arrow-left" size={16} /> Back</button>
+      <h2 className="fw-bold mb-4"><Icon name="settings" size={24} /> Settings</h2>
+      
+      <div className="card-trip">
+        <div className="row g-0">
+          <div className="col-md-3 border-end bg-light" style={{ minHeight: '60vh' }}>
+            <div className="p-3">
+              <div className="nav flex-column nav-pills gap-1">
+                <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'account' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('account')}>
+                  <Icon name="user" size={18} /> Account
+                </button>
+                <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'categories' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('categories')}>
+                  <Icon name="tag" size={18} /> Categories
+                </button>
+                <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'appearance' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('appearance')}>
+                  <Icon name="monitor" size={18} /> Appearance
+                </button>
+                <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'about' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('about')}>
+                  <Icon name="info" size={18} /> About & Logout
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div className="col-md-9">
+            <div className="p-4 p-md-5">
+              {activeTab === 'account' && (
+                <div className="animate-fade-in">
+                  <h5 className="fw-bold mb-4"><Icon name="user" size={18} className="me-2" />Account Settings</h5>
+                  <form onSubmit={handleSaveAccount} style={{ maxWidth: '500px' }}>
+                    <div className="mb-3">
+                      <label className="form-label">Username (Read-only)</label>
+                      <input type="text" className="form-control" value={currentUser} disabled />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Full Name</label>
+                      <input type="text" className="form-control" value={fullName} onChange={e => setFullName(e.target.value)} />
+                    </div>
+                    <div className="mb-4">
+                      <label className="form-label">New Password (leave blank to keep current)</label>
+                      <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
+                    </div>
+                    <button type="submit" className="btn btn-primary px-4" disabled={isSaving}>
+                      {isSaving ? 'Saving...' : 'Save Changes'}
+                    </button>
+                  </form>
+                </div>
+              )}
+
+              {activeTab === 'categories' && (
+                <div className="animate-fade-in">
+                  <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h5 className="fw-bold mb-0"><Icon name="tag" size={18} className="me-2" />Manage Categories</h5>
+                    <button className="btn btn-sm btn-primary" onClick={() => setShowCatForm(!showCatForm)}>
+                      <Icon name={showCatForm ? 'x' : 'plus'} size={16} /> {showCatForm ? 'Cancel' : 'New'}
+                    </button>
+                  </div>
+
+                  {showCatForm && (
+                    <div className="card-trip mb-4 bg-light border">
+                      <div className="card-body">
+                        <div className="row g-2 align-items-end">
+                          <div className="col-md-5">
+                            <label className="form-label small">Name</label>
+                            <input className="form-control form-control-sm" placeholder="e.g. Flight" value={catName} onChange={e => setCatName(e.target.value)} />
+                          </div>
+                          <div className="col-md-4">
+                            <label className="form-label small">Color</label>
+                            <div className="d-flex gap-2 align-items-center">
+                              <input type="color" className="form-control form-control-color form-control-sm" value={catColor} onChange={e => setCatColor(e.target.value)} style={{ width: 40 }} />
+                              <span className="small text-muted">{catColor}</span>
+                            </div>
+                          </div>
+                          <div className="col-md-3">
+                            <button className="btn btn-sm btn-primary w-100" onClick={handleCreateCategory}>Save</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="row g-3">
+                    {categories.map(cat => (
+                      <div key={cat.id} className="col-md-4 col-sm-6">
+                        <div className="card-trip text-center py-3 h-100 position-relative group-hover-show" style={{ borderTop: `4px solid ${cat.color}` }}>
+                          <div className="card-body p-2 d-flex flex-column justify-content-center">
+                            {editCatId === cat.id ? (
+                              <div>
+                                <input className="form-control form-control-sm text-center mb-2" value={editCatName} onChange={e => setEditCatName(e.target.value)} />
+                                <div className="d-flex justify-content-center mb-2">
+                                  <input type="color" className="form-control form-control-color form-control-sm" value={editCatColor} onChange={e => setEditCatColor(e.target.value)} />
+                                </div>
+                                <div className="d-flex gap-1 justify-content-center">
+                                  <button className="btn btn-sm btn-outline-secondary py-0" onClick={() => setEditCatId(null)}><Icon name="x" size={14} /></button>
+                                  <button className="btn btn-sm btn-primary py-0" onClick={() => handleUpdateCategory(cat.id)}><Icon name="info" size={14} /></button>
+                                </div>
+                              </div>
+                            ) : (
+                              <>
+                                <div className="rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style={{ width: 40, height: 40, backgroundColor: cat.color + '20' }}>
+                                  <Icon name="tag" size={18} style={{ color: cat.color }} />
+                                </div>
+                                <h6 className="mb-0 small fw-bold">{cat.name}</h6>
+                                {cat.owner !== 'default' && (
+                                  <div className="d-flex gap-1 justify-content-center mt-2">
+                                    <button className="btn btn-sm btn-light border py-0 px-2" onClick={() => startEditCategory(cat)} title="Edit Category"><Icon name="edit" size={12} /></button>
+                                    <button className="btn btn-sm btn-outline-danger py-0 px-2" onClick={() => { if(window.confirm('Delete category?')) deleteCategory(cat.id); }} title="Delete Category"><Icon name="trash" size={12} /></button>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'appearance' && (
+                <div className="animate-fade-in">
+                  <h5 className="fw-bold mb-4"><Icon name="monitor" size={18} className="me-2" />Appearance</h5>
+                  <div className="d-flex align-items-center justify-content-between p-3 border rounded">
+                    <div>
+                      <h6 className="mb-1">Dark Mode</h6>
+                      <p className="text-muted small mb-0">Switch to a dark theme to reduce eye strain</p>
+                    </div>
+                    <div className="form-check form-switch">
+                      <input className="form-check-input" type="checkbox" role="switch" checked={darkMode} onChange={toggleDarkMode} style={{ transform: 'scale(1.5)' }} />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'about' && (
+                <div className="animate-fade-in text-center py-4">
+                  <div className="rounded-circle mx-auto mb-3 bg-primary text-white d-flex align-items-center justify-content-center shadow-sm" style={{ width: 64, height: 64 }}>
+                    <Icon name="map" size={32} />
+                  </div>
+                  <h4 className="fw-bold mb-1">TripNan</h4>
+                  <p className="text-muted mb-4">Version 2.0.0 (WebP Optimized)</p>
+                  
+                  <div className="d-grid gap-2 mx-auto" style={{ maxWidth: '200px' }}>
+                    <button className="btn btn-danger d-flex align-items-center justify-content-center gap-2" onClick={logout}>
+                      <Icon name="log-out" size={18} /> Logout
+                    </button>
+                  </div>
+                  <p className="small text-muted mt-5">© 2026 TripNan. All rights reserved.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Templates Page
 const TemplatesPage = () => {
   const { templates, saveTemplate, deleteTemplate, useTemplate, activeTrip, navigateTo } = useTrip();
