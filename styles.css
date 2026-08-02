@@ -1347,8 +1347,12 @@ body.dark-mode {
   --gray-100: #1e293b;
   --gray-200: #334155;
   
-  background-color: var(--bg-body);
-  color: var(--text-primary);
+  background-color: var(--bg-body) !important;
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .bg-light {
+  background-color: var(--gray-800) !important;
 }
 
 body.dark-mode .card-trip,
@@ -1384,13 +1388,13 @@ body.dark-mode .text-muted {
 }
 
 body.dark-mode .btn-light {
-  background-color: var(--gray-200);
-  color: var(--text-primary);
-  border-color: var(--border);
+  background-color: var(--gray-200) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
 }
 
 body.dark-mode .btn-light:hover {
-  background-color: var(--gray-100);
+  background-color: var(--gray-100) !important;
 }
 
 body.dark-mode .btn-white {
