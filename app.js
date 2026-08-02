@@ -100,12 +100,12 @@ const TripProvider = ({
     const textMuted = isLight ? '#64748b' : '#94a3b8';
     let bgCard;
     if (isLight) {
-      if (yiq > 240) bgCard = '#ffffff';else bgCard = adjust(15);
+      if (yiq > 230) bgCard = '#ffffff';else bgCard = adjust(30);
     } else {
-      bgCard = adjust(15);
+      bgCard = adjust(35);
     }
-    let bgInput = isLight ? '#ffffff' : adjust(25);
-    let border = isLight ? adjust(-20) : adjust(30);
+    let bgInput = isLight ? '#ffffff' : adjust(45);
+    let border = isLight ? adjust(-30) : adjust(50);
     return {
       '--bg-body': bgHex,
       '--bg-card': bgCard,
@@ -125,24 +125,33 @@ const TripProvider = ({
   };
   useEffect(() => {
     const body = document.body;
+    let styleTag = document.getElementById('trip-dynamic-theme');
     if (bgColor) {
+      if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = 'trip-dynamic-theme';
+        document.head.appendChild(styleTag);
+      }
+      styleTag.innerHTML = `
+        body { background-color: var(--bg-body) !important; color: var(--text-primary) !important; }
+        .sidebar, .bg-white, .bg-light, .card, .settings-layout, .card-trip, .module-card, .auth-card {
+          background-color: var(--bg-card) !important; border-color: var(--border) !important; color: var(--text-primary) !important;
+        }
+        .form-control, .form-select { background-color: var(--bg-input) !important; border-color: var(--border) !important; color: var(--text-primary) !important; }
+        .text-muted { color: var(--text-muted) !important; }
+        .text-secondary { color: var(--text-secondary) !important; }
+        .text-dark { color: var(--text-primary) !important; }
+      `;
       const themeVars = generateThemeFromBg(bgColor);
       Object.entries(themeVars).forEach(([key, value]) => {
         body.style.setProperty(key, value);
       });
-
-      // Cleanup old hardcoded properties from previous version just in case
-      body.style.removeProperty('background-color');
-      body.style.removeProperty('color');
       localStorage.setItem('tripBgColor', bgColor);
-      if (themeColor !== bgColor) {
-        setThemeColor(bgColor);
-      }
+      if (themeColor !== bgColor) setThemeColor(bgColor);
     } else {
+      if (styleTag) styleTag.remove();
       const varsToRemove = ['--bg-body', '--bg-card', '--bg-sidebar', '--bg-input', '--text-primary', '--text-secondary', '--text-muted', '--border', '--gray-50', '--gray-100', '--gray-200', '--bs-body-bg', '--bs-body-color', '--bs-secondary-color'];
       varsToRemove.forEach(key => body.style.removeProperty(key));
-      body.style.removeProperty('background-color');
-      body.style.removeProperty('color');
       localStorage.removeItem('tripBgColor');
     }
   }, [bgColor]);
@@ -3537,7 +3546,9 @@ const AppContent = () => {
   // Handle navigation
   const handleNavClick = key => {
     navigateTo(key);
-    closeSidebar();
+    if (window.innerWidth <= 768) {
+      closeSidebar();
+    }
   };
   if (!currentUser) return /*#__PURE__*/React.createElement(AuthPage, null);
   const pages = {
