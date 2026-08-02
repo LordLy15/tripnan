@@ -1430,3 +1430,9 @@ body.dark-mode .dropdown-item:hover {
     display: none !important;
   }
 }
+
+/* Dynamic Background Adaptations */
+.sidebar:not(.dark-mode *), .bg-white:not(.dark-mode *), .bg-light:not(.dark-mode *), .card:not(.dark-mode *), .settings-layout:not(.dark-mode *) {
+  color: var(--text-primary);
+}
+
