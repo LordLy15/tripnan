@@ -2194,11 +2194,7 @@ const AppContent = () => {
         
         {/* Footer Section */}
         <div className="mt-auto">
-          <div className="px-3 px-md-5 pb-3">
-            <button className="btn btn-link text-danger text-decoration-none p-0 d-flex align-items-center gap-2" onClick={logout} style={{ fontWeight: '500' }}>
-              <Icon name="log-out" size={18} /> Logout Akun
-            </button>
-          </div>
+
           <footer className="text-center text-muted py-4" style={{ borderTop: '1px solid var(--border)' }}>
             <small>&copy; {new Date().getFullYear()} Dnan Dev. All rights reserved.</small>
           </footer>

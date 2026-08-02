@@ -3393,18 +3393,7 @@ const AppContent = () => {
     className: "px-3 px-md-5 pt-3 pt-md-4 pb-5 flex-grow-1"
   }, pages[activeView] || /*#__PURE__*/React.createElement(MyTrips, null)), /*#__PURE__*/React.createElement("div", {
     className: "mt-auto"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "px-3 px-md-5 pb-3"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-link text-danger text-decoration-none p-0 d-flex align-items-center gap-2",
-    onClick: logout,
-    style: {
-      fontWeight: '500'
-    }
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "log-out",
-    size: 18
-  }), " Logout Akun")), /*#__PURE__*/React.createElement("footer", {
+  }, /*#__PURE__*/React.createElement("footer", {
     className: "text-center text-muted py-4",
     style: {
       borderTop: '1px solid var(--border)'
