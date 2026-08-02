@@ -84,9 +84,13 @@ const TripProvider = ({
     const root = document.documentElement;
     if (bgColor) {
       root.style.setProperty('--bg-body', bgColor);
+      root.style.setProperty('--bs-body-bg', bgColor); // Override Bootstrap default
+      document.body.style.backgroundColor = bgColor; // Force apply directly
       localStorage.setItem('tripBgColor', bgColor);
     } else {
       root.style.removeProperty('--bg-body');
+      root.style.removeProperty('--bs-body-bg');
+      document.body.style.backgroundColor = '';
       localStorage.removeItem('tripBgColor');
     }
   }, [bgColor]);
