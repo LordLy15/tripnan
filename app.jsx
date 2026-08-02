@@ -1555,9 +1555,42 @@ const SettingsPage = () => {
               <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'preferences' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => { setActiveTab('preferences'); setMobileView('content'); }}>
                 <Icon name="settings" size={18} /> Preferensi Sistem
               </button>
-              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'about' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => { setActiveTab('about'); setMobileView('content'); }}>
-                <Icon name="info" size={18} /> Tentang
-              </button>
+              <div>
+                <button 
+                  className={`nav-link w-100 text-start d-flex align-items-center justify-content-between ${activeTab === 'about' ? 'active bg-primary text-white' : 'text-dark'}`} 
+                  onClick={() => { setActiveTab('about'); setMobileView('content'); }}
+                >
+                  <div className="d-flex align-items-center gap-2">
+                    <Icon name="info" size={18} /> Tentang
+                  </div>
+                  <Icon name={activeTab === 'about' ? "chevron-up" : "chevron-down"} size={16} />
+                </button>
+                {activeTab === 'about' && (
+                  <div className="ps-4 mt-2 mb-1 d-flex flex-column gap-2">
+                    <button 
+                      className={`btn btn-sm text-start w-100 px-2 py-1 ${aboutTab === 'version' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`} 
+                      onClick={() => setAboutTab('version')}
+                      style={{ border: 'none', background: 'transparent' }}
+                    >
+                      <Icon name="tag" size={14} className="me-2" /> Versi Aplikasi
+                    </button>
+                    <button 
+                      className={`btn btn-sm text-start w-100 px-2 py-1 ${aboutTab === 'kenali' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`} 
+                      onClick={() => setAboutTab('kenali')}
+                      style={{ border: 'none', background: 'transparent' }}
+                    >
+                      <Icon name="info" size={14} className="me-2" /> Kenali TripNan
+                    </button>
+                    <button 
+                      className={`btn btn-sm text-start w-100 px-2 py-1 ${aboutTab === 'ulas' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`} 
+                      onClick={() => setAboutTab('ulas')}
+                      style={{ border: 'none', background: 'transparent' }}
+                    >
+                      <Icon name="star" size={14} className="me-2" /> Ulas Aplikasi Ini
+                    </button>
+                  </div>
+                )}
+              </div>
               <hr className="my-2" />
               <button className="nav-link text-start d-flex align-items-center gap-2 text-danger" onClick={clearCache}>
                 <Icon name="trash" size={18} /> Bersihkan Cache
@@ -1757,20 +1790,6 @@ const SettingsPage = () => {
               {activeTab === 'about' && (
                 <div className="animate-fade-in" style={{ maxWidth: '600px' }}>
                   <h5 className="fw-bold mb-4"><Icon name="info" size={18} className="me-2" />Tentang TripNan</h5>
-                  
-                  {/* Navbar (Tab-Pills) inside About */}
-                  <ul className="nav nav-pills nav-fill mb-4 border rounded p-1">
-                    <li className="nav-item">
-                      <button className={`nav-link ${aboutTab === 'version' ? 'active' : ''}`} onClick={() => setAboutTab('version')}>Versi Aplikasi</button>
-                    </li>
-                    <li className="nav-item">
-                      <button className={`nav-link ${aboutTab === 'kenali' ? 'active' : ''}`} onClick={() => setAboutTab('kenali')}>Kenali TripNan</button>
-                    </li>
-                    <li className="nav-item">
-                      <button className={`nav-link ${aboutTab === 'ulas' ? 'active' : ''}`} onClick={() => setAboutTab('ulas')}>Ulas Aplikasi Ini</button>
-                    </li>
-                  </ul>
-                  
                   {/* Tab Content */}
                   <div className="p-4 border rounded bg-light text-center">
                     {aboutTab === 'version' && (
@@ -2172,10 +2191,17 @@ const AppContent = () => {
           {pages[activeView] || <MyTrips />}
         </div>
         
-        {/* Footer */}
-        <footer className="text-center text-muted py-4 mt-auto" style={{ borderTop: '1px solid var(--border)' }}>
-          <small>&copy; {new Date().getFullYear()} Dnan Dev. All rights reserved.</small>
-        </footer>
+        {/* Footer Section */}
+        <div className="mt-auto">
+          <div className="px-3 px-md-5 pb-3">
+            <button className="btn btn-link text-danger text-decoration-none p-0 d-flex align-items-center gap-2" onClick={logout} style={{ fontWeight: '500' }}>
+              <Icon name="log-out" size={18} /> Logout Akun
+            </button>
+          </div>
+          <footer className="text-center text-muted py-4" style={{ borderTop: '1px solid var(--border)' }}>
+            <small>&copy; {new Date().getFullYear()} Dnan Dev. All rights reserved.</small>
+          </footer>
+        </div>
       </div>
     </div>
   );
