@@ -1528,7 +1528,7 @@ const AppContent = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
       {/* Global Header */}
       <div className="d-flex align-items-center justify-content-between p-3 border-bottom bg-white sticky-top shadow-sm" style={{ zIndex: 1030 }}>
         <div className="d-flex align-items-center">

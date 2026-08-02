@@ -275,7 +275,8 @@ a:hover {
    ============================================ */
 
 .login-page {
-  min-height: 100vh;
+  min-height: 100vh; /* fallback */
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -470,7 +471,8 @@ a:hover {
   position: fixed;
   left: 0;
   top: 73px;
-  height: calc(100vh - 73px);
+  height: calc(100vh - 73px); /* fallback */
+  height: calc(100dvh - 73px);
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--border);
