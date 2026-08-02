@@ -1785,7 +1785,7 @@ const SettingsPage = () => {
 
                     <div className="mb-2">
                       <label className="form-label fw-bold text-muted mb-3"><Icon name="edit" size={16} className="me-2" />Warna Aksen Aplikasi</label>
-                      <div className="d-flex gap-3 flex-wrap">
+                      <div className="d-flex gap-3 flex-wrap align-items-center">
                         {['#0ea5e9', '#10b981', '#8b5cf6', '#f43f5e', '#f97316', '#eab308'].map(color => (
                           <div 
                             key={color}
@@ -1803,6 +1803,20 @@ const SettingsPage = () => {
                             title={`Set theme to ${color}`}
                           />
                         ))}
+                        
+                        {/* Custom Color Picker */}
+                        <div className="d-flex align-items-center justify-content-center rounded-circle border border-2 border-dashed position-relative overflow-hidden ms-2" 
+                             style={{ width: '40px', height: '40px', backgroundColor: 'transparent', cursor: 'pointer', borderColor: 'var(--border) !important' }}
+                             title="Pilih Warna Bebas">
+                          <Icon name="plus" size={18} className="text-muted position-absolute" style={{ pointerEvents: 'none' }} />
+                          <input 
+                            type="color" 
+                            className="position-absolute opacity-0 w-100 h-100" 
+                            style={{ cursor: 'pointer', transform: 'scale(1.5)' }}
+                            value={themeColor} 
+                            onChange={(e) => setThemeColor(e.target.value)} 
+                          />
+                        </div>
                       </div>
                       <p className="text-muted small mt-3 mb-0">Personalisasikan warna utama aplikasi sesuai selera Anda.</p>
                     </div>

@@ -2853,7 +2853,7 @@ const SettingsPage = () => {
     size: 16,
     className: "me-2"
   }), "Warna Aksen Aplikasi"), /*#__PURE__*/React.createElement("div", {
-    className: "d-flex gap-3 flex-wrap"
+    className: "d-flex gap-3 flex-wrap align-items-center"
   }, ['#0ea5e9', '#10b981', '#8b5cf6', '#f43f5e', '#f97316', '#eab308'].map(color => /*#__PURE__*/React.createElement("div", {
     key: color,
     className: `rounded-circle cursor-pointer border ${themeColor === color ? 'shadow' : ''}`,
@@ -2868,6 +2868,32 @@ const SettingsPage = () => {
     },
     onClick: () => setThemeColor(color),
     title: `Set theme to ${color}`
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center justify-content-center rounded-circle border border-2 border-dashed position-relative overflow-hidden ms-2",
+    style: {
+      width: '40px',
+      height: '40px',
+      backgroundColor: 'transparent',
+      cursor: 'pointer',
+      borderColor: 'var(--border) !important'
+    },
+    title: "Pilih Warna Bebas"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "plus",
+    size: 18,
+    className: "text-muted position-absolute",
+    style: {
+      pointerEvents: 'none'
+    }
+  }), /*#__PURE__*/React.createElement("input", {
+    type: "color",
+    className: "position-absolute opacity-0 w-100 h-100",
+    style: {
+      cursor: 'pointer',
+      transform: 'scale(1.5)'
+    },
+    value: themeColor,
+    onChange: e => setThemeColor(e.target.value)
   }))), /*#__PURE__*/React.createElement("p", {
     className: "text-muted small mt-3 mb-0"
   }, "Personalisasikan warna utama aplikasi sesuai selera Anda.")))), activeTab === 'preferences' && /*#__PURE__*/React.createElement("div", {
