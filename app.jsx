@@ -481,6 +481,20 @@ const PhotoGallery = ({ photos = [], onAdd, onDelete, editable = false, showHead
   );
 };
 
+// ---------------------------------------------------------
+// Helper: Calculate Trip Duration
+// ---------------------------------------------------------
+const calculateTripDuration = (schedules) => {
+  if (!schedules || schedules.length === 0) return '';
+  const dates = schedules.map(s => new Date(s.date).setHours(0,0,0,0));
+  const minDate = Math.min(...dates);
+  const maxDate = Math.max(...dates);
+  
+  const diffDays = Math.round((maxDate - minDate) / (1000 * 60 * 60 * 24));
+  const days = diffDays + 1;
+  return `${days} Day${days > 1 ? 's' : ''}`;
+};
+
 // My Trips Page
 const MyTrips = () => {
   const { trips, createTrip, joinTrip, navigateTo, isLoading, categories, logout, unreadCount, currentUser } = useTrip();
@@ -669,6 +683,9 @@ const MyTrips = () => {
                   </div>
                   <div className="card-body">
                     <h5 className="fw-bold mb-1">{trip.name}</h5>
+                    {calculateTripDuration(trip.schedules) && (
+                      <p className="small text-primary fw-medium mb-1"><Icon name="calendar" size={14} className="me-1" />{calculateTripDuration(trip.schedules)}</p>
+                    )}
                     <p className="text-muted small mb-3">Budget: Rp {parseFloat(trip.totalPlanBudget).toLocaleString('en-US')}</p>
                     <div className="d-flex justify-content-between align-items-center">
                       <span className="small text-muted">{completed}/{total} activities</span>
@@ -727,6 +744,9 @@ const TripDashboard = () => {
             <span className="badge bg-light text-dark border px-2 py-1 rounded-1 fw-normal">{activeTrip.tripCode}</span>
           </div>
           <h1 className="h2 fw-bold mb-1 text-dark">{activeTrip.name}</h1>
+          {calculateTripDuration(activeTrip.schedules) && (
+            <p className="fw-medium text-primary mb-1"><Icon name="calendar" size={16} className="me-1" />{calculateTripDuration(activeTrip.schedules)}</p>
+          )}
           <p className="text-muted mb-0" style={{ fontSize: '1.1rem' }}>
             Budget: <span className="fw-medium text-dark">Rp {parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')}</span>
           </p>
@@ -814,7 +834,11 @@ const Itinerary = () => {
     setShowAdd(false);
   };
 
-  const sorted = [...(activeTrip.schedules || [])].sort((a, b) => new Date(a.date) - new Date(b.date));
+  const sorted = [...(activeTrip.schedules || [])].sort((a, b) => {
+    const timeA = a.time || '00:00';
+    const timeB = b.time || '00:00';
+    return new Date(`${a.date}T${timeA}`) - new Date(`${b.date}T${timeB}`);
+  });
 
   return (
     <div className="animate-fade-in">
