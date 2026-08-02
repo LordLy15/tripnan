@@ -398,7 +398,13 @@ const icons = {
   'list': '<line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>',
   'check': '<polyline points="20 6 9 17 4 12"/>',
   'star': '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
-  'globe': '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'
+  'globe': '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+  'edit-2': '<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>',
+  'rotate-ccw': '<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>',
+  'save': '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
+  'send': '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
+  'play': '<polygon points="5 3 19 12 5 21 5 3"/>',
+  'log-in': '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>'
 };
 
 const Icon = ({ name, size = 20, className = "", color }) => (
@@ -459,6 +465,7 @@ const AuthPage = () => {
             </div>
           </div>}
           <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+            <Icon name={isLogin ? 'log-in' : 'user-plus'} size={18} className="me-2" />
             {loading ? 'Please wait...' : isLogin ? 'Login' : 'Register'}
           </button>
         </form>
@@ -1038,7 +1045,7 @@ const Itinerary = () => {
                   </div>
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary mt-3">Save Activity</button>
+              <button type="submit" className="btn btn-primary mt-3"><Icon name="save" size={16} className="me-2" /> Save Activity</button>
             </form>
           </div>
         </div>
@@ -1118,7 +1125,7 @@ const AddOns = () => {
                   </div>
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary mt-3">Save Add-on</button>
+              <button type="submit" className="btn btn-primary mt-3"><Icon name="save" size={16} className="me-2" /> Save Add-on</button>
             </form>
           </div>
         </div>
@@ -1234,8 +1241,8 @@ const ScheduleCard = ({ schedule }) => {
               </div>
             </div>
             <div className="d-flex justify-content-end gap-2">
-              <button className="btn btn-sm btn-outline-secondary" onClick={() => setIsEditing(false)}>Cancel</button>
-              <button className="btn btn-sm btn-primary" onClick={handleSaveEdit}>Save</button>
+              <button className="btn btn-sm btn-outline-secondary" onClick={() => setIsEditing(false)}><Icon name="x" size={14} className="me-1" /> Cancel</button>
+              <button className="btn btn-sm btn-primary" onClick={handleSaveEdit}><Icon name="save" size={14} className="me-1" /> Save</button>
             </div>
           </div>
         ) : (
@@ -1283,8 +1290,8 @@ const ScheduleCard = ({ schedule }) => {
                     <input type="text" inputMode="numeric" className="form-control" placeholder="Actual spending" value={realBudget} onChange={e => setRealBudget(formatCurrency(e.target.value))} />
                   </div>
                   <div className="col-auto">
-                    <button className="btn btn-success btn-sm" onClick={handleComplete}>Confirm</button>
-                    <button className="btn btn-outline-secondary btn-sm ms-2" onClick={() => setShowComplete(false)}>Cancel</button>
+                    <button className="btn btn-success btn-sm" onClick={handleComplete}><Icon name="check" size={14} className="me-1" /> Confirm</button>
+                    <button className="btn btn-outline-secondary btn-sm ms-2" onClick={() => setShowComplete(false)}><Icon name="x" size={14} className="me-1" /> Cancel</button>
                   </div>
                 </div>
               </div>
@@ -1295,8 +1302,8 @@ const ScheduleCard = ({ schedule }) => {
                   {showDeleteConfirm ? (
                     <div className="d-flex align-items-center gap-1 border border-danger rounded px-1">
                       <span className="text-danger small ms-1 me-1 fw-bold">Hapus?</span>
-                      <button className="btn btn-danger btn-sm px-2 py-0" onClick={() => deleteSchedule(schedule.id)}>Ya</button>
-                      <button className="btn btn-secondary btn-sm px-2 py-0" onClick={() => setShowDeleteConfirm(false)}>Tidak</button>
+                      <button className="btn btn-danger btn-sm px-2 py-0" onClick={() => deleteSchedule(schedule.id)}><Icon name="check" size={12} className="me-1" /> Ya</button>
+                      <button className="btn btn-secondary btn-sm px-2 py-0" onClick={() => setShowDeleteConfirm(false)}><Icon name="x" size={12} className="me-1" /> Tidak</button>
                     </div>
                   ) : (
                     <button className="btn btn-outline-danger btn-sm" onClick={() => setShowDeleteConfirm(true)}><Icon name="trash" size={14} /></button>
@@ -1319,8 +1326,8 @@ const ScheduleCard = ({ schedule }) => {
                 {showDeleteConfirm ? (
                   <div className="d-inline-flex align-items-center gap-1 border border-danger rounded px-1 py-1">
                     <span className="text-danger small ms-1 me-1 fw-bold">Hapus?</span>
-                    <button className="btn btn-danger btn-sm px-2 py-0" onClick={() => deleteSchedule(schedule.id)}>Ya</button>
-                    <button className="btn btn-secondary btn-sm px-2 py-0" onClick={() => setShowDeleteConfirm(false)}>Tidak</button>
+                    <button className="btn btn-danger btn-sm px-2 py-0" onClick={() => deleteSchedule(schedule.id)}><Icon name="check" size={12} className="me-1" /> Ya</button>
+                    <button className="btn btn-secondary btn-sm px-2 py-0" onClick={() => setShowDeleteConfirm(false)}><Icon name="x" size={12} className="me-1" /> Tidak</button>
                   </div>
                 ) : (
                   <button className="btn btn-outline-danger btn-sm" onClick={() => setShowDeleteConfirm(true)}><Icon name="trash" size={14} /></button>
@@ -1374,7 +1381,7 @@ const Friends = () => {
                   <label className="form-label">Email</label>
                   <input type="email" className="form-control" value={email} onChange={e => setEmail(e.target.value)} required />
                 </div>
-                <button type="submit" className="btn btn-success w-100">Add Friend</button>
+                <button type="submit" className="btn btn-success w-100"><Icon name="user-plus" size={16} className="me-2" /> Add Friend</button>
               </form>
             </div>
           </div>
@@ -1700,6 +1707,7 @@ const SettingsPage = () => {
                       <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
                     </div>
                     <button type="submit" className="btn btn-primary" disabled={isSaving}>
+                      <Icon name="save" size={18} className="me-2" />
                       {isSaving ? 'Menyimpan...' : 'Simpan Perubahan'}
                     </button>
                   </form>
@@ -1731,7 +1739,7 @@ const SettingsPage = () => {
                             </div>
                           </div>
                           <div className="col-md-3">
-                            <button className="btn btn-sm btn-primary w-100" onClick={handleCreateCategory}>Save</button>
+                            <button className="btn btn-sm btn-primary w-100" onClick={handleCreateCategory}><Icon name="save" size={14} className="me-1" /> Save</button>
                           </div>
                         </div>
                       </div>
@@ -1917,7 +1925,7 @@ const SettingsPage = () => {
                         <div className="d-flex gap-2 justify-content-center mb-4">
                           {[1, 2, 3, 4, 5].map(s => <Icon key={s} name="star" size={28} className="text-warning cursor-pointer" />)}
                         </div>
-                        <button className="btn btn-sm btn-primary px-4">Kirim Ulasan</button>
+                        <button className="btn btn-sm btn-primary px-4"><Icon name="send" size={16} className="me-2" /> Kirim Ulasan</button>
                       </div>
                     )}
                   </div>
@@ -1969,7 +1977,7 @@ const TemplatesPage = () => {
                 <input className="form-control" placeholder="Description" value={desc} onChange={e => setDesc(e.target.value)} />
               </div>
               <div className="col-md-2">
-                <button className="btn btn-primary" onClick={handleCreate}>Save</button>
+                <button className="btn btn-primary" onClick={handleCreate}><Icon name="save" size={16} className="me-2" /> Save</button>
               </div>
             </div>
           </div>
@@ -1991,7 +1999,7 @@ const TemplatesPage = () => {
                   <p className="text-muted small">{t.description || 'No description'}</p>
                   <small className="text-muted">{new Date(t.created_at).toLocaleDateString()}</small>
                   <div className="mt-3">
-                    <button className="btn btn-sm btn-primary me-2" onClick={() => useTemplate(t.id)}>Use</button>
+                    <button className="btn btn-sm btn-primary me-2" onClick={() => useTemplate(t.id)}><Icon name="play" size={14} className="me-1" /> Use</button>
                     <button className="btn btn-sm btn-outline-danger" onClick={() => deleteTemplate(t.id)}><Icon name="trash" size={14} /></button>
                   </div>
                 </div>
@@ -2012,7 +2020,7 @@ const NotificationsPage = () => {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="fw-bold mb-0"><Icon name="bell" size={24} /> Notifications</h2>
         {notifications.some(n => !n.is_read) && (
-          <button className="btn btn-sm btn-outline-primary" onClick={markAllNotificationsRead}>Mark all read</button>
+          <button className="btn btn-sm btn-outline-primary" onClick={markAllNotificationsRead}><Icon name="check-circle" size={14} className="me-1" /> Mark all read</button>
         )}
       </div>
       {notifications.length === 0 ? (

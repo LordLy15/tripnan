@@ -547,7 +547,13 @@ const icons = {
   'list': '<line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>',
   'check': '<polyline points="20 6 9 17 4 12"/>',
   'star': '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
-  'globe': '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'
+  'globe': '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+  'edit-2': '<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>',
+  'rotate-ccw': '<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>',
+  'save': '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
+  'send': '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
+  'play': '<polygon points="5 3 19 12 5 21 5 3"/>',
+  'log-in': '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>'
 };
 const Icon = ({
   name,
@@ -669,7 +675,11 @@ const AuthPage = () => {
     type: "submit",
     className: "btn btn-primary w-100",
     disabled: loading
-  }, loading ? 'Please wait...' : isLogin ? 'Login' : 'Register')), /*#__PURE__*/React.createElement("p", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: isLogin ? 'log-in' : 'user-plus',
+    size: 18,
+    className: "me-2"
+  }), loading ? 'Please wait...' : isLogin ? 'Login' : 'Register')), /*#__PURE__*/React.createElement("p", {
     className: "text-center mt-3 text-muted small"
   }, isLogin ? "Don't have an account? " : "Already have an account? ", /*#__PURE__*/React.createElement("button", {
     className: "btn btn-link p-0",
@@ -1622,7 +1632,11 @@ const Itinerary = () => {
   })))), /*#__PURE__*/React.createElement("button", {
     type: "submit",
     className: "btn btn-primary mt-3"
-  }, "Save Activity")))), sorted.length === 0 ? /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "save",
+    size: 16,
+    className: "me-2"
+  }), " Save Activity")))), sorted.length === 0 ? /*#__PURE__*/React.createElement("div", {
     className: "empty-state"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "calendar",
@@ -1769,7 +1783,11 @@ const AddOns = () => {
   })))), /*#__PURE__*/React.createElement("button", {
     type: "submit",
     className: "btn btn-primary mt-3"
-  }, "Save Add-on")))), sorted.length === 0 ? /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "save",
+    size: 16,
+    className: "me-2"
+  }), " Save Add-on")))), sorted.length === 0 ? /*#__PURE__*/React.createElement("div", {
     className: "empty-state"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "tag",
@@ -1925,10 +1943,18 @@ const ScheduleCard = ({
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline-secondary",
     onClick: () => setIsEditing(false)
-  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 14,
+    className: "me-1"
+  }), " Cancel"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-primary",
     onClick: handleSaveEdit
-  }, "Save"))) : /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "save",
+    size: 14,
+    className: "me-1"
+  }), " Save"))) : /*#__PURE__*/React.createElement("div", {
     className: "d-flex justify-content-between align-items-start mb-3"
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h5", {
     className: "fw-bold mb-1"
@@ -1982,10 +2008,18 @@ const ScheduleCard = ({
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-success btn-sm",
     onClick: handleComplete
-  }, "Confirm"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    size: 14,
+    className: "me-1"
+  }), " Confirm"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline-secondary btn-sm ms-2",
     onClick: () => setShowComplete(false)
-  }, "Cancel")))) : /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 14,
+    className: "me-1"
+  }), " Cancel")))) : /*#__PURE__*/React.createElement("div", {
     className: "w-100 d-flex flex-nowrap gap-2"
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-success btn-sm flex-grow-1",
@@ -2006,10 +2040,18 @@ const ScheduleCard = ({
   }, "Hapus?"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-danger btn-sm px-2 py-0",
     onClick: () => deleteSchedule(schedule.id)
-  }, "Ya"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    size: 12,
+    className: "me-1"
+  }), " Ya"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary btn-sm px-2 py-0",
     onClick: () => setShowDeleteConfirm(false)
-  }, "Tidak")) : /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 12,
+    className: "me-1"
+  }), " Tidak")) : /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline-danger btn-sm",
     onClick: () => setShowDeleteConfirm(true)
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -2047,10 +2089,18 @@ const ScheduleCard = ({
   }, "Hapus?"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-danger btn-sm px-2 py-0",
     onClick: () => deleteSchedule(schedule.id)
-  }, "Ya"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    size: 12,
+    className: "me-1"
+  }), " Ya"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary btn-sm px-2 py-0",
     onClick: () => setShowDeleteConfirm(false)
-  }, "Tidak")) : /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 12,
+    className: "me-1"
+  }), " Tidak")) : /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline-danger btn-sm",
     onClick: () => setShowDeleteConfirm(true)
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -2139,7 +2189,11 @@ const Friends = () => {
   })), /*#__PURE__*/React.createElement("button", {
     type: "submit",
     className: "btn btn-success w-100"
-  }, "Add Friend"))))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user-plus",
+    size: 16,
+    className: "me-2"
+  }), " Add Friend"))))), /*#__PURE__*/React.createElement("div", {
     className: "col-md-7"
   }, /*#__PURE__*/React.createElement("div", {
     className: "card-trip h-100"
@@ -2682,7 +2736,11 @@ const SettingsPage = () => {
     type: "submit",
     className: "btn btn-primary",
     disabled: isSaving
-  }, isSaving ? 'Menyimpan...' : 'Simpan Perubahan'))), activeTab === 'categories' && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "save",
+    size: 18,
+    className: "me-2"
+  }), isSaving ? 'Menyimpan...' : 'Simpan Perubahan'))), activeTab === 'categories' && /*#__PURE__*/React.createElement("div", {
     className: "animate-fade-in"
   }, /*#__PURE__*/React.createElement("div", {
     className: "d-flex justify-content-between align-items-center mb-4"
@@ -2734,7 +2792,11 @@ const SettingsPage = () => {
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-primary w-100",
     onClick: handleCreateCategory
-  }, "Save"))))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "save",
+    size: 14,
+    className: "me-1"
+  }), " Save"))))), /*#__PURE__*/React.createElement("div", {
     className: "row g-3"
   }, categories.map(cat => /*#__PURE__*/React.createElement("div", {
     key: cat.id,
@@ -3057,7 +3119,11 @@ const SettingsPage = () => {
     className: "text-warning cursor-pointer"
   }))), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-primary px-4"
-  }, "Kirim Ulasan"))), /*#__PURE__*/React.createElement("p", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "send",
+    size: 16,
+    className: "me-2"
+  }), " Kirim Ulasan"))), /*#__PURE__*/React.createElement("p", {
     className: "small text-muted mt-5 text-center"
   }, "© 2026 TripNan. All rights reserved.")))))));
 };
@@ -3140,7 +3206,11 @@ const TemplatesPage = () => {
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-primary",
     onClick: handleCreate
-  }, "Save"))))), templates.length === 0 ? /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "save",
+    size: 16,
+    className: "me-2"
+  }), " Save"))))), templates.length === 0 ? /*#__PURE__*/React.createElement("div", {
     className: "empty-state"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "layout",
@@ -3167,7 +3237,11 @@ const TemplatesPage = () => {
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-primary me-2",
     onClick: () => useTemplate(t.id)
-  }, "Use"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "play",
+    size: 14,
+    className: "me-1"
+  }), " Use"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline-danger",
     onClick: () => deleteTemplate(t.id)
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -3196,7 +3270,11 @@ const NotificationsPage = () => {
   }), " Notifications"), notifications.some(n => !n.is_read) && /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline-primary",
     onClick: markAllNotificationsRead
-  }, "Mark all read")), notifications.length === 0 ? /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check-circle",
+    size: 14,
+    className: "me-1"
+  }), " Mark all read")), notifications.length === 0 ? /*#__PURE__*/React.createElement("div", {
     className: "empty-state"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "bell",
