@@ -1513,7 +1513,7 @@ const SettingsPage = () => {
       
       <div className="card-trip">
         <div className="row g-0">
-          <div className="col-md-3 border-end bg-light" style={{ minHeight: '60vh' }}>
+          <div className="col-md-3 border-end bg-light settings-sidebar">
             <div className="p-3">
               <div className="nav flex-column nav-pills gap-1">
                 <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'account' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('account')}>

@@ -1411,3 +1411,9 @@ body.dark-mode .dropdown-item:hover {
   background-color: var(--gray-200);
   color: var(--text-primary);
 }
+
+@media (min-width: 768px) {
+  .settings-sidebar {
+    min-height: 60vh;
+  }
+}
