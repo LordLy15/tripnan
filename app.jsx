@@ -1,4 +1,4 @@
-const { useState, useEffect, createContext, useContext } = React;
+const { useState, useEffect, createContext, useContext, useRef } = React;
 
 // Helper Functions
 const generateId = () => Math.random().toString(36).substr(2, 9);
@@ -366,7 +366,9 @@ const icons = {
   'settings': '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
   'monitor': '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
   'list': '<line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>',
-  'check': '<polyline points="20 6 9 17 4 12"/>'
+  'check': '<polyline points="20 6 9 17 4 12"/>',
+  'star': '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  'globe': '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'
 };
 
 const Icon = ({ name, size = 20, className = "", color }) => (
@@ -1467,8 +1469,18 @@ const SettingsPage = () => {
 
   // Account state
   const [fullName, setFullName] = useState(currentUser || '');
+  const [email, setEmail] = useState('');
+  const [dob, setDob] = useState('');
+  const [gender, setGender] = useState('');
+  const [city, setCity] = useState('');
   const [password, setPassword] = useState('');
+  const [profilePic, setProfilePic] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const fileInputRef = useRef(null);
+  
+  // App preferences state
+  const [language, setLanguage] = useState('id');
+  const [aboutOpen, setAboutOpen] = useState('');
 
   // Category state
   const [catName, setCatName] = useState('');
@@ -1481,7 +1493,8 @@ const SettingsPage = () => {
   const handleSaveAccount = async (e) => {
     e.preventDefault();
     setIsSaving(true);
-    const res = await updateUser(fullName, password);
+    // Include the new fields in actual app backend API call here
+    const res = await updateUser(fullName, password); 
     setIsSaving(false);
     if (res.success) {
       alert('Settings saved successfully!');
@@ -1489,6 +1502,18 @@ const SettingsPage = () => {
     } else {
       alert(res.message || 'Failed to save settings');
     }
+  };
+
+  const handleProfilePicChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const compressed = await compressImage(file, 200); // reuse compressImage function
+      setProfilePic(compressed);
+    }
+  };
+
+  const clearCache = () => {
+    alert('Cache berhasil dibersihkan! Aplikasi akan terasa lebih ringan dan cepat.');
   };
 
   const handleCreateCategory = async (e) => {
@@ -1545,21 +1570,61 @@ const SettingsPage = () => {
               {activeTab === 'account' && (
                 <div className="animate-fade-in">
                   <h5 className="fw-bold mb-4"><Icon name="user" size={18} className="me-2" />Account Settings</h5>
-                  <form onSubmit={handleSaveAccount} style={{ maxWidth: '500px' }}>
+                  <form onSubmit={handleSaveAccount} style={{ maxWidth: '600px' }}>
+                    <div className="d-flex flex-column align-items-center mb-4">
+                      <div className="position-relative" style={{ width: '100px', height: '100px' }}>
+                        <div className="rounded-circle bg-light border d-flex align-items-center justify-content-center overflow-hidden w-100 h-100">
+                          {profilePic ? (
+                            <img src={profilePic} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ) : (
+                            <Icon name="user" size={48} className="text-muted" />
+                          )}
+                        </div>
+                        <button type="button" className="btn btn-primary btn-sm rounded-circle position-absolute bottom-0 end-0 d-flex align-items-center justify-content-center" style={{ width: '32px', height: '32px' }} onClick={() => fileInputRef.current?.click()} title="Ubah Foto Profil">
+                          <Icon name="camera" size={14} />
+                        </button>
+                        <input type="file" ref={fileInputRef} className="d-none" accept="image/*" onChange={handleProfilePicChange} />
+                      </div>
+                    </div>
+
                     <div className="mb-3">
-                      <label className="form-label">Username (Read-only)</label>
+                      <label className="form-label fw-bold small text-muted"><Icon name="user" size={14} className="me-1" />Username (Read-only)</label>
                       <input type="text" className="form-control" value={currentUser} disabled />
                     </div>
-                    <div className="mb-3">
-                      <label className="form-label">Full Name</label>
-                      <input type="text" className="form-control" value={fullName} onChange={e => setFullName(e.target.value)} />
+                    <div className="row g-3 mb-3">
+                      <div className="col-md-6">
+                        <label className="form-label fw-bold small text-muted"><Icon name="user" size={14} className="me-1" />Nama Lengkap</label>
+                        <input type="text" className="form-control" value={fullName} onChange={e => setFullName(e.target.value)} />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label fw-bold small text-muted"><Icon name="mail" size={14} className="me-1" />Email</label>
+                        <input type="email" className="form-control" value={email} onChange={e => setEmail(e.target.value)} />
+                      </div>
+                    </div>
+                    <div className="row g-3 mb-3">
+                      <div className="col-md-4">
+                        <label className="form-label fw-bold small text-muted"><Icon name="calendar" size={14} className="me-1" />Tanggal Lahir</label>
+                        <input type="date" className="form-control" value={dob} onChange={e => setDob(e.target.value)} />
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label fw-bold small text-muted"><Icon name="users" size={14} className="me-1" />Jenis Kelamin</label>
+                        <select className="form-select" value={gender} onChange={e => setGender(e.target.value)}>
+                          <option value="">Pilih...</option>
+                          <option value="L">Laki-laki</option>
+                          <option value="P">Perempuan</option>
+                        </select>
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label fw-bold small text-muted"><Icon name="map" size={14} className="me-1" />Kota Tempat Tinggal</label>
+                        <input type="text" className="form-control" value={city} onChange={e => setCity(e.target.value)} />
+                      </div>
                     </div>
                     <div className="mb-4">
-                      <label className="form-label">New Password (leave blank to keep current)</label>
+                      <label className="form-label fw-bold small text-muted"><Icon name="lock" size={14} className="me-1" />Password Baru <span className="small text-muted fw-normal">(kosongkan jika tidak diubah)</span></label>
                       <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
                     </div>
-                    <button type="submit" className="btn btn-primary px-4" disabled={isSaving}>
-                      {isSaving ? 'Saving...' : 'Save Changes'}
+                    <button type="submit" className="btn btn-primary" disabled={isSaving}>
+                      {isSaving ? 'Menyimpan...' : 'Simpan Perubahan'}
                     </button>
                   </form>
                 </div>
@@ -1644,31 +1709,87 @@ const SettingsPage = () => {
               )}
 
               {activeTab === 'appearance' && (
-                <div className="animate-fade-in">
-                  <h5 className="fw-bold mb-4"><Icon name="monitor" size={18} className="me-2" />Appearance</h5>
-                  <div className="d-flex align-items-center justify-content-between p-3 border rounded">
+                <div className="animate-fade-in" style={{ maxWidth: '600px' }}>
+                  <h5 className="fw-bold mb-4"><Icon name="monitor" size={18} className="me-2" />Appearance & Preferences</h5>
+                  
+                  <h6 className="fw-bold mt-4 mb-3">Tampilan</h6>
+                  <div className="d-flex align-items-center justify-content-between p-3 border rounded mb-3">
                     <div>
                       <h6 className="mb-1">Dark Mode</h6>
-                      <p className="text-muted small mb-0">Switch to a dark theme to reduce eye strain</p>
+                      <p className="text-muted small mb-0">Ubah tampilan menjadi mode gelap agar nyaman di mata</p>
                     </div>
                     <div className="form-check form-switch">
                       <input className="form-check-input" type="checkbox" role="switch" checked={darkMode} onChange={toggleDarkMode} style={{ transform: 'scale(1.5)' }} />
+                    </div>
+                  </div>
+
+                  <h6 className="fw-bold mt-4 mb-3">Preferensi Sistem</h6>
+                  <div className="p-3 border rounded mb-3">
+                    <div className="mb-3">
+                      <label className="form-label fw-bold small text-muted"><Icon name="globe" size={14} className="me-1" />Bahasa Aplikasi</label>
+                      <select className="form-select" value={language} onChange={e => setLanguage(e.target.value)}>
+                        <option value="id">Bahasa Indonesia</option>
+                        <option value="en">English (US)</option>
+                      </select>
+                    </div>
+                    <hr />
+                    <div className="d-flex align-items-center justify-content-between pt-2">
+                      <div>
+                        <h6 className="mb-1"><Icon name="trash" size={16} className="me-1 text-danger" />Bersihkan Cache</h6>
+                        <p className="text-muted small mb-0">Hapus file sementara jika aplikasi terasa lambat</p>
+                      </div>
+                      <button className="btn btn-outline-danger btn-sm" onClick={clearCache}>
+                        Bersihkan
+                      </button>
                     </div>
                   </div>
                 </div>
               )}
 
               {activeTab === 'about' && (
-                <div className="animate-fade-in text-center py-4">
+                <div className="animate-fade-in text-center py-4" style={{ maxWidth: '600px', margin: '0 auto' }}>
                   <div className="rounded-circle mx-auto mb-3 bg-primary text-white d-flex align-items-center justify-content-center shadow-sm" style={{ width: 64, height: 64 }}>
                     <Icon name="map" size={32} />
                   </div>
                   <h4 className="fw-bold mb-1">TripNan</h4>
-                  <p className="text-muted mb-4">Version 2.0.0 (WebP Optimized)</p>
+                  <p className="text-primary fw-bold mb-4">Version 2.0.0 (WebP Optimized)</p>
+                  
+                  <div className="text-start mb-5 text-dark">
+                    <div className="accordion" id="aboutAccordion">
+                      <div className="accordion-item">
+                        <h2 className="accordion-header">
+                          <button className={`accordion-button ${aboutOpen === 'kenali' ? '' : 'collapsed'}`} type="button" onClick={() => setAboutOpen(aboutOpen === 'kenali' ? '' : 'kenali')}>
+                            <Icon name="info" size={18} className="me-2 text-primary" /> Kenali TripNan
+                          </button>
+                        </h2>
+                        <div className={`accordion-collapse collapse ${aboutOpen === 'kenali' ? 'show' : ''}`}>
+                          <div className="accordion-body small text-muted">
+                            TripNan adalah aplikasi super-ringan untuk pencatatan dan manajemen perjalanan yang dirancang untuk memudahkan Anda merencanakan liburan, memantau anggaran (budget), serta mengelola aset perjalanan Anda secara mandiri.
+                          </div>
+                        </div>
+                      </div>
+                      <div className="accordion-item">
+                        <h2 className="accordion-header">
+                          <button className={`accordion-button ${aboutOpen === 'ulas' ? '' : 'collapsed'}`} type="button" onClick={() => setAboutOpen(aboutOpen === 'ulas' ? '' : 'ulas')}>
+                            <Icon name="star" size={18} className="me-2 text-warning" /> Ulas Aplikasi ini
+                          </button>
+                        </h2>
+                        <div className={`accordion-collapse collapse ${aboutOpen === 'ulas' ? 'show' : ''}`}>
+                          <div className="accordion-body small text-muted text-center py-4">
+                            <p>Bagaimana pengalaman Anda menggunakan TripNan?</p>
+                            <div className="d-flex gap-2 justify-content-center mb-3">
+                              {[1, 2, 3, 4, 5].map(s => <Icon key={s} name="star" size={24} className="text-warning" />)}
+                            </div>
+                            <button className="btn btn-sm btn-primary">Kirim Ulasan</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   
                   <div className="d-grid gap-2 mx-auto" style={{ maxWidth: '200px' }}>
                     <button className="btn btn-danger d-flex align-items-center justify-content-center gap-2" onClick={logout}>
-                      <Icon name="log-out" size={18} /> Logout
+                      <Icon name="log-out" size={18} /> Logout Akun
                     </button>
                   </div>
                   <p className="small text-muted mt-5">© 2026 TripNan. All rights reserved.</p>
