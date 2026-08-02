@@ -1480,7 +1480,7 @@ const SettingsPage = () => {
   
   // App preferences state
   const [language, setLanguage] = useState('id');
-  const [aboutOpen, setAboutOpen] = useState('');
+  const [aboutTab, setAboutTab] = useState('version');
 
   // Category state
   const [catName, setCatName] = useState('');
@@ -1552,8 +1552,18 @@ const SettingsPage = () => {
               <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'appearance' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => { setActiveTab('appearance'); setMobileView('content'); }}>
                 <Icon name="monitor" size={18} /> Appearance
               </button>
+              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'preferences' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => { setActiveTab('preferences'); setMobileView('content'); }}>
+                <Icon name="settings" size={18} /> Preferensi Sistem
+              </button>
               <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'about' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => { setActiveTab('about'); setMobileView('content'); }}>
-                <Icon name="info" size={18} /> About & Logout
+                <Icon name="info" size={18} /> Tentang
+              </button>
+              <hr className="my-2" />
+              <button className="nav-link text-start d-flex align-items-center gap-2 text-danger" onClick={clearCache}>
+                <Icon name="trash" size={18} /> Bersihkan Cache
+              </button>
+              <button className="nav-link text-start d-flex align-items-center gap-2 text-danger" onClick={logout}>
+                <Icon name="log-out" size={18} /> Logout Akun
               </button>
             </div>
           </div>
@@ -1710,20 +1720,28 @@ const SettingsPage = () => {
 
               {activeTab === 'appearance' && (
                 <div className="animate-fade-in" style={{ maxWidth: '600px' }}>
-                  <h5 className="fw-bold mb-4"><Icon name="monitor" size={18} className="me-2" />Appearance & Preferences</h5>
+                  <h5 className="fw-bold mb-4"><Icon name="monitor" size={18} className="me-2" />Appearance</h5>
                   
-                  <h6 className="fw-bold mt-4 mb-3">Tampilan</h6>
-                  <div className="d-flex align-items-center justify-content-between p-3 border rounded mb-3">
-                    <div>
-                      <h6 className="mb-1">Dark Mode</h6>
-                      <p className="text-muted small mb-0">Ubah tampilan menjadi mode gelap agar nyaman di mata</p>
-                    </div>
-                    <div className="form-check form-switch">
-                      <input className="form-check-input" type="checkbox" role="switch" checked={darkMode} onChange={toggleDarkMode} style={{ transform: 'scale(1.5)' }} />
+                  <div className="p-3 border rounded mb-3">
+                    <div className="mb-3">
+                      <label className="form-label fw-bold small text-muted"><Icon name="monitor" size={14} className="me-1" />Mode Tampilan</label>
+                      <select className="form-select" value={darkMode ? 'dark' : 'light'} onChange={e => {
+                        const isDark = e.target.value === 'dark';
+                        if (isDark !== darkMode) toggleDarkMode();
+                      }}>
+                        <option value="light">Light Mode</option>
+                        <option value="dark">Dark Mode</option>
+                      </select>
+                      <p className="text-muted small mt-2 mb-0">Ubah tampilan menjadi mode gelap agar nyaman di mata</p>
                     </div>
                   </div>
+                </div>
+              )}
 
-                  <h6 className="fw-bold mt-4 mb-3">Preferensi Sistem</h6>
+              {activeTab === 'preferences' && (
+                <div className="animate-fade-in" style={{ maxWidth: '600px' }}>
+                  <h5 className="fw-bold mb-4"><Icon name="settings" size={18} className="me-2" />Preferensi Sistem</h5>
+                  
                   <div className="p-3 border rounded mb-3">
                     <div className="mb-3">
                       <label className="form-label fw-bold small text-muted"><Icon name="globe" size={14} className="me-1" />Bahasa Aplikasi</label>
@@ -1732,67 +1750,62 @@ const SettingsPage = () => {
                         <option value="en">English (US)</option>
                       </select>
                     </div>
-                    <hr />
-                    <div className="d-flex align-items-center justify-content-between pt-2">
-                      <div>
-                        <h6 className="mb-1"><Icon name="trash" size={16} className="me-1 text-danger" />Bersihkan Cache</h6>
-                        <p className="text-muted small mb-0">Hapus file sementara jika aplikasi terasa lambat</p>
-                      </div>
-                      <button className="btn btn-outline-danger btn-sm" onClick={clearCache}>
-                        Bersihkan
-                      </button>
-                    </div>
                   </div>
                 </div>
               )}
 
               {activeTab === 'about' && (
-                <div className="animate-fade-in text-center py-4" style={{ maxWidth: '600px', margin: '0 auto' }}>
-                  <div className="rounded-circle mx-auto mb-3 bg-primary text-white d-flex align-items-center justify-content-center shadow-sm" style={{ width: 64, height: 64 }}>
-                    <Icon name="map" size={32} />
-                  </div>
-                  <h4 className="fw-bold mb-1">TripNan</h4>
-                  <p className="text-primary fw-bold mb-4">Version 2.0.0 (WebP Optimized)</p>
+                <div className="animate-fade-in" style={{ maxWidth: '600px' }}>
+                  <h5 className="fw-bold mb-4"><Icon name="info" size={18} className="me-2" />Tentang TripNan</h5>
                   
-                  <div className="text-start mb-5 text-dark">
-                    <div className="accordion" id="aboutAccordion">
-                      <div className="accordion-item">
-                        <h2 className="accordion-header">
-                          <button className={`accordion-button ${aboutOpen === 'kenali' ? '' : 'collapsed'}`} type="button" onClick={() => setAboutOpen(aboutOpen === 'kenali' ? '' : 'kenali')}>
-                            <Icon name="info" size={18} className="me-2 text-primary" /> Kenali TripNan
-                          </button>
-                        </h2>
-                        <div className={`accordion-collapse collapse ${aboutOpen === 'kenali' ? 'show' : ''}`}>
-                          <div className="accordion-body small text-muted">
-                            TripNan adalah aplikasi super-ringan untuk pencatatan dan manajemen perjalanan yang dirancang untuk memudahkan Anda merencanakan liburan, memantau anggaran (budget), serta mengelola aset perjalanan Anda secara mandiri.
-                          </div>
+                  {/* Navbar (Tab-Pills) inside About */}
+                  <ul className="nav nav-pills nav-fill mb-4 border rounded p-1">
+                    <li className="nav-item">
+                      <button className={`nav-link ${aboutTab === 'version' ? 'active' : ''}`} onClick={() => setAboutTab('version')}>Versi Aplikasi</button>
+                    </li>
+                    <li className="nav-item">
+                      <button className={`nav-link ${aboutTab === 'kenali' ? 'active' : ''}`} onClick={() => setAboutTab('kenali')}>Kenali TripNan</button>
+                    </li>
+                    <li className="nav-item">
+                      <button className={`nav-link ${aboutTab === 'ulas' ? 'active' : ''}`} onClick={() => setAboutTab('ulas')}>Ulas Aplikasi Ini</button>
+                    </li>
+                  </ul>
+                  
+                  {/* Tab Content */}
+                  <div className="p-4 border rounded bg-light text-center">
+                    {aboutTab === 'version' && (
+                      <div className="animate-fade-in py-3">
+                        <div className="rounded-circle mx-auto mb-3 bg-primary text-white d-flex align-items-center justify-content-center shadow-sm" style={{ width: 64, height: 64 }}>
+                          <Icon name="map" size={32} />
                         </div>
+                        <h4 className="fw-bold mb-1">TripNan</h4>
+                        <p className="text-primary fw-bold mb-0">Version 2.0.0</p>
+                        <p className="small text-muted mt-2">WebP Optimized & Responsive</p>
                       </div>
-                      <div className="accordion-item">
-                        <h2 className="accordion-header">
-                          <button className={`accordion-button ${aboutOpen === 'ulas' ? '' : 'collapsed'}`} type="button" onClick={() => setAboutOpen(aboutOpen === 'ulas' ? '' : 'ulas')}>
-                            <Icon name="star" size={18} className="me-2 text-warning" /> Ulas Aplikasi ini
-                          </button>
-                        </h2>
-                        <div className={`accordion-collapse collapse ${aboutOpen === 'ulas' ? 'show' : ''}`}>
-                          <div className="accordion-body small text-muted text-center py-4">
-                            <p>Bagaimana pengalaman Anda menggunakan TripNan?</p>
-                            <div className="d-flex gap-2 justify-content-center mb-3">
-                              {[1, 2, 3, 4, 5].map(s => <Icon key={s} name="star" size={24} className="text-warning" />)}
-                            </div>
-                            <button className="btn btn-sm btn-primary">Kirim Ulasan</button>
-                          </div>
+                    )}
+                    
+                    {aboutTab === 'kenali' && (
+                      <div className="animate-fade-in text-start py-2">
+                        <h6 className="fw-bold text-primary mb-3"><Icon name="info" size={18} className="me-2" />Kenali TripNan</h6>
+                        <p className="small text-muted mb-0 lh-lg">
+                          TripNan adalah aplikasi super-ringan untuk pencatatan dan manajemen perjalanan yang dirancang untuk memudahkan Anda merencanakan liburan, memantau anggaran (budget), serta mengelola aset perjalanan Anda secara mandiri.
+                        </p>
+                      </div>
+                    )}
+                    
+                    {aboutTab === 'ulas' && (
+                      <div className="animate-fade-in py-2">
+                        <h6 className="fw-bold text-warning mb-3"><Icon name="star" size={18} className="me-2" />Ulas Aplikasi ini</h6>
+                        <p className="small text-muted mb-3">Bagaimana pengalaman Anda menggunakan TripNan?</p>
+                        <div className="d-flex gap-2 justify-content-center mb-4">
+                          {[1, 2, 3, 4, 5].map(s => <Icon key={s} name="star" size={28} className="text-warning cursor-pointer" />)}
                         </div>
+                        <button className="btn btn-sm btn-primary px-4">Kirim Ulasan</button>
                       </div>
-                    </div>
+                    )}
                   </div>
                   
-                  <div className="d-grid gap-2 mx-auto" style={{ maxWidth: '200px' }}>
-                    <button className="btn btn-danger d-flex align-items-center justify-content-center gap-2" onClick={logout}>
-                      <Icon name="log-out" size={18} /> Logout Akun
-                    </button>
-                  </div>
-                  <p className="small text-muted mt-5">© 2026 TripNan. All rights reserved.</p>
+                  <p className="small text-muted mt-5 text-center">© 2026 TripNan. All rights reserved.</p>
                 </div>
               )}
             </div>
