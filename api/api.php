@@ -178,6 +178,7 @@ try {
             if (isset($input['tripCode'])) { $updates[] = "tripCode = ?"; $params[] = $input['tripCode']; }
             if (isset($input['category_id'])) { $updates[] = "category_id = ?"; $params[] = $input['category_id']; }
             if (isset($input['coverUrl'])) { $updates[] = "coverurl = ?"; $params[] = $input['coverUrl']; }
+            if (isset($input['is_finished'])) { $updates[] = "is_finished = ?"; $params[] = $input['is_finished'] ? 'true' : 'false'; }
 
             if (!empty($updates)) {
                 $params[] = $id;

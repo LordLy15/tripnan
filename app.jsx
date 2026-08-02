@@ -670,42 +670,74 @@ const MyTrips = () => {
           </div>
         </div>
       ) : (
-        <div className="row g-4">
-          {filtered.map(trip => {
-            const completed = trip.schedules?.filter(s => s.isCompleted).length || 0;
-            const total = trip.schedules?.length || 0;
-            const progress = total ? Math.round((completed / total) * 100) : 0;
-            const cat = categories.find(c => c.id === trip.category_id);
-            return (
-              <div key={trip.id} className={viewMode === 'grid' ? 'col-6 col-md-4' : 'col-12'}>
-                <div className="card-trip trip-card" onClick={() => navigateTo('trip-dashboard', trip.id)}>
-                  <div className="trip-cover" style={{ backgroundImage: trip.coverUrl ? `url(${trip.coverUrl})` : 'linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%)' }}>
-                    <span className="trip-code">{trip.tripCode}</span>
-                    {!trip.isOwner && <span className="trip-shared-badge">Shared</span>}
-                    {cat && (
-                      <span className="badge" style={{ position: 'absolute', bottom: 12, left: 12, background: cat.color, color: 'white' }}>{cat.name}</span>
-                    )}
-                  </div>
-                  <div className="card-body">
-                    <h5 className="fw-bold mb-1">{trip.name}</h5>
-                    {calculateTripDuration(trip.schedules) && (
-                      <p className="small text-primary fw-medium mb-1"><Icon name="calendar" size={14} className="me-1" />{calculateTripDuration(trip.schedules)}</p>
-                    )}
-                    <p className="text-muted small mb-3">Budget: Rp {parseFloat(trip.totalPlanBudget).toLocaleString('en-US')}</p>
-                    <div className="d-flex justify-content-between align-items-center">
-                      <span className="small text-muted">{completed}/{total} activities</span>
-                      <span className="fw-bold" style={{ color: progress === 100 ? 'var(--success)' : 'var(--primary)' }}>{progress}%</span>
+        <>
+          {(() => {
+            const inProgressTrips = filtered.filter(t => !t.is_finished);
+            const completedTrips = filtered.filter(t => t.is_finished);
+            
+            const renderTripCards = (tripList) => (
+              <div className="row g-4">
+                {tripList.map(trip => {
+                  const completed = trip.schedules?.filter(s => s.isCompleted).length || 0;
+                  const total = trip.schedules?.length || 0;
+                  const progress = total ? Math.round((completed / total) * 100) : 0;
+                  const cat = categories.find(c => c.id === trip.category_id);
+                  return (
+                    <div key={trip.id} className={viewMode === 'grid' ? 'col-6 col-md-4' : 'col-12'}>
+                      <div className="card-trip trip-card" onClick={() => navigateTo('trip-dashboard', trip.id)}>
+                        <div className="trip-cover" style={{ backgroundImage: trip.coverUrl ? `url(${trip.coverUrl})` : 'linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%)' }}>
+                          <span className="trip-code">{trip.tripCode}</span>
+                          {!trip.isOwner && <span className="trip-shared-badge">Shared</span>}
+                          {cat && (
+                            <span className="badge" style={{ position: 'absolute', bottom: 12, left: 12, background: cat.color, color: 'white' }}>{cat.name}</span>
+                          )}
+                        </div>
+                        <div className="card-body">
+                          <h5 className="fw-bold mb-1">{trip.name}</h5>
+                          {calculateTripDuration(trip.schedules) && (
+                            <p className="small text-primary fw-medium mb-1"><Icon name="calendar" size={14} className="me-1" />{calculateTripDuration(trip.schedules)}</p>
+                          )}
+                          <p className="text-muted small mb-3">Budget: Rp {parseFloat(trip.totalPlanBudget).toLocaleString('en-US')}</p>
+                          <div className="d-flex justify-content-between align-items-center">
+                            <span className="small text-muted">{completed}/{total} activities</span>
+                            <span className="fw-bold" style={{ color: progress === 100 ? 'var(--success)' : 'var(--primary)' }}>{progress}%</span>
+                          </div>
+                          <div className="progress mt-2">
+                            <div className="progress-bar" style={{ width: `${progress}%`, background: progress === 100 ? 'var(--success)' : 'var(--primary)' }} />
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="progress mt-2">
-                      <div className="progress-bar" style={{ width: `${progress}%`, background: progress === 100 ? 'var(--success)' : 'var(--primary)' }} />
-                    </div>
-                  </div>
-                </div>
+                  );
+                })}
               </div>
             );
-          })}
-        </div>
+
+            return (
+              <>
+                {inProgressTrips.length > 0 && (
+                  <div className="mb-5">
+                    <h5 className="fw-bold mb-3 d-flex align-items-center gap-2">
+                      <Icon name="clock" size={20} className="text-warning" /> In Progress
+                    </h5>
+                    {renderTripCards(inProgressTrips)}
+                  </div>
+                )}
+                
+                {completedTrips.length > 0 && (
+                  <div>
+                    <h5 className="fw-bold mb-3 d-flex align-items-center gap-2">
+                      <Icon name="check-circle" size={20} className="text-success" /> Completed
+                    </h5>
+                    {renderTripCards(completedTrips)}
+                  </div>
+                )}
+              </>
+            );
+          })()}
+        </>
       )}
+
     </div>
   );
 };
@@ -717,6 +749,7 @@ const TripDashboard = () => {
   const [edit, setEdit] = useState({});
   const [coverPreview, setCoverPreview] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showEndTripConfirm, setShowEndTripConfirm] = useState(false);
 
   if (!activeTrip) return null;
 
@@ -747,6 +780,11 @@ const TripDashboard = () => {
           <div className="d-flex align-items-center gap-2 mb-2">
             <span className="badge bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-1">Workspace</span>
             <span className="badge bg-light text-dark border px-2 py-1 rounded-1 fw-normal">{activeTrip.tripCode}</span>
+            {activeTrip.is_finished ? (
+              <span className="badge bg-success bg-opacity-10 text-success px-2 py-1 rounded-1">Completed</span>
+            ) : (
+              <span className="badge bg-warning bg-opacity-10 text-warning px-2 py-1 rounded-1">In Progress</span>
+            )}
           </div>
           <h1 className="h2 fw-bold mb-1 text-dark">{activeTrip.name}</h1>
           {calculateTripDuration(activeTrip.schedules) && (
@@ -760,6 +798,21 @@ const TripDashboard = () => {
           <button className="btn btn-light border d-flex align-items-center gap-2 px-3" onClick={() => { setEdit(activeTrip); setEditing(true) }}>
             <Icon name="edit" size={16} /> Edit
           </button>
+          
+          {!activeTrip.is_finished && (
+            showEndTripConfirm ? (
+              <div className="d-flex align-items-center gap-2 bg-white border border-success rounded px-2">
+                <span className="text-success small fw-bold mb-0">End this trip?</span>
+                <button className="btn btn-success btn-sm" onClick={() => updateTrip(activeTrip.id, { is_finished: true })}>Ya</button>
+                <button className="btn btn-outline-secondary btn-sm" onClick={() => setShowEndTripConfirm(false)}>Tidak</button>
+              </div>
+            ) : (
+              <button className="btn btn-outline-success d-flex align-items-center gap-2 px-3" onClick={() => setShowEndTripConfirm(true)}>
+                <Icon name="check-square" size={16} /> End Trip
+              </button>
+            )
+          )}
+
           {showDeleteConfirm ? (
             <div className="d-flex align-items-center gap-2 bg-white border border-danger rounded px-2">
               <span className="text-danger small fw-bold mb-0">Hapus Trip ini?</span>
@@ -853,9 +906,11 @@ const Itinerary = () => {
       <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('trip-dashboard')}><Icon name="arrow-left" size={16} /> Back</button>
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div><h2 className="fw-bold mb-1">Itinerary</h2><p className="text-muted mb-0">Plan your activities</p></div>
-        <button className={`btn ${showAdd ? 'btn-secondary' : 'btn-primary'}`} onClick={() => setShowAdd(!showAdd)}>
-          <Icon name={showAdd ? 'x' : 'plus'} size={16} /> {showAdd ? 'Cancel' : 'Add Activity'}
-        </button>
+        {!activeTrip.is_finished && (
+          <button className={`btn ${showAdd ? 'btn-secondary' : 'btn-primary'}`} onClick={() => setShowAdd(!showAdd)}>
+            <Icon name={showAdd ? 'x' : 'plus'} size={16} /> {showAdd ? 'Cancel' : 'Add Activity'}
+          </button>
+        )}
       </div>
 
       {showAdd && (
@@ -931,9 +986,11 @@ const AddOns = () => {
       <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('trip-dashboard')}><Icon name="arrow-left" size={16} /> Back</button>
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div><h2 className="fw-bold mb-1">Add-ons</h2><p className="text-muted mb-0">Plan minor expenses (parking, snacks, etc.)</p></div>
-        <button className={`btn ${showAdd ? 'btn-secondary' : 'btn-primary'}`} onClick={() => setShowAdd(!showAdd)}>
-          <Icon name={showAdd ? 'x' : 'plus'} size={16} /> {showAdd ? 'Cancel' : 'Add Add-on'}
-        </button>
+        {!activeTrip.is_finished && (
+          <button className={`btn ${showAdd ? 'btn-secondary' : 'btn-primary'}`} onClick={() => setShowAdd(!showAdd)}>
+            <Icon name={showAdd ? 'x' : 'plus'} size={16} /> {showAdd ? 'Cancel' : 'Add Add-on'}
+          </button>
+        )}
       </div>
 
       {showAdd && (
