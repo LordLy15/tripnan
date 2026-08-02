@@ -2651,6 +2651,7 @@ const SettingsPage = () => {
   // App preferences state
   const [language, setLanguage] = useState('id');
   const [aboutTab, setAboutTab] = useState('version');
+  const [isAboutExpanded, setIsAboutExpanded] = useState(false);
 
   // Category state
   const [catName, setCatName] = useState('');
@@ -2766,11 +2767,8 @@ const SettingsPage = () => {
               }, void 0, false), " Preferensi Sistem"]
             }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
               children: [/*#__PURE__*/_jsxDEV("button", {
-                className: `nav-link w-100 text-start d-flex align-items-center justify-content-between ${activeTab === 'about' ? 'active bg-primary text-white' : 'text-dark'}`,
-                onClick: () => {
-                  setActiveTab('about');
-                  setMobileView('content');
-                },
+                className: `nav-link w-100 text-start d-flex align-items-center justify-content-between ${isAboutExpanded ? 'active bg-primary text-white' : 'text-dark'}`,
+                onClick: () => setIsAboutExpanded(!isAboutExpanded),
                 children: [/*#__PURE__*/_jsxDEV("div", {
                   className: "d-flex align-items-center gap-2",
                   children: [/*#__PURE__*/_jsxDEV(Icon, {
@@ -2778,14 +2776,18 @@ const SettingsPage = () => {
                     size: 18
                   }, void 0, false), " Tentang"]
                 }, void 0, true), /*#__PURE__*/_jsxDEV(Icon, {
-                  name: activeTab === 'about' ? "chevron-up" : "chevron-down",
+                  name: isAboutExpanded ? "chevron-up" : "chevron-down",
                   size: 16
                 }, void 0, false)]
-              }, void 0, true), activeTab === 'about' && /*#__PURE__*/_jsxDEV("div", {
+              }, void 0, true), isAboutExpanded && /*#__PURE__*/_jsxDEV("div", {
                 className: "ps-4 mt-2 mb-1 d-flex flex-column gap-2",
                 children: [/*#__PURE__*/_jsxDEV("button", {
-                  className: `btn btn-sm text-start w-100 px-2 py-1 ${aboutTab === 'version' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
-                  onClick: () => setAboutTab('version'),
+                  className: `btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'version' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
+                  onClick: () => {
+                    setActiveTab('about');
+                    setAboutTab('version');
+                    setMobileView('content');
+                  },
                   style: {
                     border: 'none',
                     background: 'transparent'
@@ -2796,8 +2798,12 @@ const SettingsPage = () => {
                     className: "me-2"
                   }, void 0, false), " Versi Aplikasi"]
                 }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                  className: `btn btn-sm text-start w-100 px-2 py-1 ${aboutTab === 'kenali' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
-                  onClick: () => setAboutTab('kenali'),
+                  className: `btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'kenali' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
+                  onClick: () => {
+                    setActiveTab('about');
+                    setAboutTab('kenali');
+                    setMobileView('content');
+                  },
                   style: {
                     border: 'none',
                     background: 'transparent'
@@ -2808,8 +2814,12 @@ const SettingsPage = () => {
                     className: "me-2"
                   }, void 0, false), " Kenali TripNan"]
                 }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                  className: `btn btn-sm text-start w-100 px-2 py-1 ${aboutTab === 'ulas' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
-                  onClick: () => setAboutTab('ulas'),
+                  className: `btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'ulas' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
+                  onClick: () => {
+                    setActiveTab('about');
+                    setAboutTab('ulas');
+                    setMobileView('content');
+                  },
                   style: {
                     border: 'none',
                     background: 'transparent'

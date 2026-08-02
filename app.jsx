@@ -1481,6 +1481,7 @@ const SettingsPage = () => {
   // App preferences state
   const [language, setLanguage] = useState('id');
   const [aboutTab, setAboutTab] = useState('version');
+  const [isAboutExpanded, setIsAboutExpanded] = useState(false);
 
   // Category state
   const [catName, setCatName] = useState('');
@@ -1557,33 +1558,33 @@ const SettingsPage = () => {
               </button>
               <div>
                 <button 
-                  className={`nav-link w-100 text-start d-flex align-items-center justify-content-between ${activeTab === 'about' ? 'active bg-primary text-white' : 'text-dark'}`} 
-                  onClick={() => { setActiveTab('about'); setMobileView('content'); }}
+                  className={`nav-link w-100 text-start d-flex align-items-center justify-content-between ${isAboutExpanded ? 'active bg-primary text-white' : 'text-dark'}`} 
+                  onClick={() => setIsAboutExpanded(!isAboutExpanded)}
                 >
                   <div className="d-flex align-items-center gap-2">
                     <Icon name="info" size={18} /> Tentang
                   </div>
-                  <Icon name={activeTab === 'about' ? "chevron-up" : "chevron-down"} size={16} />
+                  <Icon name={isAboutExpanded ? "chevron-up" : "chevron-down"} size={16} />
                 </button>
-                {activeTab === 'about' && (
+                {isAboutExpanded && (
                   <div className="ps-4 mt-2 mb-1 d-flex flex-column gap-2">
                     <button 
-                      className={`btn btn-sm text-start w-100 px-2 py-1 ${aboutTab === 'version' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`} 
-                      onClick={() => setAboutTab('version')}
+                      className={`btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'version' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`} 
+                      onClick={() => { setActiveTab('about'); setAboutTab('version'); setMobileView('content'); }}
                       style={{ border: 'none', background: 'transparent' }}
                     >
                       <Icon name="tag" size={14} className="me-2" /> Versi Aplikasi
                     </button>
                     <button 
-                      className={`btn btn-sm text-start w-100 px-2 py-1 ${aboutTab === 'kenali' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`} 
-                      onClick={() => setAboutTab('kenali')}
+                      className={`btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'kenali' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`} 
+                      onClick={() => { setActiveTab('about'); setAboutTab('kenali'); setMobileView('content'); }}
                       style={{ border: 'none', background: 'transparent' }}
                     >
                       <Icon name="info" size={14} className="me-2" /> Kenali TripNan
                     </button>
                     <button 
-                      className={`btn btn-sm text-start w-100 px-2 py-1 ${aboutTab === 'ulas' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`} 
-                      onClick={() => setAboutTab('ulas')}
+                      className={`btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'ulas' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`} 
+                      onClick={() => { setActiveTab('about'); setAboutTab('ulas'); setMobileView('content'); }}
                       style={{ border: 'none', background: 'transparent' }}
                     >
                       <Icon name="star" size={14} className="me-2" /> Ulas Aplikasi Ini
