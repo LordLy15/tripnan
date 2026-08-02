@@ -486,12 +486,17 @@ const PhotoGallery = ({ photos = [], onAdd, onDelete, editable = false, showHead
 // ---------------------------------------------------------
 const calculateTripDuration = (schedules) => {
   if (!schedules || schedules.length === 0) return '';
-  const dates = schedules.map(s => new Date(s.date).setHours(0,0,0,0));
+  const dates = schedules.map(s => {
+    const time = s.time || '00:00';
+    return new Date(`${s.date}T${time}`).getTime();
+  });
   const minDate = Math.min(...dates);
   const maxDate = Math.max(...dates);
   
-  const diffDays = Math.round((maxDate - minDate) / (1000 * 60 * 60 * 24));
-  const days = diffDays + 1;
+  const diffMs = maxDate - minDate;
+  let days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  if (days === 0) days = 1; // At least 1 day
+  
   return `${days} Day${days > 1 ? 's' : ''}`;
 };
 
