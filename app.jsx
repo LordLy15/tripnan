@@ -364,7 +364,9 @@ const icons = {
   'chevron-down': '<polyline points="6 9 12 15 18 9"/>',
   'chevron-up': '<polyline points="18 15 12 9 6 15"/>',
   'settings': '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
-  'monitor': '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>'
+  'monitor': '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
+  'list': '<line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>',
+  'check': '<polyline points="20 6 9 17 4 12"/>'
 };
 
 const Icon = ({ name, size = 20, className = "", color }) => (
@@ -644,7 +646,7 @@ const MyTrips = () => {
           )}
           <div className="btn-group border bg-white rounded-3 shadow-sm d-flex" style={{ padding: '2px' }}>
             <button className={`btn btn-sm ${viewMode === 'grid' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted border-0'}`} onClick={() => setViewMode('grid')} style={{ padding: '6px 12px' }} title="Grid View">
-              <Icon name="grid" size={16} />
+              <Icon name="layout" size={16} />
             </button>
             <button className={`btn btn-sm ${viewMode === 'list' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted border-0'}`} onClick={() => setViewMode('list')} style={{ padding: '6px 12px' }} title="List View">
               <Icon name="list" size={16} />
@@ -1511,29 +1513,29 @@ const SettingsPage = () => {
       <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('my-trips')}><Icon name="arrow-left" size={16} /> Back</button>
       <h2 className="fw-bold mb-4"><Icon name="settings" size={24} /> Settings</h2>
       
-      <div className="card-trip">
-        <div className="row g-0">
-          <div className="col-md-3 border-end bg-light settings-sidebar">
-            <div className="p-3">
-              <div className="nav flex-column nav-pills gap-1">
-                <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'account' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('account')}>
-                  <Icon name="user" size={18} /> Account
-                </button>
-                <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'categories' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('categories')}>
-                  <Icon name="tag" size={18} /> Categories
-                </button>
-                <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'appearance' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('appearance')}>
-                  <Icon name="monitor" size={18} /> Appearance
-                </button>
-                <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'about' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('about')}>
-                  <Icon name="info" size={18} /> About & Logout
-                </button>
-              </div>
+      <div className="row g-4">
+        <div className="col-md-3">
+          <div className="settings-sidebar" style={{ position: 'sticky', top: '80px' }}>
+            <div className="nav flex-column nav-pills gap-1">
+              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'account' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('account')}>
+                <Icon name="user" size={18} /> Account
+              </button>
+              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'categories' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('categories')}>
+                <Icon name="tag" size={18} /> Categories
+              </button>
+              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'appearance' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('appearance')}>
+                <Icon name="monitor" size={18} /> Appearance
+              </button>
+              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'about' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('about')}>
+                <Icon name="info" size={18} /> About & Logout
+              </button>
             </div>
           </div>
-          
-          <div className="col-md-9">
-            <div className="p-4 p-md-5">
+        </div>
+        
+        <div className="col-md-9">
+          <div className="card-trip h-100">
+            <div className="card-body p-4 p-md-5">
               {activeTab === 'account' && (
                 <div className="animate-fade-in">
                   <h5 className="fw-bold mb-4"><Icon name="user" size={18} className="me-2" />Account Settings</h5>
@@ -1561,8 +1563,8 @@ const SettingsPage = () => {
                 <div className="animate-fade-in">
                   <div className="d-flex justify-content-between align-items-center mb-4">
                     <h5 className="fw-bold mb-0"><Icon name="tag" size={18} className="me-2" />Manage Categories</h5>
-                    <button className="btn btn-sm btn-primary" onClick={() => setShowCatForm(!showCatForm)}>
-                      <Icon name={showCatForm ? 'x' : 'plus'} size={16} /> {showCatForm ? 'Cancel' : 'New'}
+                    <button className="btn btn-sm btn-primary d-flex align-items-center gap-1" onClick={() => setShowCatForm(!showCatForm)}>
+                      <Icon name={showCatForm ? 'x' : 'plus-circle'} size={16} /> {showCatForm ? 'Cancel' : 'New'}
                     </button>
                   </div>
 
@@ -1600,9 +1602,13 @@ const SettingsPage = () => {
                                 <div className="d-flex justify-content-center mb-2">
                                   <input type="color" className="form-control form-control-color form-control-sm" value={editCatColor} onChange={e => setEditCatColor(e.target.value)} />
                                 </div>
-                                <div className="d-flex gap-1 justify-content-center">
-                                  <button className="btn btn-sm btn-outline-secondary py-0" onClick={() => setEditCatId(null)}><Icon name="x" size={14} /></button>
-                                  <button className="btn btn-sm btn-primary py-0" onClick={() => handleUpdateCategory(cat.id)}><Icon name="info" size={14} /></button>
+                                <div className="d-flex gap-2 justify-content-center mt-3">
+                                  <button className="btn btn-sm btn-light border text-secondary d-flex align-items-center justify-content-center p-0" style={{ width: '32px', height: '32px' }} onClick={() => setEditCatId(null)} title="Cancel">
+                                    <Icon name="x" size={16} />
+                                  </button>
+                                  <button className="btn btn-sm btn-primary d-flex align-items-center justify-content-center p-0" style={{ width: '32px', height: '32px' }} onClick={() => handleUpdateCategory(cat.id)} title="Save">
+                                    <Icon name="check" size={16} />
+                                  </button>
                                 </div>
                               </div>
                             ) : (
@@ -1612,9 +1618,13 @@ const SettingsPage = () => {
                                 </div>
                                 <h6 className="mb-0 small fw-bold">{cat.name}</h6>
                                 {cat.owner !== 'default' && (
-                                  <div className="d-flex gap-1 justify-content-center mt-2">
-                                    <button className="btn btn-sm btn-light border py-0 px-2" onClick={() => startEditCategory(cat)} title="Edit Category"><Icon name="edit" size={12} /></button>
-                                    <button className="btn btn-sm btn-outline-danger py-0 px-2" onClick={() => { if(window.confirm('Delete category?')) deleteCategory(cat.id); }} title="Delete Category"><Icon name="trash" size={12} /></button>
+                                  <div className="d-flex gap-2 justify-content-center mt-3">
+                                    <button className="btn btn-sm btn-light border text-primary d-flex align-items-center justify-content-center p-0" style={{ width: '32px', height: '32px' }} onClick={() => startEditCategory(cat)} title="Edit Category">
+                                      <Icon name="edit" size={16} />
+                                    </button>
+                                    <button className="btn btn-sm btn-light border text-danger d-flex align-items-center justify-content-center p-0" style={{ width: '32px', height: '32px' }} onClick={() => { if(window.confirm('Delete category?')) deleteCategory(cat.id); }} title="Delete Category">
+                                      <Icon name="trash" size={16} />
+                                    </button>
                                   </div>
                                 )}
                               </>
