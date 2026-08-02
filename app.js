@@ -85,12 +85,12 @@ const TripProvider = ({
     if (bgColor) {
       root.style.setProperty('--bg-body', bgColor);
       root.style.setProperty('--bs-body-bg', bgColor); // Override Bootstrap default
-      document.body.style.backgroundColor = bgColor; // Force apply directly
+      document.body.style.setProperty('background-color', bgColor, 'important'); // Force apply directly with important
       localStorage.setItem('tripBgColor', bgColor);
     } else {
       root.style.removeProperty('--bg-body');
       root.style.removeProperty('--bs-body-bg');
-      document.body.style.backgroundColor = '';
+      document.body.style.removeProperty('background-color');
       localStorage.removeItem('tripBgColor');
     }
   }, [bgColor]);
