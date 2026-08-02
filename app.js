@@ -1,4 +1,3 @@
-import { jsxDEV as _jsxDEV, Fragment as _Fragment } from "react/jsx-dev-runtime";
 const {
   useState,
   useEffect,
@@ -472,10 +471,9 @@ const TripProvider = ({
     darkMode,
     toggleDarkMode
   };
-  return /*#__PURE__*/_jsxDEV(TripContext.Provider, {
-    value: value,
-    children: children
-  }, void 0, false);
+  return /*#__PURE__*/React.createElement(TripContext.Provider, {
+    value: value
+  }, children);
 };
 
 // Icons
@@ -528,7 +526,7 @@ const Icon = ({
   size = 20,
   className = "",
   color
-}) => /*#__PURE__*/_jsxDEV("svg", {
+}) => /*#__PURE__*/React.createElement("svg", {
   width: size,
   height: size,
   viewBox: "0 0 24 24",
@@ -541,7 +539,7 @@ const Icon = ({
   dangerouslySetInnerHTML: {
     __html: icons[name] || icons.info
   }
-}, void 0, false);
+});
 
 // Auth Page
 const AuthPage = () => {
@@ -567,111 +565,88 @@ const AuthPage = () => {
     setLoading(false);
     if (!res.success) setError(res.message);
   };
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "login-page",
-    children: /*#__PURE__*/_jsxDEV("div", {
-      className: "login-card animate-fade-in",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "text-center mb-4",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "icon-circle",
-          children: /*#__PURE__*/_jsxDEV(Icon, {
-            name: "map",
-            size: 24
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("h2", {
-          className: "fw-bold",
-          children: "TripNan"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-          className: "text-muted",
-          children: isLogin ? 'Welcome back!' : 'Create your account'
-        }, void 0, false)]
-      }, void 0, true), error && /*#__PURE__*/_jsxDEV("div", {
-        className: "alert alert-danger",
-        children: error
-      }, void 0, false), /*#__PURE__*/_jsxDEV("form", {
-        onSubmit: handleSubmit,
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "mb-3",
-          children: [/*#__PURE__*/_jsxDEV("label", {
-            className: "form-label",
-            children: "Username"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "input-group",
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              className: "input-group-text",
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "user",
-                size: 16
-              }, void 0, false)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-              type: "text",
-              className: "form-control",
-              placeholder: "Enter username",
-              value: username,
-              onChange: e => setUsername(e.target.value),
-              required: true
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "mb-3",
-          children: [/*#__PURE__*/_jsxDEV("label", {
-            className: "form-label",
-            children: "Password"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "input-group",
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              className: "input-group-text",
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "lock",
-                size: 16
-              }, void 0, false)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-              type: "password",
-              className: "form-control",
-              placeholder: "Enter password",
-              value: password,
-              onChange: e => setPassword(e.target.value),
-              required: true
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true), !isLogin && /*#__PURE__*/_jsxDEV("div", {
-          className: "mb-3",
-          children: [/*#__PURE__*/_jsxDEV("label", {
-            className: "form-label",
-            children: "Email (optional)"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "input-group",
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              className: "input-group-text",
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "mail",
-                size: 16
-              }, void 0, false)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-              type: "email",
-              className: "form-control",
-              placeholder: "Enter email",
-              value: email,
-              onChange: e => setEmail(e.target.value)
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-          type: "submit",
-          className: "btn btn-primary w-100",
-          disabled: loading,
-          children: loading ? 'Please wait...' : isLogin ? 'Login' : 'Register'
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-        className: "text-center mt-3 text-muted small",
-        children: [isLogin ? "Don't have an account? " : "Already have an account? ", /*#__PURE__*/_jsxDEV("button", {
-          className: "btn btn-link p-0",
-          onClick: () => setIsLogin(!isLogin),
-          children: isLogin ? 'Register' : 'Login'
-        }, void 0, false)]
-      }, void 0, true)]
-    }, void 0, true)
-  }, void 0, false);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "login-page"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "login-card animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-center mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "icon-circle"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "map",
+    size: 24
+  })), /*#__PURE__*/React.createElement("h2", {
+    className: "fw-bold"
+  }, "TripNan"), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted"
+  }, isLogin ? 'Welcome back!' : 'Create your account')), error && /*#__PURE__*/React.createElement("div", {
+    className: "alert alert-danger"
+  }, error), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mb-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Username"), /*#__PURE__*/React.createElement("div", {
+    className: "input-group"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "input-group-text"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user",
+    size: 16
+  })), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-control",
+    placeholder: "Enter username",
+    value: username,
+    onChange: e => setUsername(e.target.value),
+    required: true
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "mb-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Password"), /*#__PURE__*/React.createElement("div", {
+    className: "input-group"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "input-group-text"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "lock",
+    size: 16
+  })), /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    className: "form-control",
+    placeholder: "Enter password",
+    value: password,
+    onChange: e => setPassword(e.target.value),
+    required: true
+  }))), !isLogin && /*#__PURE__*/React.createElement("div", {
+    className: "mb-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Email (optional)"), /*#__PURE__*/React.createElement("div", {
+    className: "input-group"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "input-group-text"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "mail",
+    size: 16
+  })), /*#__PURE__*/React.createElement("input", {
+    type: "email",
+    className: "form-control",
+    placeholder: "Enter email",
+    value: email,
+    onChange: e => setEmail(e.target.value)
+  }))), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "btn btn-primary w-100",
+    disabled: loading
+  }, loading ? 'Please wait...' : isLogin ? 'Login' : 'Register')), /*#__PURE__*/React.createElement("p", {
+    className: "text-center mt-3 text-muted small"
+  }, isLogin ? "Don't have an account? " : "Already have an account? ", /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-link p-0",
+    onClick: () => setIsLogin(!isLogin)
+  }, isLogin ? 'Register' : 'Login'))));
 };
 
 // Enhanced Photo Gallery Component with hover zoom, download, and preview
@@ -691,106 +666,91 @@ const PhotoGallery = ({
     a.download = `photo_${index + 1}.jpg`;
     a.click();
   };
-  return /*#__PURE__*/_jsxDEV(_Fragment, {
-    children: [showHeader && photos.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-      className: "photo-gallery-header",
-      children: /*#__PURE__*/_jsxDEV("h6", {
-        children: [/*#__PURE__*/_jsxDEV(Icon, {
-          name: "camera",
-          size: 14
-        }, void 0, false), " Photos (", photos.length, ")"]
-      }, void 0, true)
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      className: `photo-gallery ${gridClass}`,
-      children: [photos.map((photo, i) => /*#__PURE__*/_jsxDEV("div", {
-        className: "photo-item",
-        onClick: () => setPreviewImage(photo),
-        children: [/*#__PURE__*/_jsxDEV("img", {
-          src: photo,
-          alt: `Photo ${i + 1}`,
-          loading: "lazy"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-          className: "photo-number",
-          children: i + 1
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "photo-overlay",
-          children: [/*#__PURE__*/_jsxDEV("button", {
-            className: "photo-action",
-            onClick: e => {
-              e.stopPropagation();
-              handleDownload(photo, i);
-            },
-            title: "Download Photo",
-            children: /*#__PURE__*/_jsxDEV(Icon, {
-              name: "download",
-              size: 18
-            }, void 0, false)
-          }, void 0, false), editable && /*#__PURE__*/_jsxDEV("button", {
-            className: "photo-action delete",
-            onClick: e => {
-              e.stopPropagation();
-              onDelete(i);
-            },
-            title: "Delete Photo",
-            children: /*#__PURE__*/_jsxDEV(Icon, {
-              name: "trash",
-              size: 18
-            }, void 0, false)
-          }, void 0, false)]
-        }, void 0, true)]
-      }, i, true)), editable && onAdd && /*#__PURE__*/_jsxDEV("label", {
-        className: "add-photo-btn",
-        children: [/*#__PURE__*/_jsxDEV(Icon, {
-          name: "camera",
-          size: 28
-        }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-          className: "small fw-semibold",
-          children: "Add Photo"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-          type: "file",
-          accept: "image/*",
-          onChange: onAdd,
-          style: {
-            display: 'none'
-          },
-          multiple: true
-        }, void 0, false)]
-      }, void 0, true)]
-    }, void 0, true), previewImage && /*#__PURE__*/_jsxDEV("div", {
-      className: "image-preview-modal animate-scale-in",
-      onClick: () => setPreviewImage(null),
-      children: [/*#__PURE__*/_jsxDEV("button", {
-        className: "close-btn",
-        onClick: () => setPreviewImage(null),
-        children: /*#__PURE__*/_jsxDEV(Icon, {
-          name: "x",
-          size: 24
-        }, void 0, false)
-      }, void 0, false), /*#__PURE__*/_jsxDEV("img", {
-        src: previewImage,
-        alt: "Preview",
-        onClick: e => e.stopPropagation()
-      }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-        className: "btn btn-light position-absolute",
-        style: {
-          bottom: 30,
-          left: '50%',
-          transform: 'translateX(-50%)'
-        },
-        onClick: e => {
-          e.stopPropagation();
-          const link = document.createElement('a');
-          link.href = previewImage;
-          link.download = `photo_${Date.now()}.jpg`;
-          link.click();
-        },
-        children: [/*#__PURE__*/_jsxDEV(Icon, {
-          name: "download",
-          size: 18
-        }, void 0, false), " Download"]
-      }, void 0, true)]
-    }, void 0, true)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement(React.Fragment, null, showHeader && photos.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "photo-gallery-header"
+  }, /*#__PURE__*/React.createElement("h6", null, /*#__PURE__*/React.createElement(Icon, {
+    name: "camera",
+    size: 14
+  }), " Photos (", photos.length, ")")), /*#__PURE__*/React.createElement("div", {
+    className: `photo-gallery ${gridClass}`
+  }, photos.map((photo, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "photo-item",
+    onClick: () => setPreviewImage(photo)
+  }, /*#__PURE__*/React.createElement("img", {
+    src: photo,
+    alt: `Photo ${i + 1}`,
+    loading: "lazy"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "photo-number"
+  }, i + 1), /*#__PURE__*/React.createElement("div", {
+    className: "photo-overlay"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "photo-action",
+    onClick: e => {
+      e.stopPropagation();
+      handleDownload(photo, i);
+    },
+    title: "Download Photo"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "download",
+    size: 18
+  })), editable && /*#__PURE__*/React.createElement("button", {
+    className: "photo-action delete",
+    onClick: e => {
+      e.stopPropagation();
+      onDelete(i);
+    },
+    title: "Delete Photo"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "trash",
+    size: 18
+  }))))), editable && onAdd && /*#__PURE__*/React.createElement("label", {
+    className: "add-photo-btn"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "camera",
+    size: 28
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "small fw-semibold"
+  }, "Add Photo"), /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    accept: "image/*",
+    onChange: onAdd,
+    style: {
+      display: 'none'
+    },
+    multiple: true
+  }))), previewImage && /*#__PURE__*/React.createElement("div", {
+    className: "image-preview-modal animate-scale-in",
+    onClick: () => setPreviewImage(null)
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    onClick: () => setPreviewImage(null)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 24
+  })), /*#__PURE__*/React.createElement("img", {
+    src: previewImage,
+    alt: "Preview",
+    onClick: e => e.stopPropagation()
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-light position-absolute",
+    style: {
+      bottom: 30,
+      left: '50%',
+      transform: 'translateX(-50%)'
+    },
+    onClick: e => {
+      e.stopPropagation();
+      const link = document.createElement('a');
+      link.href = previewImage;
+      link.download = `photo_${Date.now()}.jpg`;
+      link.click();
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "download",
+    size: 18
+  }), " Download")));
 };
 
 // ---------------------------------------------------------
@@ -877,500 +837,405 @@ const MyTrips = () => {
     return 'Selamat Malam';
   };
   if (isLoading) {
-    return /*#__PURE__*/_jsxDEV("div", {
-      className: "animate-fade-in",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "row align-items-center mb-4 gap-3 gap-md-0",
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "col-12 col-md-auto",
-          children: [/*#__PURE__*/_jsxDEV("h4", {
-            className: "text-muted mb-2 fw-normal",
-            children: [getGreeting(), ", ", /*#__PURE__*/_jsxDEV("span", {
-              className: "fw-bold",
-              style: {
-                color: 'var(--primary)'
-              },
-              children: currentUser
-            }, void 0, false), "!"]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "placeholder-glow",
-            children: /*#__PURE__*/_jsxDEV("span", {
-              className: "placeholder col-6 fs-3 rounded"
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "placeholder-glow",
-            children: /*#__PURE__*/_jsxDEV("span", {
-              className: "placeholder col-4 rounded mt-1"
-            }, void 0, false)
-          }, void 0, false)]
-        }, void 0, true)
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        className: "row g-4",
-        children: [1, 2, 3].map(i => /*#__PURE__*/_jsxDEV("div", {
-          className: viewMode === 'grid' ? 'col-6 col-md-4' : 'col-12',
-          children: /*#__PURE__*/_jsxDEV("div", {
-            className: "card-trip trip-card placeholder-glow",
-            style: {
-              height: '280px'
-            },
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "trip-cover placeholder w-100",
-              style: {
-                height: '140px'
-              }
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "card-body",
-              children: [/*#__PURE__*/_jsxDEV("span", {
-                className: "placeholder col-8 mb-2 rounded"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                className: "placeholder col-4 mb-3 rounded"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                className: "placeholder col-12 mb-2 rounded"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                className: "placeholder col-12 rounded"
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true)
-        }, i, false))
-      }, void 0, false)]
-    }, void 0, true);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "animate-fade-in"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "row align-items-center mb-4 gap-3 gap-md-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "col-12 col-md-auto"
+    }, /*#__PURE__*/React.createElement("h4", {
+      className: "text-muted mb-2 fw-normal"
+    }, getGreeting(), ", ", /*#__PURE__*/React.createElement("span", {
+      className: "fw-bold",
+      style: {
+        color: 'var(--primary)'
+      }
+    }, currentUser), "!"), /*#__PURE__*/React.createElement("div", {
+      className: "placeholder-glow"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "placeholder col-6 fs-3 rounded"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "placeholder-glow"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "placeholder col-4 rounded mt-1"
+    })))), /*#__PURE__*/React.createElement("div", {
+      className: "row g-4"
+    }, [1, 2, 3].map(i => /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: viewMode === 'grid' ? 'col-6 col-md-4' : 'col-12'
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "card-trip trip-card placeholder-glow",
+      style: {
+        height: '280px'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "trip-cover placeholder w-100",
+      style: {
+        height: '140px'
+      }
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "card-body"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "placeholder col-8 mb-2 rounded"
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "placeholder col-4 mb-3 rounded"
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "placeholder col-12 mb-2 rounded"
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "placeholder col-12 rounded"
+    })))))));
   }
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "animate-fade-in",
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      className: "row align-items-center mb-4 gap-3 gap-md-0",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "col-12 col-md-auto",
-        children: [/*#__PURE__*/_jsxDEV("h4", {
-          className: "text-muted mb-2 fw-normal",
-          children: [getGreeting(), ", ", /*#__PURE__*/_jsxDEV("span", {
-            className: "fw-bold",
-            style: {
-              color: 'var(--primary)'
-            },
-            children: currentUser
-          }, void 0, false), "!"]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("h1", {
-          className: "h3 fw-bold mb-1",
-          children: "My Trips"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-          className: "text-muted mb-0",
-          children: [trips.length, " trips planned"]
-        }, void 0, true)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "col-12 col-md d-flex justify-content-md-end flex-wrap gap-2",
-        children: [/*#__PURE__*/_jsxDEV("select", {
-          className: "form-select",
-          value: filterCat,
-          onChange: e => setFilterCat(e.target.value),
-          style: {
-            width: 'auto',
-            flexGrow: 1
-          },
-          children: [/*#__PURE__*/_jsxDEV("option", {
-            value: "",
-            children: "All Categories"
-          }, void 0, false), categories.map(c => /*#__PURE__*/_jsxDEV("option", {
-            value: c.id,
-            children: c.name
-          }, c.id, false))]
-        }, void 0, true), showCreate || showJoin ? /*#__PURE__*/_jsxDEV("button", {
-          className: "btn btn-outline-secondary",
-          onClick: () => {
-            setShowCreate(false);
-            setShowJoin(false);
-          },
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "x",
-            size: 16
-          }, void 0, false), " Cancel"]
-        }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-          className: "position-relative",
-          style: {
-            display: 'inline-block'
-          },
-          children: [/*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-light border d-flex align-items-center gap-2",
-            type: "button",
-            onClick: () => setShowDropdown(!showDropdown),
-            style: {
-              backgroundColor: '#f8f9fa'
-            },
-            children: ["Add New ", /*#__PURE__*/_jsxDEV(Icon, {
-              name: showDropdown ? "chevron-up" : "chevron-down",
-              size: 16
-            }, void 0, false)]
-          }, void 0, true), showDropdown && /*#__PURE__*/_jsxDEV(_Fragment, {
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "position-fixed top-0 start-0 w-100 h-100",
-              style: {
-                zIndex: 999
-              },
-              onClick: () => setShowDropdown(false)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("ul", {
-              className: "dropdown-menu shadow show py-2",
-              style: {
-                position: 'absolute',
-                right: 0,
-                top: '100%',
-                zIndex: 1000,
-                marginTop: '8px',
-                minWidth: '180px',
-                borderRadius: '8px',
-                border: '1px solid var(--border)'
-              },
-              children: [/*#__PURE__*/_jsxDEV("li", {
-                children: /*#__PURE__*/_jsxDEV("button", {
-                  className: "dropdown-item py-2 d-flex align-items-center",
-                  onClick: () => {
-                    setShowDropdown(false);
-                    setShowCreate(true);
-                  },
-                  children: [/*#__PURE__*/_jsxDEV(Icon, {
-                    name: "plus-circle",
-                    size: 16,
-                    className: "me-2 text-primary"
-                  }, void 0, false), "Create New Trip"]
-                }, void 0, true)
-              }, void 0, false), /*#__PURE__*/_jsxDEV("li", {
-                children: /*#__PURE__*/_jsxDEV("button", {
-                  className: "dropdown-item py-2 d-flex align-items-center",
-                  onClick: () => {
-                    setShowDropdown(false);
-                    setShowJoin(true);
-                  },
-                  children: [/*#__PURE__*/_jsxDEV(Icon, {
-                    name: "users",
-                    size: 16,
-                    className: "me-2 text-success"
-                  }, void 0, false), "Join via Code"]
-                }, void 0, true)
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "btn-group border bg-white rounded-3 shadow-sm d-flex",
-          style: {
-            padding: '2px'
-          },
-          children: [/*#__PURE__*/_jsxDEV("button", {
-            className: `btn btn-sm ${viewMode === 'grid' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted border-0'}`,
-            onClick: () => setViewMode('grid'),
-            style: {
-              padding: '6px 12px'
-            },
-            title: "Grid View",
-            children: /*#__PURE__*/_jsxDEV(Icon, {
-              name: "layout",
-              size: 16
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-            className: `btn btn-sm ${viewMode === 'list' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted border-0'}`,
-            onClick: () => setViewMode('list'),
-            style: {
-              padding: '6px 12px'
-            },
-            title: "List View",
-            children: /*#__PURE__*/_jsxDEV(Icon, {
-              name: "list",
-              size: 16
-            }, void 0, false)
-          }, void 0, false)]
-        }, void 0, true)]
-      }, void 0, true)]
-    }, void 0, true), showCreate && /*#__PURE__*/_jsxDEV("div", {
-      className: "card-trip mb-4 animate-fade-in",
-      style: {
-        border: '2px solid var(--primary)'
-      },
-      children: /*#__PURE__*/_jsxDEV("div", {
-        className: "card-body p-4",
-        children: [/*#__PURE__*/_jsxDEV("h5", {
-          className: "fw-bold mb-3",
-          children: "Create New Trip"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("form", {
-          onSubmit: handleCreate,
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "row g-3",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-4",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: "Trip Name"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                type: "text",
-                className: "form-control",
-                placeholder: "Bali Adventure 2026",
-                value: newTrip.name,
-                onChange: e => setNewTrip({
-                  ...newTrip,
-                  name: e.target.value
-                }),
-                required: true
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-4",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: "Budget (IDR)"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                className: "input-group",
-                children: [/*#__PURE__*/_jsxDEV("span", {
-                  className: "input-group-text",
-                  children: "Rp"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                  type: "text",
-                  inputMode: "numeric",
-                  className: "form-control",
-                  placeholder: "5,000,000",
-                  value: newTrip.budget,
-                  onChange: e => setNewTrip({
-                    ...newTrip,
-                    budget: formatCurrency(e.target.value)
-                  }),
-                  required: true
-                }, void 0, false)]
-              }, void 0, true)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-4",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: "Category"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("select", {
-                className: "form-select",
-                value: newTrip.category_id,
-                onChange: e => setNewTrip({
-                  ...newTrip,
-                  category_id: e.target.value
-                }),
-                children: [/*#__PURE__*/_jsxDEV("option", {
-                  value: "",
-                  children: "No Category"
-                }, void 0, false), categories.map(c => /*#__PURE__*/_jsxDEV("option", {
-                  value: c.id,
-                  children: c.name
-                }, c.id, false))]
-              }, void 0, true)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-6",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: "Cover Photo"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                className: "d-flex gap-2 align-items-center",
-                children: [coverPreview && /*#__PURE__*/_jsxDEV("img", {
-                  src: coverPreview,
-                  alt: "Cover",
-                  style: {
-                    width: 80,
-                    height: 60,
-                    objectFit: 'cover',
-                    borderRadius: 8
-                  }
-                }, void 0, false), /*#__PURE__*/_jsxDEV("label", {
-                  className: "btn btn-outline-primary btn-sm",
-                  children: [/*#__PURE__*/_jsxDEV(Icon, {
-                    name: "camera",
-                    size: 14
-                  }, void 0, false), " Upload Cover", /*#__PURE__*/_jsxDEV("input", {
-                    type: "file",
-                    accept: "image/*",
-                    onChange: handleCoverUpload,
-                    style: {
-                      display: 'none'
-                    }
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true)]
-            }, void 0, true)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-            type: "submit",
-            className: "btn btn-primary mt-3",
-            children: "Create Trip"
-          }, void 0, false)]
-        }, void 0, true)]
-      }, void 0, true)
-    }, void 0, false), showJoin && /*#__PURE__*/_jsxDEV("div", {
-      className: "card-trip mb-4 animate-fade-in",
-      style: {
-        border: '2px solid var(--primary)'
-      },
-      children: /*#__PURE__*/_jsxDEV("div", {
-        className: "card-body p-4",
-        children: [/*#__PURE__*/_jsxDEV("h5", {
-          className: "fw-bold mb-3",
-          children: "Join a Trip"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("form", {
-          onSubmit: handleJoin,
-          children: [joinError && /*#__PURE__*/_jsxDEV("div", {
-            className: "alert alert-danger p-2 small",
-            children: joinError
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "row g-3 align-items-end",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-8",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: "Trip Code"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                type: "text",
-                className: "form-control",
-                placeholder: "Enter 6-character code",
-                value: joinCode,
-                onChange: e => setJoinCode(e.target.value.toUpperCase()),
-                required: true
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-4",
-              children: /*#__PURE__*/_jsxDEV("button", {
-                type: "submit",
-                className: "btn btn-primary w-100",
-                children: "Join Trip"
-              }, void 0, false)
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true)]
-      }, void 0, true)
-    }, void 0, false), filtered.length === 0 ? /*#__PURE__*/_jsxDEV("div", {
-      className: "empty-state",
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "compass",
-        size: 64
-      }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "row align-items-center mb-4 gap-3 gap-md-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-12 col-md-auto"
+  }, /*#__PURE__*/React.createElement("h4", {
+    className: "text-muted mb-2 fw-normal"
+  }, getGreeting(), ", ", /*#__PURE__*/React.createElement("span", {
+    className: "fw-bold",
+    style: {
+      color: 'var(--primary)'
+    }
+  }, currentUser), "!"), /*#__PURE__*/React.createElement("h1", {
+    className: "h3 fw-bold mb-1"
+  }, "My Trips"), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted mb-0"
+  }, trips.length, " trips planned")), /*#__PURE__*/React.createElement("div", {
+    className: "col-12 col-md d-flex justify-content-md-end flex-wrap gap-2"
+  }, /*#__PURE__*/React.createElement("select", {
+    className: "form-select",
+    value: filterCat,
+    onChange: e => setFilterCat(e.target.value),
+    style: {
+      width: 'auto',
+      flexGrow: 1
+    }
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "All Categories"), categories.map(c => /*#__PURE__*/React.createElement("option", {
+    key: c.id,
+    value: c.id
+  }, c.name))), showCreate || showJoin ? /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-secondary",
+    onClick: () => {
+      setShowCreate(false);
+      setShowJoin(false);
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 16
+  }), " Cancel") : /*#__PURE__*/React.createElement("div", {
+    className: "position-relative",
+    style: {
+      display: 'inline-block'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-light border d-flex align-items-center gap-2",
+    type: "button",
+    onClick: () => setShowDropdown(!showDropdown),
+    style: {
+      backgroundColor: '#f8f9fa'
+    }
+  }, "Add New ", /*#__PURE__*/React.createElement(Icon, {
+    name: showDropdown ? "chevron-up" : "chevron-down",
+    size: 16
+  })), showDropdown && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "position-fixed top-0 start-0 w-100 h-100",
+    style: {
+      zIndex: 999
+    },
+    onClick: () => setShowDropdown(false)
+  }), /*#__PURE__*/React.createElement("ul", {
+    className: "dropdown-menu shadow show py-2",
+    style: {
+      position: 'absolute',
+      right: 0,
+      top: '100%',
+      zIndex: 1000,
+      marginTop: '8px',
+      minWidth: '180px',
+      borderRadius: '8px',
+      border: '1px solid var(--border)'
+    }
+  }, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("button", {
+    className: "dropdown-item py-2 d-flex align-items-center",
+    onClick: () => {
+      setShowDropdown(false);
+      setShowCreate(true);
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "plus-circle",
+    size: 16,
+    className: "me-2 text-primary"
+  }), "Create New Trip")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("button", {
+    className: "dropdown-item py-2 d-flex align-items-center",
+    onClick: () => {
+      setShowDropdown(false);
+      setShowJoin(true);
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "users",
+    size: 16,
+    className: "me-2 text-success"
+  }), "Join via Code"))))), /*#__PURE__*/React.createElement("div", {
+    className: "btn-group border bg-white rounded-3 shadow-sm d-flex",
+    style: {
+      padding: '2px'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `btn btn-sm ${viewMode === 'grid' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted border-0'}`,
+    onClick: () => setViewMode('grid'),
+    style: {
+      padding: '6px 12px'
+    },
+    title: "Grid View"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "layout",
+    size: 16
+  })), /*#__PURE__*/React.createElement("button", {
+    className: `btn btn-sm ${viewMode === 'list' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted border-0'}`,
+    onClick: () => setViewMode('list'),
+    style: {
+      padding: '6px 12px'
+    },
+    title: "List View"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "list",
+    size: 16
+  }))))), showCreate && /*#__PURE__*/React.createElement("div", {
+    className: "card-trip mb-4 animate-fade-in",
+    style: {
+      border: '2px solid var(--primary)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-4"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-3"
+  }, "Create New Trip"), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleCreate
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "row g-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Trip Name"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-control",
+    placeholder: "Bali Adventure 2026",
+    value: newTrip.name,
+    onChange: e => setNewTrip({
+      ...newTrip,
+      name: e.target.value
+    }),
+    required: true
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Budget (IDR)"), /*#__PURE__*/React.createElement("div", {
+    className: "input-group"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "input-group-text"
+  }, "Rp"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    inputMode: "numeric",
+    className: "form-control",
+    placeholder: "5,000,000",
+    value: newTrip.budget,
+    onChange: e => setNewTrip({
+      ...newTrip,
+      budget: formatCurrency(e.target.value)
+    }),
+    required: true
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Category"), /*#__PURE__*/React.createElement("select", {
+    className: "form-select",
+    value: newTrip.category_id,
+    onChange: e => setNewTrip({
+      ...newTrip,
+      category_id: e.target.value
+    })
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "No Category"), categories.map(c => /*#__PURE__*/React.createElement("option", {
+    key: c.id,
+    value: c.id
+  }, c.name)))), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-6"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Cover Photo"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex gap-2 align-items-center"
+  }, coverPreview && /*#__PURE__*/React.createElement("img", {
+    src: coverPreview,
+    alt: "Cover",
+    style: {
+      width: 80,
+      height: 60,
+      objectFit: 'cover',
+      borderRadius: 8
+    }
+  }), /*#__PURE__*/React.createElement("label", {
+    className: "btn btn-outline-primary btn-sm"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "camera",
+    size: 14
+  }), " Upload Cover", /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    accept: "image/*",
+    onChange: handleCoverUpload,
+    style: {
+      display: 'none'
+    }
+  }))))), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "btn btn-primary mt-3"
+  }, "Create Trip")))), showJoin && /*#__PURE__*/React.createElement("div", {
+    className: "card-trip mb-4 animate-fade-in",
+    style: {
+      border: '2px solid var(--primary)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-4"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-3"
+  }, "Join a Trip"), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleJoin
+  }, joinError && /*#__PURE__*/React.createElement("div", {
+    className: "alert alert-danger p-2 small"
+  }, joinError), /*#__PURE__*/React.createElement("div", {
+    className: "row g-3 align-items-end"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-8"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Trip Code"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-control",
+    placeholder: "Enter 6-character code",
+    value: joinCode,
+    onChange: e => setJoinCode(e.target.value.toUpperCase()),
+    required: true
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "btn btn-primary w-100"
+  }, "Join Trip")))))), filtered.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "empty-state"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "compass",
+    size: 64
+  }), /*#__PURE__*/React.createElement("h4", {
+    className: "fw-bold"
+  }, "No trips yet"), /*#__PURE__*/React.createElement("p", null, "Create your first trip to get started!"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex gap-2 justify-content-center mt-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-primary",
+    onClick: () => setShowCreate(true)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "plus",
+    size: 16
+  }), " Create Trip"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-primary",
+    onClick: () => setShowJoin(true)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user-plus",
+    size: 16
+  }), " Join Trip"))) : /*#__PURE__*/React.createElement(React.Fragment, null, (() => {
+    const inProgressTrips = filtered.filter(t => !t.is_finished);
+    const completedTrips = filtered.filter(t => t.is_finished);
+    const renderTripCards = tripList => /*#__PURE__*/React.createElement("div", {
+      className: "row g-4"
+    }, tripList.map((trip, index) => {
+      const completed = trip.schedules?.filter(s => s.isCompleted).length || 0;
+      const total = trip.schedules?.length || 0;
+      const progress = total ? Math.round(completed / total * 100) : 0;
+      const cat = categories.find(c => c.id === trip.category_id);
+      const isEager = index < 2;
+      return /*#__PURE__*/React.createElement("div", {
+        key: trip.id,
+        className: viewMode === 'grid' ? 'col-6 col-md-4' : 'col-12'
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "card-trip trip-card",
+        onClick: () => navigateTo('trip-dashboard', trip.id)
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "trip-cover",
+        style: {
+          background: trip.coverUrl ? 'transparent' : 'linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%)'
+        }
+      }, trip.coverUrl && /*#__PURE__*/React.createElement("img", {
+        src: trip.coverUrl,
+        alt: "Trip Cover",
+        className: "cover-img",
+        loading: isEager ? "eager" : "lazy",
+        fetchpriority: isEager ? "high" : "auto"
+      }), /*#__PURE__*/React.createElement("span", {
+        className: "trip-code"
+      }, trip.tripCode), !trip.isOwner && /*#__PURE__*/React.createElement("span", {
+        className: "trip-shared-badge"
+      }, "Shared"), cat && /*#__PURE__*/React.createElement("span", {
+        className: "badge",
+        style: {
+          position: 'absolute',
+          bottom: 12,
+          left: 12,
+          background: cat.color,
+          color: 'white'
+        }
+      }, cat.name)), /*#__PURE__*/React.createElement("div", {
+        className: "card-body"
+      }, /*#__PURE__*/React.createElement("h5", {
+        className: "fw-bold mb-1"
+      }, trip.name), calculateTripDuration(trip.schedules) && /*#__PURE__*/React.createElement("p", {
+        className: "small text-primary fw-medium mb-1"
+      }, /*#__PURE__*/React.createElement(Icon, {
+        name: "calendar",
+        size: 14,
+        className: "me-1"
+      }), calculateTripDuration(trip.schedules)), /*#__PURE__*/React.createElement("p", {
+        className: "text-muted small mb-3"
+      }, "Budget: Rp ", parseFloat(trip.totalPlanBudget).toLocaleString('en-US')), /*#__PURE__*/React.createElement("div", {
+        className: "d-flex justify-content-between align-items-center"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "small text-muted"
+      }, completed, "/", total, " activities"), /*#__PURE__*/React.createElement("span", {
         className: "fw-bold",
-        children: "No trips yet"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-        children: "Create your first trip to get started!"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        className: "d-flex gap-2 justify-content-center mt-2",
-        children: [/*#__PURE__*/_jsxDEV("button", {
-          className: "btn btn-primary",
-          onClick: () => setShowCreate(true),
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "plus",
-            size: 16
-          }, void 0, false), " Create Trip"]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-          className: "btn btn-outline-primary",
-          onClick: () => setShowJoin(true),
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "user-plus",
-            size: 16
-          }, void 0, false), " Join Trip"]
-        }, void 0, true)]
-      }, void 0, true)]
-    }, void 0, true) : /*#__PURE__*/_jsxDEV(_Fragment, {
-      children: (() => {
-        const inProgressTrips = filtered.filter(t => !t.is_finished);
-        const completedTrips = filtered.filter(t => t.is_finished);
-        const renderTripCards = tripList => /*#__PURE__*/_jsxDEV("div", {
-          className: "row g-4",
-          children: tripList.map((trip, index) => {
-            const completed = trip.schedules?.filter(s => s.isCompleted).length || 0;
-            const total = trip.schedules?.length || 0;
-            const progress = total ? Math.round(completed / total * 100) : 0;
-            const cat = categories.find(c => c.id === trip.category_id);
-            const isEager = index < 2;
-            return /*#__PURE__*/_jsxDEV("div", {
-              className: viewMode === 'grid' ? 'col-6 col-md-4' : 'col-12',
-              children: /*#__PURE__*/_jsxDEV("div", {
-                className: "card-trip trip-card",
-                onClick: () => navigateTo('trip-dashboard', trip.id),
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "trip-cover",
-                  style: {
-                    background: trip.coverUrl ? 'transparent' : 'linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%)'
-                  },
-                  children: [trip.coverUrl && /*#__PURE__*/_jsxDEV("img", {
-                    src: trip.coverUrl,
-                    alt: "Trip Cover",
-                    className: "cover-img",
-                    loading: isEager ? "eager" : "lazy",
-                    fetchpriority: isEager ? "high" : "auto"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                    className: "trip-code",
-                    children: trip.tripCode
-                  }, void 0, false), !trip.isOwner && /*#__PURE__*/_jsxDEV("span", {
-                    className: "trip-shared-badge",
-                    children: "Shared"
-                  }, void 0, false), cat && /*#__PURE__*/_jsxDEV("span", {
-                    className: "badge",
-                    style: {
-                      position: 'absolute',
-                      bottom: 12,
-                      left: 12,
-                      background: cat.color,
-                      color: 'white'
-                    },
-                    children: cat.name
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "card-body",
-                  children: [/*#__PURE__*/_jsxDEV("h5", {
-                    className: "fw-bold mb-1",
-                    children: trip.name
-                  }, void 0, false), calculateTripDuration(trip.schedules) && /*#__PURE__*/_jsxDEV("p", {
-                    className: "small text-primary fw-medium mb-1",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "calendar",
-                      size: 14,
-                      className: "me-1"
-                    }, void 0, false), calculateTripDuration(trip.schedules)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-                    className: "text-muted small mb-3",
-                    children: ["Budget: Rp ", parseFloat(trip.totalPlanBudget).toLocaleString('en-US')]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "d-flex justify-content-between align-items-center",
-                    children: [/*#__PURE__*/_jsxDEV("span", {
-                      className: "small text-muted",
-                      children: [completed, "/", total, " activities"]
-                    }, void 0, true), /*#__PURE__*/_jsxDEV("span", {
-                      className: "fw-bold",
-                      style: {
-                        color: progress === 100 ? 'var(--success)' : 'var(--primary)'
-                      },
-                      children: [progress, "%"]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "progress mt-2",
-                    children: /*#__PURE__*/_jsxDEV("div", {
-                      className: "progress-bar",
-                      style: {
-                        width: `${progress}%`,
-                        background: progress === 100 ? 'var(--success)' : 'var(--primary)'
-                      }
-                    }, void 0, false)
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true)
-            }, trip.id, false);
-          })
-        }, void 0, false);
-        return /*#__PURE__*/_jsxDEV(_Fragment, {
-          children: [inProgressTrips.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-            className: "mb-5",
-            children: [/*#__PURE__*/_jsxDEV("h5", {
-              className: "fw-bold mb-3 d-flex align-items-center gap-2",
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "clock",
-                size: 20,
-                className: "text-warning"
-              }, void 0, false), " In Progress"]
-            }, void 0, true), renderTripCards(inProgressTrips)]
-          }, void 0, true), completedTrips.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-            children: [/*#__PURE__*/_jsxDEV("h5", {
-              className: "fw-bold mb-3 d-flex align-items-center gap-2",
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "check-circle",
-                size: 20,
-                className: "text-success"
-              }, void 0, false), " Completed"]
-            }, void 0, true), renderTripCards(completedTrips)]
-          }, void 0, true)]
-        }, void 0, true);
-      })()
-    }, void 0, false)]
-  }, void 0, true);
+        style: {
+          color: progress === 100 ? 'var(--success)' : 'var(--primary)'
+        }
+      }, progress, "%")), /*#__PURE__*/React.createElement("div", {
+        className: "progress mt-2"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "progress-bar",
+        style: {
+          width: `${progress}%`,
+          background: progress === 100 ? 'var(--success)' : 'var(--primary)'
+        }
+      })))));
+    }));
+    return /*#__PURE__*/React.createElement(React.Fragment, null, inProgressTrips.length > 0 && /*#__PURE__*/React.createElement("div", {
+      className: "mb-5"
+    }, /*#__PURE__*/React.createElement("h5", {
+      className: "fw-bold mb-3 d-flex align-items-center gap-2"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "clock",
+      size: 20,
+      className: "text-warning"
+    }), " In Progress"), renderTripCards(inProgressTrips)), completedTrips.length > 0 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h5", {
+      className: "fw-bold mb-3 d-flex align-items-center gap-2"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "check-circle",
+      size: 20,
+      className: "text-success"
+    }), " Completed"), renderTripCards(completedTrips)));
+  })()));
 };
 
 // Trip Dashboard
@@ -1401,247 +1266,201 @@ const TripDashboard = () => {
     const compressed = await compressImage(file);
     setCoverPreview(compressed);
   };
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "animate-fade-in",
-    children: [/*#__PURE__*/_jsxDEV("button", {
-      className: "btn btn-link text-muted p-0 mb-4",
-      onClick: () => navigateTo('my-trips'),
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "arrow-left",
-        size: 16
-      }, void 0, false), " Back to Trips"]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "d-flex align-items-center gap-2 mb-2",
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "badge bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-1",
-            children: "Workspace"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: "badge bg-light text-dark border px-2 py-1 rounded-1 fw-normal",
-            children: activeTrip.tripCode
-          }, void 0, false), activeTrip.is_finished ? /*#__PURE__*/_jsxDEV("span", {
-            className: "badge bg-success bg-opacity-10 text-success px-2 py-1 rounded-1",
-            children: "Completed"
-          }, void 0, false) : /*#__PURE__*/_jsxDEV("span", {
-            className: "badge bg-warning bg-opacity-10 text-warning px-2 py-1 rounded-1",
-            children: "In Progress"
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("h1", {
-          className: "h2 fw-bold mb-1 text-dark",
-          children: activeTrip.name
-        }, void 0, false), calculateTripDuration(activeTrip.schedules) && /*#__PURE__*/_jsxDEV("p", {
-          className: "fw-medium text-primary mb-1",
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "calendar",
-            size: 16,
-            className: "me-1"
-          }, void 0, false), calculateTripDuration(activeTrip.schedules)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-          className: "text-muted mb-0",
-          style: {
-            fontSize: '1.1rem'
-          },
-          children: ["Budget: ", /*#__PURE__*/_jsxDEV("span", {
-            className: "fw-medium text-dark",
-            children: ["Rp ", parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')]
-          }, void 0, true)]
-        }, void 0, true)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "d-flex gap-2",
-        children: [/*#__PURE__*/_jsxDEV("button", {
-          className: "btn btn-light border d-flex align-items-center gap-2 px-3",
-          onClick: () => {
-            setEdit(activeTrip);
-            setEditing(true);
-          },
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "edit",
-            size: 16
-          }, void 0, false), " Edit"]
-        }, void 0, true), !activeTrip.is_finished && (showEndTripConfirm ? /*#__PURE__*/_jsxDEV("div", {
-          className: "d-flex align-items-center gap-2 bg-white border border-success rounded px-2",
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "text-success small fw-bold mb-0",
-            children: "End this trip?"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-success btn-sm",
-            onClick: () => updateTrip(activeTrip.id, {
-              is_finished: true
-            }),
-            children: "Ya"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-outline-secondary btn-sm",
-            onClick: () => setShowEndTripConfirm(false),
-            children: "Tidak"
-          }, void 0, false)]
-        }, void 0, true) : /*#__PURE__*/_jsxDEV("button", {
-          className: "btn btn-outline-success d-flex align-items-center gap-2 px-3",
-          onClick: () => setShowEndTripConfirm(true),
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "check-square",
-            size: 16
-          }, void 0, false), " End Trip"]
-        }, void 0, true)), showDeleteConfirm ? /*#__PURE__*/_jsxDEV("div", {
-          className: "d-flex align-items-center gap-2 bg-white border border-danger rounded px-2",
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "text-danger small fw-bold mb-0",
-            children: "Hapus Trip ini?"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-danger btn-sm",
-            onClick: () => deleteTrip(activeTrip.id),
-            children: "Ya"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-outline-secondary btn-sm",
-            onClick: () => setShowDeleteConfirm(false),
-            children: "Tidak"
-          }, void 0, false)]
-        }, void 0, true) : /*#__PURE__*/_jsxDEV("button", {
-          className: "btn btn-outline-danger d-flex align-items-center gap-2 px-3",
-          onClick: () => setShowDeleteConfirm(true),
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "trash",
-            size: 16
-          }, void 0, false), " Delete"]
-        }, void 0, true)]
-      }, void 0, true)]
-    }, void 0, true), editing && /*#__PURE__*/_jsxDEV("div", {
-      className: "card-trip mb-4",
-      style: {
-        border: '2px solid var(--primary)'
-      },
-      children: /*#__PURE__*/_jsxDEV("div", {
-        className: "card-body",
-        children: [/*#__PURE__*/_jsxDEV("h5", {
-          className: "fw-bold mb-3",
-          children: "Edit Trip"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "row g-3",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "col-md-4",
-            children: [/*#__PURE__*/_jsxDEV("label", {
-              className: "form-label",
-              children: "Name"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-              className: "form-control",
-              value: edit.name || '',
-              onChange: e => setEdit({
-                ...edit,
-                name: e.target.value
-              })
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "col-md-4",
-            children: [/*#__PURE__*/_jsxDEV("label", {
-              className: "form-label",
-              children: "Budget"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-              type: "text",
-              inputMode: "numeric",
-              className: "form-control",
-              value: formatCurrency(edit.totalPlanBudget),
-              onChange: e => setEdit({
-                ...edit,
-                totalPlanBudget: parseCurrency(e.target.value)
-              })
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "col-md-4",
-            children: [/*#__PURE__*/_jsxDEV("label", {
-              className: "form-label",
-              children: "Cover Photo"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "d-flex gap-2",
-              children: [(coverPreview || edit.coverUrl) && /*#__PURE__*/_jsxDEV("img", {
-                src: coverPreview || edit.coverUrl,
-                alt: "",
-                style: {
-                  width: 60,
-                  height: 40,
-                  objectFit: 'cover',
-                  borderRadius: 8
-                }
-              }, void 0, false), /*#__PURE__*/_jsxDEV("label", {
-                className: "btn btn-outline-primary btn-sm",
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "camera",
-                  size: 14
-                }, void 0, false), " Change", /*#__PURE__*/_jsxDEV("input", {
-                  type: "file",
-                  accept: "image/*",
-                  onChange: handleCoverChange,
-                  style: {
-                    display: 'none'
-                  }
-                }, void 0, false)]
-              }, void 0, true)]
-            }, void 0, true)]
-          }, void 0, true)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "mt-3",
-          children: [/*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-primary",
-            onClick: handleSave,
-            children: "Save"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-outline-secondary ms-2",
-            onClick: () => setEditing(false),
-            children: "Cancel"
-          }, void 0, false)]
-        }, void 0, true)]
-      }, void 0, true)
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      className: "row g-4",
-      children: [{
-        key: 'itinerary',
-        icon: 'calendar',
-        color: 'var(--primary)',
-        title: 'Itinerary',
-        desc: `${activeTrip.schedules?.filter(s => !s.is_addon).length || 0} activities`
-      }, {
-        key: 'addons',
-        icon: 'tag',
-        color: 'var(--info)',
-        title: 'Add-ons',
-        desc: `${activeTrip.schedules?.filter(s => s.is_addon).length || 0} add-ons`
-      }, {
-        key: 'friends',
-        icon: 'users',
-        color: 'var(--success)',
-        title: 'Travel Buddies',
-        desc: `${activeTrip.friends?.length || 0} friends`
-      }, {
-        key: 'budget',
-        icon: 'pie-chart',
-        color: 'var(--warning)',
-        title: 'Budget Report',
-        desc: 'View analytics'
-      }].map(m => /*#__PURE__*/_jsxDEV("div", {
-        className: "col-md-4",
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "module-card",
-          onClick: () => navigateTo(m.key),
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "module-icon",
-            style: {
-              background: m.color
-            },
-            children: /*#__PURE__*/_jsxDEV(Icon, {
-              name: m.icon,
-              size: 28
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-            className: "fw-bold mb-1",
-            children: m.title
-          }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-            className: "text-muted small mb-0",
-            children: m.desc
-          }, void 0, false)]
-        }, void 0, true)
-      }, m.key, false))
-    }, void 0, false)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-link text-muted p-0 mb-4",
+    onClick: () => navigateTo('my-trips')
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "arrow-left",
+    size: 16
+  }), " Back to Trips"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center gap-2 mb-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "badge bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-1"
+  }, "Workspace"), /*#__PURE__*/React.createElement("span", {
+    className: "badge bg-light text-dark border px-2 py-1 rounded-1 fw-normal"
+  }, activeTrip.tripCode), activeTrip.is_finished ? /*#__PURE__*/React.createElement("span", {
+    className: "badge bg-success bg-opacity-10 text-success px-2 py-1 rounded-1"
+  }, "Completed") : /*#__PURE__*/React.createElement("span", {
+    className: "badge bg-warning bg-opacity-10 text-warning px-2 py-1 rounded-1"
+  }, "In Progress")), /*#__PURE__*/React.createElement("h1", {
+    className: "h2 fw-bold mb-1 text-dark"
+  }, activeTrip.name), calculateTripDuration(activeTrip.schedules) && /*#__PURE__*/React.createElement("p", {
+    className: "fw-medium text-primary mb-1"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "calendar",
+    size: 16,
+    className: "me-1"
+  }), calculateTripDuration(activeTrip.schedules)), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted mb-0",
+    style: {
+      fontSize: '1.1rem'
+    }
+  }, "Budget: ", /*#__PURE__*/React.createElement("span", {
+    className: "fw-medium text-dark"
+  }, "Rp ", parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')))), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-light border d-flex align-items-center gap-2 px-3",
+    onClick: () => {
+      setEdit(activeTrip);
+      setEditing(true);
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "edit",
+    size: 16
+  }), " Edit"), !activeTrip.is_finished && (showEndTripConfirm ? /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center gap-2 bg-white border border-success rounded px-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-success small fw-bold mb-0"
+  }, "End this trip?"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-success btn-sm",
+    onClick: () => updateTrip(activeTrip.id, {
+      is_finished: true
+    })
+  }, "Ya"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-secondary btn-sm",
+    onClick: () => setShowEndTripConfirm(false)
+  }, "Tidak")) : /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-success d-flex align-items-center gap-2 px-3",
+    onClick: () => setShowEndTripConfirm(true)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check-square",
+    size: 16
+  }), " End Trip")), showDeleteConfirm ? /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center gap-2 bg-white border border-danger rounded px-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-danger small fw-bold mb-0"
+  }, "Hapus Trip ini?"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-danger btn-sm",
+    onClick: () => deleteTrip(activeTrip.id)
+  }, "Ya"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-secondary btn-sm",
+    onClick: () => setShowDeleteConfirm(false)
+  }, "Tidak")) : /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-danger d-flex align-items-center gap-2 px-3",
+    onClick: () => setShowDeleteConfirm(true)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "trash",
+    size: 16
+  }), " Delete"))), editing && /*#__PURE__*/React.createElement("div", {
+    className: "card-trip mb-4",
+    style: {
+      border: '2px solid var(--primary)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-3"
+  }, "Edit Trip"), /*#__PURE__*/React.createElement("div", {
+    className: "row g-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Name"), /*#__PURE__*/React.createElement("input", {
+    className: "form-control",
+    value: edit.name || '',
+    onChange: e => setEdit({
+      ...edit,
+      name: e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Budget"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    inputMode: "numeric",
+    className: "form-control",
+    value: formatCurrency(edit.totalPlanBudget),
+    onChange: e => setEdit({
+      ...edit,
+      totalPlanBudget: parseCurrency(e.target.value)
+    })
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Cover Photo"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex gap-2"
+  }, (coverPreview || edit.coverUrl) && /*#__PURE__*/React.createElement("img", {
+    src: coverPreview || edit.coverUrl,
+    alt: "",
+    style: {
+      width: 60,
+      height: 40,
+      objectFit: 'cover',
+      borderRadius: 8
+    }
+  }), /*#__PURE__*/React.createElement("label", {
+    className: "btn btn-outline-primary btn-sm"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "camera",
+    size: 14
+  }), " Change", /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    accept: "image/*",
+    onChange: handleCoverChange,
+    style: {
+      display: 'none'
+    }
+  }))))), /*#__PURE__*/React.createElement("div", {
+    className: "mt-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-primary",
+    onClick: handleSave
+  }, "Save"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-secondary ms-2",
+    onClick: () => setEditing(false)
+  }, "Cancel")))), /*#__PURE__*/React.createElement("div", {
+    className: "row g-4"
+  }, [{
+    key: 'itinerary',
+    icon: 'calendar',
+    color: 'var(--primary)',
+    title: 'Itinerary',
+    desc: `${activeTrip.schedules?.filter(s => !s.is_addon).length || 0} activities`
+  }, {
+    key: 'addons',
+    icon: 'tag',
+    color: 'var(--info)',
+    title: 'Add-ons',
+    desc: `${activeTrip.schedules?.filter(s => s.is_addon).length || 0} add-ons`
+  }, {
+    key: 'friends',
+    icon: 'users',
+    color: 'var(--success)',
+    title: 'Travel Buddies',
+    desc: `${activeTrip.friends?.length || 0} friends`
+  }, {
+    key: 'budget',
+    icon: 'pie-chart',
+    color: 'var(--warning)',
+    title: 'Budget Report',
+    desc: 'View analytics'
+  }].map(m => /*#__PURE__*/React.createElement("div", {
+    key: m.key,
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "module-card",
+    onClick: () => navigateTo(m.key)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "module-icon",
+    style: {
+      background: m.color
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: m.icon,
+    size: 28
+  })), /*#__PURE__*/React.createElement("h4", {
+    className: "fw-bold mb-1"
+  }, m.title), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small mb-0"
+  }, m.desc))))));
 };
 
 // Itinerary Page
@@ -1680,141 +1499,114 @@ const Itinerary = () => {
     const timeB = b.time || '00:00';
     return new Date(`${a.date}T${timeA}`) - new Date(`${b.date}T${timeB}`);
   });
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "animate-fade-in",
-    children: [/*#__PURE__*/_jsxDEV("button", {
-      className: "btn btn-link text-muted p-0 mb-4",
-      onClick: () => navigateTo('trip-dashboard'),
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "arrow-left",
-        size: 16
-      }, void 0, false), " Back"]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        children: [/*#__PURE__*/_jsxDEV("h2", {
-          className: "fw-bold mb-1",
-          children: "Itinerary"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-          className: "text-muted mb-0",
-          children: "Plan your activities"
-        }, void 0, false)]
-      }, void 0, true), !activeTrip.is_finished && /*#__PURE__*/_jsxDEV("button", {
-        className: `btn ${showAdd ? 'btn-secondary' : 'btn-primary'}`,
-        onClick: () => setShowAdd(!showAdd),
-        children: [/*#__PURE__*/_jsxDEV(Icon, {
-          name: showAdd ? 'x' : 'plus',
-          size: 16
-        }, void 0, false), " ", showAdd ? 'Cancel' : 'Add Activity']
-      }, void 0, true)]
-    }, void 0, true), showAdd && /*#__PURE__*/_jsxDEV("div", {
-      className: "card-trip mb-4",
-      style: {
-        border: '2px solid var(--primary)'
-      },
-      children: /*#__PURE__*/_jsxDEV("div", {
-        className: "card-body",
-        children: [/*#__PURE__*/_jsxDEV("h5", {
-          className: "fw-bold mb-3",
-          children: "New Activity"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("form", {
-          onSubmit: handleAdd,
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "row g-3",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-3",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: "Date"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                type: "date",
-                className: "form-control",
-                value: newSch.date,
-                onChange: e => setNewSch({
-                  ...newSch,
-                  date: e.target.value
-                }),
-                required: true
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-3",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: ["Time ", /*#__PURE__*/_jsxDEV("span", {
-                  className: "text-muted fw-normal",
-                  children: "(Opt)"
-                }, void 0, false)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("input", {
-                type: "time",
-                className: "form-control",
-                value: newSch.time,
-                onChange: e => setNewSch({
-                  ...newSch,
-                  time: e.target.value
-                })
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-6",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: "Title"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                type: "text",
-                className: "form-control",
-                placeholder: "Visit amazing places",
-                value: newSch.title,
-                onChange: e => setNewSch({
-                  ...newSch,
-                  title: e.target.value
-                }),
-                required: true
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-4",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: "Budget (IDR)"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                className: "input-group",
-                children: [/*#__PURE__*/_jsxDEV("span", {
-                  className: "input-group-text",
-                  children: "Rp"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                  type: "text",
-                  inputMode: "numeric",
-                  className: "form-control",
-                  placeholder: "0",
-                  value: newSch.planBudget,
-                  onChange: e => setNewSch({
-                    ...newSch,
-                    planBudget: formatCurrency(e.target.value)
-                  })
-                }, void 0, false)]
-              }, void 0, true)]
-            }, void 0, true)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-            type: "submit",
-            className: "btn btn-primary mt-3",
-            children: "Save Activity"
-          }, void 0, false)]
-        }, void 0, true)]
-      }, void 0, true)
-    }, void 0, false), sorted.length === 0 ? /*#__PURE__*/_jsxDEV("div", {
-      className: "empty-state",
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "calendar",
-        size: 64
-      }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-        className: "fw-bold",
-        children: "No activities yet"
-      }, void 0, false)]
-    }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-      className: "d-flex flex-column gap-3",
-      children: sorted.map(s => /*#__PURE__*/_jsxDEV(ScheduleCard, {
-        schedule: s
-      }, s.id, false))
-    }, void 0, false)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-link text-muted p-0 mb-4",
+    onClick: () => navigateTo('trip-dashboard')
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "arrow-left",
+    size: 16
+  }), " Back"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    className: "fw-bold mb-1"
+  }, "Itinerary"), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted mb-0"
+  }, "Plan your activities")), !activeTrip.is_finished && /*#__PURE__*/React.createElement("button", {
+    className: `btn ${showAdd ? 'btn-secondary' : 'btn-primary'}`,
+    onClick: () => setShowAdd(!showAdd)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: showAdd ? 'x' : 'plus',
+    size: 16
+  }), " ", showAdd ? 'Cancel' : 'Add Activity')), showAdd && /*#__PURE__*/React.createElement("div", {
+    className: "card-trip mb-4",
+    style: {
+      border: '2px solid var(--primary)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-3"
+  }, "New Activity"), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleAdd
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "row g-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Date"), /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    className: "form-control",
+    value: newSch.date,
+    onChange: e => setNewSch({
+      ...newSch,
+      date: e.target.value
+    }),
+    required: true
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Time ", /*#__PURE__*/React.createElement("span", {
+    className: "text-muted fw-normal"
+  }, "(Opt)")), /*#__PURE__*/React.createElement("input", {
+    type: "time",
+    className: "form-control",
+    value: newSch.time,
+    onChange: e => setNewSch({
+      ...newSch,
+      time: e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-6"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Title"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-control",
+    placeholder: "Visit amazing places",
+    value: newSch.title,
+    onChange: e => setNewSch({
+      ...newSch,
+      title: e.target.value
+    }),
+    required: true
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Budget (IDR)"), /*#__PURE__*/React.createElement("div", {
+    className: "input-group"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "input-group-text"
+  }, "Rp"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    inputMode: "numeric",
+    className: "form-control",
+    placeholder: "0",
+    value: newSch.planBudget,
+    onChange: e => setNewSch({
+      ...newSch,
+      planBudget: formatCurrency(e.target.value)
+    })
+  })))), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "btn btn-primary mt-3"
+  }, "Save Activity")))), sorted.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "empty-state"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "calendar",
+    size: 64
+  }), /*#__PURE__*/React.createElement("h4", {
+    className: "fw-bold"
+  }, "No activities yet")) : /*#__PURE__*/React.createElement("div", {
+    className: "d-flex flex-column gap-3"
+  }, sorted.map(s => /*#__PURE__*/React.createElement(ScheduleCard, {
+    key: s.id,
+    schedule: s
+  }))));
 };
 
 // Add-Ons Page
@@ -1854,141 +1646,114 @@ const AddOns = () => {
     const timeB = b.time || '00:00';
     return new Date(`${a.date}T${timeA}`) - new Date(`${b.date}T${timeB}`);
   });
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "animate-fade-in",
-    children: [/*#__PURE__*/_jsxDEV("button", {
-      className: "btn btn-link text-muted p-0 mb-4",
-      onClick: () => navigateTo('trip-dashboard'),
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "arrow-left",
-        size: 16
-      }, void 0, false), " Back"]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        children: [/*#__PURE__*/_jsxDEV("h2", {
-          className: "fw-bold mb-1",
-          children: "Add-ons"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-          className: "text-muted mb-0",
-          children: "Plan minor expenses (parking, snacks, etc.)"
-        }, void 0, false)]
-      }, void 0, true), !activeTrip.is_finished && /*#__PURE__*/_jsxDEV("button", {
-        className: `btn ${showAdd ? 'btn-secondary' : 'btn-primary'}`,
-        onClick: () => setShowAdd(!showAdd),
-        children: [/*#__PURE__*/_jsxDEV(Icon, {
-          name: showAdd ? 'x' : 'plus',
-          size: 16
-        }, void 0, false), " ", showAdd ? 'Cancel' : 'Add Add-on']
-      }, void 0, true)]
-    }, void 0, true), showAdd && /*#__PURE__*/_jsxDEV("div", {
-      className: "card-trip mb-4",
-      style: {
-        border: '2px solid var(--primary)'
-      },
-      children: /*#__PURE__*/_jsxDEV("div", {
-        className: "card-body",
-        children: [/*#__PURE__*/_jsxDEV("h5", {
-          className: "fw-bold mb-3",
-          children: "New Add-on"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("form", {
-          onSubmit: handleAdd,
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "row g-3",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-3",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: "Date"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                type: "date",
-                className: "form-control",
-                value: newSch.date,
-                onChange: e => setNewSch({
-                  ...newSch,
-                  date: e.target.value
-                }),
-                required: true
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-3",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: ["Time ", /*#__PURE__*/_jsxDEV("span", {
-                  className: "text-muted fw-normal",
-                  children: "(Opt)"
-                }, void 0, false)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("input", {
-                type: "time",
-                className: "form-control",
-                value: newSch.time,
-                onChange: e => setNewSch({
-                  ...newSch,
-                  time: e.target.value
-                })
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-6",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: "Title"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                type: "text",
-                className: "form-control",
-                placeholder: "Toll, Parking, Snack...",
-                value: newSch.title,
-                onChange: e => setNewSch({
-                  ...newSch,
-                  title: e.target.value
-                }),
-                required: true
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "col-md-4",
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "form-label",
-                children: "Budget (IDR)"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                className: "input-group",
-                children: [/*#__PURE__*/_jsxDEV("span", {
-                  className: "input-group-text",
-                  children: "Rp"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                  type: "text",
-                  inputMode: "numeric",
-                  className: "form-control",
-                  placeholder: "0",
-                  value: newSch.planBudget,
-                  onChange: e => setNewSch({
-                    ...newSch,
-                    planBudget: formatCurrency(e.target.value)
-                  })
-                }, void 0, false)]
-              }, void 0, true)]
-            }, void 0, true)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-            type: "submit",
-            className: "btn btn-primary mt-3",
-            children: "Save Add-on"
-          }, void 0, false)]
-        }, void 0, true)]
-      }, void 0, true)
-    }, void 0, false), sorted.length === 0 ? /*#__PURE__*/_jsxDEV("div", {
-      className: "empty-state",
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "tag",
-        size: 64
-      }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-        className: "fw-bold",
-        children: "No add-ons yet"
-      }, void 0, false)]
-    }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-      className: "d-flex flex-column gap-3",
-      children: sorted.map(s => /*#__PURE__*/_jsxDEV(ScheduleCard, {
-        schedule: s
-      }, s.id, false))
-    }, void 0, false)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-link text-muted p-0 mb-4",
+    onClick: () => navigateTo('trip-dashboard')
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "arrow-left",
+    size: 16
+  }), " Back"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    className: "fw-bold mb-1"
+  }, "Add-ons"), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted mb-0"
+  }, "Plan minor expenses (parking, snacks, etc.)")), !activeTrip.is_finished && /*#__PURE__*/React.createElement("button", {
+    className: `btn ${showAdd ? 'btn-secondary' : 'btn-primary'}`,
+    onClick: () => setShowAdd(!showAdd)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: showAdd ? 'x' : 'plus',
+    size: 16
+  }), " ", showAdd ? 'Cancel' : 'Add Add-on')), showAdd && /*#__PURE__*/React.createElement("div", {
+    className: "card-trip mb-4",
+    style: {
+      border: '2px solid var(--primary)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-3"
+  }, "New Add-on"), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleAdd
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "row g-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Date"), /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    className: "form-control",
+    value: newSch.date,
+    onChange: e => setNewSch({
+      ...newSch,
+      date: e.target.value
+    }),
+    required: true
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Time ", /*#__PURE__*/React.createElement("span", {
+    className: "text-muted fw-normal"
+  }, "(Opt)")), /*#__PURE__*/React.createElement("input", {
+    type: "time",
+    className: "form-control",
+    value: newSch.time,
+    onChange: e => setNewSch({
+      ...newSch,
+      time: e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-6"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Title"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-control",
+    placeholder: "Toll, Parking, Snack...",
+    value: newSch.title,
+    onChange: e => setNewSch({
+      ...newSch,
+      title: e.target.value
+    }),
+    required: true
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Budget (IDR)"), /*#__PURE__*/React.createElement("div", {
+    className: "input-group"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "input-group-text"
+  }, "Rp"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    inputMode: "numeric",
+    className: "form-control",
+    placeholder: "0",
+    value: newSch.planBudget,
+    onChange: e => setNewSch({
+      ...newSch,
+      planBudget: formatCurrency(e.target.value)
+    })
+  })))), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "btn btn-primary mt-3"
+  }, "Save Add-on")))), sorted.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "empty-state"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "tag",
+    size: 64
+  }), /*#__PURE__*/React.createElement("h4", {
+    className: "fw-bold"
+  }, "No add-ons yet")) : /*#__PURE__*/React.createElement("div", {
+    className: "d-flex flex-column gap-3"
+  }, sorted.map(s => /*#__PURE__*/React.createElement(ScheduleCard, {
+    key: s.id,
+    schedule: s
+  }))));
 };
 
 // Schedule Card with Enhanced Multi-Photo Support
@@ -2070,255 +1835,200 @@ const ScheduleCard = ({
     });
     setIsEditing(false);
   };
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: `schedule-item ${schedule.isCompleted ? 'completed' : ''}`,
-    children: /*#__PURE__*/_jsxDEV("div", {
-      className: "card-body",
-      children: [isEditing ? /*#__PURE__*/_jsxDEV("div", {
-        className: "mb-3 p-3 bg-light rounded border",
-        children: [/*#__PURE__*/_jsxDEV("h6", {
-          className: "fw-bold mb-3",
-          children: "Edit Activity"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "row g-2 mb-3",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "col-12",
-            children: /*#__PURE__*/_jsxDEV("input", {
-              type: "text",
-              className: "form-control",
-              value: editForm.title,
-              onChange: e => setEditForm({
-                ...editForm,
-                title: e.target.value
-              }),
-              placeholder: "Title"
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "col-6",
-            children: /*#__PURE__*/_jsxDEV("input", {
-              type: "date",
-              className: "form-control",
-              value: editForm.date,
-              onChange: e => setEditForm({
-                ...editForm,
-                date: e.target.value
-              })
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "col-6",
-            children: /*#__PURE__*/_jsxDEV("input", {
-              type: "time",
-              className: "form-control",
-              value: editForm.time,
-              onChange: e => setEditForm({
-                ...editForm,
-                time: e.target.value
-              })
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "col-12",
-            children: /*#__PURE__*/_jsxDEV("div", {
-              className: "input-group",
-              children: [/*#__PURE__*/_jsxDEV("span", {
-                className: "input-group-text",
-                children: "Rp"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                type: "text",
-                inputMode: "numeric",
-                className: "form-control",
-                placeholder: "Plan Budget",
-                value: editForm.planBudget,
-                onChange: e => setEditForm({
-                  ...editForm,
-                  planBudget: formatCurrency(e.target.value)
-                })
-              }, void 0, false)]
-            }, void 0, true)
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "d-flex justify-content-end gap-2",
-          children: [/*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-sm btn-outline-secondary",
-            onClick: () => setIsEditing(false),
-            children: "Cancel"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-sm btn-primary",
-            onClick: handleSaveEdit,
-            children: "Save"
-          }, void 0, false)]
-        }, void 0, true)]
-      }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-        className: "d-flex justify-content-between align-items-start mb-3",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          children: [/*#__PURE__*/_jsxDEV("h5", {
-            className: "fw-bold mb-1",
-            children: schedule.title
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: "badge bg-light text-dark",
-            children: [/*#__PURE__*/_jsxDEV(Icon, {
-              name: "calendar",
-              size: 12
-            }, void 0, false), " ", new Date(schedule.date).toLocaleDateString()]
-          }, void 0, true), schedule.time && /*#__PURE__*/_jsxDEV("span", {
-            className: "badge bg-light text-dark ms-2",
-            children: [/*#__PURE__*/_jsxDEV(Icon, {
-              name: "clock",
-              size: 12
-            }, void 0, false), " ", schedule.time]
-          }, void 0, true)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "text-end",
-          children: [/*#__PURE__*/_jsxDEV("p", {
-            className: "text-muted small mb-1",
-            children: ["Plan: Rp ", parseFloat(schedule.planBudget || 0).toLocaleString('en-US')]
-          }, void 0, true), schedule.isCompleted && /*#__PURE__*/_jsxDEV("p", {
-            className: `fw-bold mb-0 ${schedule.realBudget > schedule.planBudget ? 'text-danger' : 'text-success'}`,
-            children: ["Real: Rp ", parseFloat(schedule.realBudget || 0).toLocaleString('en-US')]
-          }, void 0, true)]
-        }, void 0, true)]
-      }, void 0, true), (schedule.isCompleted || isEditing) && /*#__PURE__*/_jsxDEV(PhotoGallery, {
-        photos: photos,
-        editable: isEditing,
-        onAdd: handlePhotoAdd,
-        onDelete: handlePhotoDelete
-      }, void 0, false), loadingPhotos && /*#__PURE__*/_jsxDEV("div", {
-        className: "text-center py-2",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "spinner-border spinner-border-sm text-primary",
-          role: "status",
-          children: /*#__PURE__*/_jsxDEV("span", {
-            className: "visually-hidden",
-            children: "Loading..."
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-          className: "ms-2 text-muted small",
-          children: "Loading photos..."
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "mt-3 pt-3 border-top d-flex flex-wrap justify-content-between align-items-center gap-2",
-        children: !schedule.isCompleted ? showComplete ? /*#__PURE__*/_jsxDEV("div", {
-          className: "w-100",
-          children: /*#__PURE__*/_jsxDEV("div", {
-            className: "row g-2 align-items-end",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "col",
-              children: /*#__PURE__*/_jsxDEV("input", {
-                type: "text",
-                inputMode: "numeric",
-                className: "form-control",
-                placeholder: "Actual spending",
-                value: realBudget,
-                onChange: e => setRealBudget(formatCurrency(e.target.value))
-              }, void 0, false)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "col-auto",
-              children: [/*#__PURE__*/_jsxDEV("button", {
-                className: "btn btn-success btn-sm",
-                onClick: handleComplete,
-                children: "Confirm"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                className: "btn btn-outline-secondary btn-sm ms-2",
-                onClick: () => setShowComplete(false),
-                children: "Cancel"
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true)
-        }, void 0, false) : /*#__PURE__*/_jsxDEV("div", {
-          className: "w-100 d-flex flex-nowrap gap-2",
-          children: [/*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-success btn-sm flex-grow-1",
-            onClick: () => setShowComplete(true),
-            children: [/*#__PURE__*/_jsxDEV(Icon, {
-              name: "check-circle",
-              size: 14
-            }, void 0, false), " Complete"]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-outline-secondary btn-sm",
-            onClick: () => setIsEditing(true),
-            children: /*#__PURE__*/_jsxDEV(Icon, {
-              name: "edit",
-              size: 14
-            }, void 0, false)
-          }, void 0, false), showDeleteConfirm ? /*#__PURE__*/_jsxDEV("div", {
-            className: "d-flex align-items-center gap-1 border border-danger rounded px-1",
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              className: "text-danger small ms-1 me-1 fw-bold",
-              children: "Hapus?"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-              className: "btn btn-danger btn-sm px-2 py-0",
-              onClick: () => deleteSchedule(schedule.id),
-              children: "Ya"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-              className: "btn btn-secondary btn-sm px-2 py-0",
-              onClick: () => setShowDeleteConfirm(false),
-              children: "Tidak"
-            }, void 0, false)]
-          }, void 0, true) : /*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-outline-danger btn-sm",
-            onClick: () => setShowDeleteConfirm(true),
-            children: /*#__PURE__*/_jsxDEV(Icon, {
-              name: "trash",
-              size: 14
-            }, void 0, false)
-          }, void 0, false)]
-        }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-          className: "w-100 d-flex justify-content-between align-items-center",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              className: "badge bg-success",
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "check-circle",
-                size: 12
-              }, void 0, false), " Completed"]
-            }, void 0, true), schedule.completed_at && /*#__PURE__*/_jsxDEV("span", {
-              className: "text-muted small ms-2",
-              style: {
-                fontSize: '11px'
-              },
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "clock",
-                size: 10,
-                className: "me-1"
-              }, void 0, false), new Date(schedule.completed_at).toLocaleString('id-ID', {
-                dateStyle: 'short',
-                timeStyle: 'short'
-              })]
-            }, void 0, true)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            children: [/*#__PURE__*/_jsxDEV("button", {
-              className: "btn btn-outline-secondary btn-sm me-2",
-              onClick: () => setIsEditing(true),
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "edit",
-                size: 14
-              }, void 0, false)
-            }, void 0, false), showDeleteConfirm ? /*#__PURE__*/_jsxDEV("div", {
-              className: "d-inline-flex align-items-center gap-1 border border-danger rounded px-1 py-1",
-              children: [/*#__PURE__*/_jsxDEV("span", {
-                className: "text-danger small ms-1 me-1 fw-bold",
-                children: "Hapus?"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                className: "btn btn-danger btn-sm px-2 py-0",
-                onClick: () => deleteSchedule(schedule.id),
-                children: "Ya"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                className: "btn btn-secondary btn-sm px-2 py-0",
-                onClick: () => setShowDeleteConfirm(false),
-                children: "Tidak"
-              }, void 0, false)]
-            }, void 0, true) : /*#__PURE__*/_jsxDEV("button", {
-              className: "btn btn-outline-danger btn-sm",
-              onClick: () => setShowDeleteConfirm(true),
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "trash",
-                size: 14
-              }, void 0, false)
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true)
-      }, void 0, false)]
-    }, void 0, true)
-  }, void 0, false);
+  return /*#__PURE__*/React.createElement("div", {
+    className: `schedule-item ${schedule.isCompleted ? 'completed' : ''}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body"
+  }, isEditing ? /*#__PURE__*/React.createElement("div", {
+    className: "mb-3 p-3 bg-light rounded border"
+  }, /*#__PURE__*/React.createElement("h6", {
+    className: "fw-bold mb-3"
+  }, "Edit Activity"), /*#__PURE__*/React.createElement("div", {
+    className: "row g-2 mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-12"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-control",
+    value: editForm.title,
+    onChange: e => setEditForm({
+      ...editForm,
+      title: e.target.value
+    }),
+    placeholder: "Title"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-6"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    className: "form-control",
+    value: editForm.date,
+    onChange: e => setEditForm({
+      ...editForm,
+      date: e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-6"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "time",
+    className: "form-control",
+    value: editForm.time,
+    onChange: e => setEditForm({
+      ...editForm,
+      time: e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-12"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "input-group"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "input-group-text"
+  }, "Rp"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    inputMode: "numeric",
+    className: "form-control",
+    placeholder: "Plan Budget",
+    value: editForm.planBudget,
+    onChange: e => setEditForm({
+      ...editForm,
+      planBudget: formatCurrency(e.target.value)
+    })
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-end gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline-secondary",
+    onClick: () => setIsEditing(false)
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-primary",
+    onClick: handleSaveEdit
+  }, "Save"))) : /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between align-items-start mb-3"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-1"
+  }, schedule.title), /*#__PURE__*/React.createElement("span", {
+    className: "badge bg-light text-dark"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "calendar",
+    size: 12
+  }), " ", new Date(schedule.date).toLocaleDateString()), schedule.time && /*#__PURE__*/React.createElement("span", {
+    className: "badge bg-light text-dark ms-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "clock",
+    size: 12
+  }), " ", schedule.time)), /*#__PURE__*/React.createElement("div", {
+    className: "text-end"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small mb-1"
+  }, "Plan: Rp ", parseFloat(schedule.planBudget || 0).toLocaleString('en-US')), schedule.isCompleted && /*#__PURE__*/React.createElement("p", {
+    className: `fw-bold mb-0 ${schedule.realBudget > schedule.planBudget ? 'text-danger' : 'text-success'}`
+  }, "Real: Rp ", parseFloat(schedule.realBudget || 0).toLocaleString('en-US')))), (schedule.isCompleted || isEditing) && /*#__PURE__*/React.createElement(PhotoGallery, {
+    photos: photos,
+    editable: isEditing,
+    onAdd: handlePhotoAdd,
+    onDelete: handlePhotoDelete
+  }), loadingPhotos && /*#__PURE__*/React.createElement("div", {
+    className: "text-center py-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "spinner-border spinner-border-sm text-primary",
+    role: "status"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "visually-hidden"
+  }, "Loading...")), /*#__PURE__*/React.createElement("span", {
+    className: "ms-2 text-muted small"
+  }, "Loading photos...")), /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 pt-3 border-top d-flex flex-wrap justify-content-between align-items-center gap-2"
+  }, !schedule.isCompleted ? showComplete ? /*#__PURE__*/React.createElement("div", {
+    className: "w-100"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "row g-2 align-items-end"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    inputMode: "numeric",
+    className: "form-control",
+    placeholder: "Actual spending",
+    value: realBudget,
+    onChange: e => setRealBudget(formatCurrency(e.target.value))
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-auto"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-success btn-sm",
+    onClick: handleComplete
+  }, "Confirm"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-secondary btn-sm ms-2",
+    onClick: () => setShowComplete(false)
+  }, "Cancel")))) : /*#__PURE__*/React.createElement("div", {
+    className: "w-100 d-flex flex-nowrap gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-success btn-sm flex-grow-1",
+    onClick: () => setShowComplete(true)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check-circle",
+    size: 14
+  }), " Complete"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-secondary btn-sm",
+    onClick: () => setIsEditing(true)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "edit",
+    size: 14
+  })), showDeleteConfirm ? /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center gap-1 border border-danger rounded px-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-danger small ms-1 me-1 fw-bold"
+  }, "Hapus?"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-danger btn-sm px-2 py-0",
+    onClick: () => deleteSchedule(schedule.id)
+  }, "Ya"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary btn-sm px-2 py-0",
+    onClick: () => setShowDeleteConfirm(false)
+  }, "Tidak")) : /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-danger btn-sm",
+    onClick: () => setShowDeleteConfirm(true)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "trash",
+    size: 14
+  }))) : /*#__PURE__*/React.createElement("div", {
+    className: "w-100 d-flex justify-content-between align-items-center"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    className: "badge bg-success"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check-circle",
+    size: 12
+  }), " Completed"), schedule.completed_at && /*#__PURE__*/React.createElement("span", {
+    className: "text-muted small ms-2",
+    style: {
+      fontSize: '11px'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "clock",
+    size: 10,
+    className: "me-1"
+  }), new Date(schedule.completed_at).toLocaleString('id-ID', {
+    dateStyle: 'short',
+    timeStyle: 'short'
+  }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-secondary btn-sm me-2",
+    onClick: () => setIsEditing(true)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "edit",
+    size: 14
+  })), showDeleteConfirm ? /*#__PURE__*/React.createElement("div", {
+    className: "d-inline-flex align-items-center gap-1 border border-danger rounded px-1 py-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-danger small ms-1 me-1 fw-bold"
+  }, "Hapus?"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-danger btn-sm px-2 py-0",
+    onClick: () => deleteSchedule(schedule.id)
+  }, "Ya"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary btn-sm px-2 py-0",
+    onClick: () => setShowDeleteConfirm(false)
+  }, "Tidak")) : /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-danger btn-sm",
+    onClick: () => setShowDeleteConfirm(true)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "trash",
+    size: 14
+  })))))));
 };
 
 // Friends Page
@@ -2338,139 +2048,107 @@ const Friends = () => {
     setName('');
     setEmail('');
   };
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "animate-fade-in",
-    children: [/*#__PURE__*/_jsxDEV("button", {
-      className: "btn btn-link text-muted p-0 mb-4",
-      onClick: () => navigateTo('trip-dashboard'),
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "arrow-left",
-        size: 16
-      }, void 0, false), " Back"]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("h2", {
-      className: "fw-bold mb-4",
-      children: "Travel Buddies"
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      className: "row g-4",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "col-md-5",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "card-trip text-center mb-4",
-          children: /*#__PURE__*/_jsxDEV("div", {
-            className: "card-body p-4",
-            children: [/*#__PURE__*/_jsxDEV("p", {
-              className: "text-muted small fw-bold mb-1",
-              children: "INVITE CODE"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("h2", {
-              className: "fw-bold letter-spacing-1 mb-2",
-              children: activeTrip.tripCode
-            }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-              className: "text-muted small",
-              children: "Share this code with friends"
-            }, void 0, false)]
-          }, void 0, true)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "card-trip",
-          style: {
-            borderColor: 'var(--success)'
-          },
-          children: /*#__PURE__*/_jsxDEV("div", {
-            className: "card-body p-4",
-            children: [/*#__PURE__*/_jsxDEV("h5", {
-              className: "fw-bold mb-3",
-              style: {
-                color: 'var(--success)'
-              },
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "user-plus",
-                size: 18
-              }, void 0, false), " Add Friend"]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("form", {
-              onSubmit: handleAdd,
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                className: "mb-3",
-                children: [/*#__PURE__*/_jsxDEV("label", {
-                  className: "form-label",
-                  children: "Name"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                  className: "form-control",
-                  value: name,
-                  onChange: e => setName(e.target.value),
-                  required: true
-                }, void 0, false)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "mb-3",
-                children: [/*#__PURE__*/_jsxDEV("label", {
-                  className: "form-label",
-                  children: "Email"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                  type: "email",
-                  className: "form-control",
-                  value: email,
-                  onChange: e => setEmail(e.target.value),
-                  required: true
-                }, void 0, false)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                type: "submit",
-                className: "btn btn-success w-100",
-                children: "Add Friend"
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true)
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "col-md-7",
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "card-trip h-100",
-          children: /*#__PURE__*/_jsxDEV("div", {
-            className: "card-body p-4",
-            children: [/*#__PURE__*/_jsxDEV("h5", {
-              className: "fw-bold mb-4",
-              children: ["Friends (", activeTrip.friends?.length || 0, ")"]
-            }, void 0, true), (activeTrip.friends || []).length === 0 ? /*#__PURE__*/_jsxDEV("p", {
-              className: "text-muted text-center py-4",
-              children: "No friends yet"
-            }, void 0, false) : /*#__PURE__*/_jsxDEV("div", {
-              className: "list-group list-group-flush",
-              children: activeTrip.friends.map(f => /*#__PURE__*/_jsxDEV("div", {
-                className: "list-group-item d-flex justify-content-between align-items-center px-0",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "d-flex align-items-center gap-3",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "rounded-circle bg-light d-flex align-items-center justify-content-center",
-                    style: {
-                      width: 40,
-                      height: 40
-                    },
-                    children: /*#__PURE__*/_jsxDEV(Icon, {
-                      name: "user",
-                      size: 18,
-                      className: "text-muted"
-                    }, void 0, false)
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                    children: [/*#__PURE__*/_jsxDEV("p", {
-                      className: "fw-bold mb-0",
-                      children: f.name
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "text-muted small mb-0",
-                      children: f.email
-                    }, void 0, false)]
-                  }, void 0, true)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                  className: "btn btn-sm btn-outline-danger",
-                  onClick: () => removeFriend(f.id),
-                  children: /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "trash",
-                    size: 14
-                  }, void 0, false)
-                }, void 0, false)]
-              }, f.id, true))
-            }, void 0, false)]
-          }, void 0, true)
-        }, void 0, false)
-      }, void 0, false)]
-    }, void 0, true)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-link text-muted p-0 mb-4",
+    onClick: () => navigateTo('trip-dashboard')
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "arrow-left",
+    size: 16
+  }), " Back"), /*#__PURE__*/React.createElement("h2", {
+    className: "fw-bold mb-4"
+  }, "Travel Buddies"), /*#__PURE__*/React.createElement("div", {
+    className: "row g-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-trip text-center mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-4"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small fw-bold mb-1"
+  }, "INVITE CODE"), /*#__PURE__*/React.createElement("h2", {
+    className: "fw-bold letter-spacing-1 mb-2"
+  }, activeTrip.tripCode), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small"
+  }, "Share this code with friends"))), /*#__PURE__*/React.createElement("div", {
+    className: "card-trip",
+    style: {
+      borderColor: 'var(--success)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-4"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-3",
+    style: {
+      color: 'var(--success)'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user-plus",
+    size: 18
+  }), " Add Friend"), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleAdd
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mb-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Name"), /*#__PURE__*/React.createElement("input", {
+    className: "form-control",
+    value: name,
+    onChange: e => setName(e.target.value),
+    required: true
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "mb-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Email"), /*#__PURE__*/React.createElement("input", {
+    type: "email",
+    className: "form-control",
+    value: email,
+    onChange: e => setEmail(e.target.value),
+    required: true
+  })), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "btn btn-success w-100"
+  }, "Add Friend"))))), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-7"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-trip h-100"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-4"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-4"
+  }, "Friends (", activeTrip.friends?.length || 0, ")"), (activeTrip.friends || []).length === 0 ? /*#__PURE__*/React.createElement("p", {
+    className: "text-muted text-center py-4"
+  }, "No friends yet") : /*#__PURE__*/React.createElement("div", {
+    className: "list-group list-group-flush"
+  }, activeTrip.friends.map(f => /*#__PURE__*/React.createElement("div", {
+    key: f.id,
+    className: "list-group-item d-flex justify-content-between align-items-center px-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "rounded-circle bg-light d-flex align-items-center justify-content-center",
+    style: {
+      width: 40,
+      height: 40
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user",
+    size: 18,
+    className: "text-muted"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    className: "fw-bold mb-0"
+  }, f.name), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small mb-0"
+  }, f.email))), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline-danger",
+    onClick: () => removeFriend(f.id)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "trash",
+    size: 14
+  }))))))))));
 };
 
 // Budget Page
@@ -2488,134 +2166,97 @@ const BudgetReport = () => {
   const diff = totalReal - totalPlan;
   const isOver = diff > 0;
   const completion = schedules.length ? schedules.filter(s => s.isCompleted).length / schedules.length * 100 : 0;
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "animate-fade-in",
-    children: [/*#__PURE__*/_jsxDEV("button", {
-      className: "btn btn-link text-muted p-0 mb-4 d-flex align-items-center gap-1",
-      onClick: () => navigateTo('trip-dashboard'),
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "arrow-left",
-        size: 16
-      }, void 0, false), " Back"]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("h2", {
-      className: "fw-bold mb-4",
-      children: "Budget Analytics"
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      className: "card-trip mb-4 overflow-hidden border",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "card-body p-4 p-md-5 text-center border-bottom",
-        style: {
-          background: isOver ? 'linear-gradient(135deg, #fff, #fef2f2)' : 'linear-gradient(135deg, #fff, #f0fdf4)'
-        },
-        children: completion === 0 ? /*#__PURE__*/_jsxDEV("div", {
-          className: "text-muted py-4",
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "pie-chart",
-            size: 60,
-            className: "opacity-25 mb-3"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-            children: "No Data"
-          }, void 0, false)]
-        }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-          className: "py-2",
-          children: [isOver ? /*#__PURE__*/_jsxDEV(Icon, {
-            name: "alert-circle",
-            size: 60,
-            className: "text-danger mb-3"
-          }, void 0, false) : /*#__PURE__*/_jsxDEV(Icon, {
-            name: "check-circle",
-            size: 60,
-            className: "text-success mb-3"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("h1", {
-            className: `display-4 fw-bold ${isOver ? 'text-danger' : 'text-success'}`,
-            children: isOver ? 'OVER BUDGET' : 'ON BUDGET'
-          }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-            className: "fs-5 text-muted mb-0",
-            children: isOver ? /*#__PURE__*/_jsxDEV(_Fragment, {
-              children: ["Over by ", /*#__PURE__*/_jsxDEV("strong", {
-                className: "text-danger",
-                children: ["Rp ", diff.toLocaleString('en-US')]
-              }, void 0, true)]
-            }, void 0, true) : /*#__PURE__*/_jsxDEV(_Fragment, {
-              children: ["Saving ", /*#__PURE__*/_jsxDEV("strong", {
-                className: "text-success",
-                children: ["Rp ", Math.abs(diff).toLocaleString('en-US')]
-              }, void 0, true)]
-            }, void 0, true)
-          }, void 0, false)]
-        }, void 0, true)
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        className: "card-body p-4 p-md-5",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "row g-4 mb-4 text-center",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "col-6 border-end",
-            children: [/*#__PURE__*/_jsxDEV("p", {
-              className: "text-muted small fw-bold mb-2",
-              children: "BUDGET"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("h3", {
-              className: "fw-bold",
-              style: {
-                color: 'var(--primary)'
-              },
-              children: ["Rp ", totalPlan.toLocaleString('en-US')]
-            }, void 0, true)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "col-6",
-            children: [/*#__PURE__*/_jsxDEV("p", {
-              className: "text-muted small fw-bold mb-2",
-              children: "ACTUAL"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("h3", {
-              className: `fw-bold ${isOver ? 'text-danger' : 'text-success'}`,
-              children: ["Rp ", totalReal.toLocaleString('en-US')]
-            }, void 0, true)]
-          }, void 0, true)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "p-4 bg-light rounded-3 border",
-          children: [/*#__PURE__*/_jsxDEV("h5", {
-            className: "fw-bold mb-1",
-            children: "Trip Allowance"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-            className: "text-muted small mb-3",
-            children: ["Total Budget: Rp ", parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "d-flex flex-column gap-2 mb-3",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "d-flex justify-content-between",
-              children: [/*#__PURE__*/_jsxDEV("span", {
-                className: "text-muted small",
-                children: "Itinerary Spending:"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                className: "fw-medium small",
-                children: ["Rp ", itineraryReal.toLocaleString('en-US')]
-              }, void 0, true)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "d-flex justify-content-between",
-              children: [/*#__PURE__*/_jsxDEV("span", {
-                className: "text-muted small",
-                children: "Add-ons Spending:"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                className: "fw-medium small",
-                children: ["Rp ", addonReal.toLocaleString('en-US')]
-              }, void 0, true)]
-            }, void 0, true)]
-          }, void 0, true), totalReal > activeTrip.totalPlanBudget ? /*#__PURE__*/_jsxDEV("div", {
-            className: "alert alert-danger mb-0 py-2 px-3 d-flex align-items-center gap-2",
-            children: [/*#__PURE__*/_jsxDEV(Icon, {
-              name: "alert-triangle",
-              size: 18
-            }, void 0, false), " Exceeded by Rp ", (totalReal - activeTrip.totalPlanBudget).toLocaleString('en-US')]
-          }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-            className: "alert alert-success mb-0 py-2 px-3 d-flex align-items-center gap-2",
-            children: [/*#__PURE__*/_jsxDEV(Icon, {
-              name: "check-circle",
-              size: 18
-            }, void 0, false), " Rp ", (activeTrip.totalPlanBudget - totalReal).toLocaleString('en-US'), " remaining"]
-          }, void 0, true)]
-        }, void 0, true)]
-      }, void 0, true)]
-    }, void 0, true)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-link text-muted p-0 mb-4 d-flex align-items-center gap-1",
+    onClick: () => navigateTo('trip-dashboard')
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "arrow-left",
+    size: 16
+  }), " Back"), /*#__PURE__*/React.createElement("h2", {
+    className: "fw-bold mb-4"
+  }, "Budget Analytics"), /*#__PURE__*/React.createElement("div", {
+    className: "card-trip mb-4 overflow-hidden border"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-4 p-md-5 text-center border-bottom",
+    style: {
+      background: isOver ? 'linear-gradient(135deg, #fff, #fef2f2)' : 'linear-gradient(135deg, #fff, #f0fdf4)'
+    }
+  }, completion === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "text-muted py-4"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "pie-chart",
+    size: 60,
+    className: "opacity-25 mb-3"
+  }), /*#__PURE__*/React.createElement("h4", null, "No Data")) : /*#__PURE__*/React.createElement("div", {
+    className: "py-2"
+  }, isOver ? /*#__PURE__*/React.createElement(Icon, {
+    name: "alert-circle",
+    size: 60,
+    className: "text-danger mb-3"
+  }) : /*#__PURE__*/React.createElement(Icon, {
+    name: "check-circle",
+    size: 60,
+    className: "text-success mb-3"
+  }), /*#__PURE__*/React.createElement("h1", {
+    className: `display-4 fw-bold ${isOver ? 'text-danger' : 'text-success'}`
+  }, isOver ? 'OVER BUDGET' : 'ON BUDGET'), /*#__PURE__*/React.createElement("p", {
+    className: "fs-5 text-muted mb-0"
+  }, isOver ? /*#__PURE__*/React.createElement(React.Fragment, null, "Over by ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-danger"
+  }, "Rp ", diff.toLocaleString('en-US'))) : /*#__PURE__*/React.createElement(React.Fragment, null, "Saving ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-success"
+  }, "Rp ", Math.abs(diff).toLocaleString('en-US')))))), /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-4 p-md-5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "row g-4 mb-4 text-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-6 border-end"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small fw-bold mb-2"
+  }, "BUDGET"), /*#__PURE__*/React.createElement("h3", {
+    className: "fw-bold",
+    style: {
+      color: 'var(--primary)'
+    }
+  }, "Rp ", totalPlan.toLocaleString('en-US'))), /*#__PURE__*/React.createElement("div", {
+    className: "col-6"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small fw-bold mb-2"
+  }, "ACTUAL"), /*#__PURE__*/React.createElement("h3", {
+    className: `fw-bold ${isOver ? 'text-danger' : 'text-success'}`
+  }, "Rp ", totalReal.toLocaleString('en-US')))), /*#__PURE__*/React.createElement("div", {
+    className: "p-4 bg-light rounded-3 border"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-1"
+  }, "Trip Allowance"), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small mb-3"
+  }, "Total Budget: Rp ", parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex flex-column gap-2 mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-muted small"
+  }, "Itinerary Spending:"), /*#__PURE__*/React.createElement("span", {
+    className: "fw-medium small"
+  }, "Rp ", itineraryReal.toLocaleString('en-US'))), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-muted small"
+  }, "Add-ons Spending:"), /*#__PURE__*/React.createElement("span", {
+    className: "fw-medium small"
+  }, "Rp ", addonReal.toLocaleString('en-US')))), totalReal > activeTrip.totalPlanBudget ? /*#__PURE__*/React.createElement("div", {
+    className: "alert alert-danger mb-0 py-2 px-3 d-flex align-items-center gap-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "alert-triangle",
+    size: 18
+  }), " Exceeded by Rp ", (totalReal - activeTrip.totalPlanBudget).toLocaleString('en-US')) : /*#__PURE__*/React.createElement("div", {
+    className: "alert alert-success mb-0 py-2 px-3 d-flex align-items-center gap-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check-circle",
+    size: 18
+  }), " Rp ", (activeTrip.totalPlanBudget - totalReal).toLocaleString('en-US'), " remaining")))));
 };
 
 // Settings Page
@@ -2698,696 +2339,577 @@ const SettingsPage = () => {
     await updateCategory(id, editCatName, editCatColor, 'tag');
     setEditCatId(null);
   };
-  return /*#__PURE__*/_jsxDEV("div", {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-link text-muted p-0 mb-4",
+    onClick: () => navigateTo('my-trips')
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "arrow-left",
+    size: 16
+  }), " Back"), /*#__PURE__*/React.createElement("h2", {
+    className: "fw-bold mb-4"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "settings",
+    size: 24
+  }), " Settings"), /*#__PURE__*/React.createElement("div", {
+    className: `row g-4 settings-layout ${mobileView === 'menu' ? 'mobile-menu-active' : 'mobile-content-active'}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-3 settings-menu-container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "settings-sidebar",
+    style: {
+      position: 'sticky',
+      top: '80px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "nav flex-column nav-pills gap-1"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'account' ? 'active bg-primary text-white' : 'text-dark'}`,
+    onClick: () => {
+      setActiveTab('account');
+      setMobileView('content');
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user",
+    size: 18
+  }), " Account"), /*#__PURE__*/React.createElement("button", {
+    className: `nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'categories' ? 'active bg-primary text-white' : 'text-dark'}`,
+    onClick: () => {
+      setActiveTab('categories');
+      setMobileView('content');
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "tag",
+    size: 18
+  }), " Categories"), /*#__PURE__*/React.createElement("button", {
+    className: `nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'appearance' ? 'active bg-primary text-white' : 'text-dark'}`,
+    onClick: () => {
+      setActiveTab('appearance');
+      setMobileView('content');
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "monitor",
+    size: 18
+  }), " Appearance"), /*#__PURE__*/React.createElement("button", {
+    className: `nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'preferences' ? 'active bg-primary text-white' : 'text-dark'}`,
+    onClick: () => {
+      setActiveTab('preferences');
+      setMobileView('content');
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "settings",
+    size: 18
+  }), " Preferensi Sistem"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", {
+    className: `nav-link w-100 text-start d-flex align-items-center justify-content-between ${isAboutExpanded ? 'active bg-primary text-white' : 'text-dark'}`,
+    onClick: () => setIsAboutExpanded(!isAboutExpanded)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center gap-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "info",
+    size: 18
+  }), " Tentang"), /*#__PURE__*/React.createElement(Icon, {
+    name: isAboutExpanded ? "chevron-up" : "chevron-down",
+    size: 16
+  })), isAboutExpanded && /*#__PURE__*/React.createElement("div", {
+    className: "ps-4 mt-2 mb-1 d-flex flex-column gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'version' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
+    onClick: () => {
+      setActiveTab('about');
+      setAboutTab('version');
+      setMobileView('content');
+    },
+    style: {
+      border: 'none',
+      background: 'transparent'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "tag",
+    size: 14,
+    className: "me-2"
+  }), " Versi Aplikasi"), /*#__PURE__*/React.createElement("button", {
+    className: `btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'kenali' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
+    onClick: () => {
+      setActiveTab('about');
+      setAboutTab('kenali');
+      setMobileView('content');
+    },
+    style: {
+      border: 'none',
+      background: 'transparent'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "info",
+    size: 14,
+    className: "me-2"
+  }), " Kenali TripNan"), /*#__PURE__*/React.createElement("button", {
+    className: `btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'ulas' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
+    onClick: () => {
+      setActiveTab('about');
+      setAboutTab('ulas');
+      setMobileView('content');
+    },
+    style: {
+      border: 'none',
+      background: 'transparent'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "star",
+    size: 14,
+    className: "me-2"
+  }), " Ulas Aplikasi Ini"))), /*#__PURE__*/React.createElement("hr", {
+    className: "my-2"
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "nav-link text-start d-flex align-items-center gap-2 text-danger",
+    onClick: clearCache
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "trash",
+    size: 18
+  }), " Bersihkan Cache"), /*#__PURE__*/React.createElement("button", {
+    className: "nav-link text-start d-flex align-items-center gap-2 text-danger",
+    onClick: logout
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "log-out",
+    size: 18
+  }), " Logout Akun")))), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-9 settings-content-container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-md-none mb-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-link text-muted p-0 d-flex align-items-center gap-1",
+    onClick: () => setMobileView('menu')
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "arrow-left",
+    size: 16
+  }), " Back to Menu")), /*#__PURE__*/React.createElement("div", {
+    className: "card-trip h-100"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-4 p-md-5"
+  }, activeTab === 'account' && /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-4"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user",
+    size: 18,
+    className: "me-2"
+  }), "Account Settings"), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleSaveAccount,
+    style: {
+      maxWidth: '600px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex flex-column align-items-center mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "position-relative",
+    style: {
+      width: '100px',
+      height: '100px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "rounded-circle bg-light border d-flex align-items-center justify-content-center overflow-hidden w-100 h-100"
+  }, profilePic ? /*#__PURE__*/React.createElement("img", {
+    src: profilePic,
+    alt: "Profile",
+    style: {
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover'
+    }
+  }) : /*#__PURE__*/React.createElement(Icon, {
+    name: "user",
+    size: 48,
+    className: "text-muted"
+  })), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "btn btn-primary btn-sm rounded-circle position-absolute bottom-0 end-0 d-flex align-items-center justify-content-center",
+    style: {
+      width: '32px',
+      height: '32px'
+    },
+    onClick: () => fileInputRef.current?.click(),
+    title: "Ubah Foto Profil"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "camera",
+    size: 14
+  })), /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    ref: fileInputRef,
+    className: "d-none",
+    accept: "image/*",
+    onChange: handleProfilePicChange
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "mb-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label fw-bold small text-muted"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user",
+    size: 14,
+    className: "me-1"
+  }), "Username (Read-only)"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-control",
+    value: currentUser,
+    disabled: true
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "row g-3 mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-6"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label fw-bold small text-muted"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user",
+    size: 14,
+    className: "me-1"
+  }), "Nama Lengkap"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-control",
+    value: fullName,
+    onChange: e => setFullName(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-6"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label fw-bold small text-muted"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "mail",
+    size: 14,
+    className: "me-1"
+  }), "Email"), /*#__PURE__*/React.createElement("input", {
+    type: "email",
+    className: "form-control",
+    value: email,
+    onChange: e => setEmail(e.target.value)
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "row g-3 mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label fw-bold small text-muted"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "calendar",
+    size: 14,
+    className: "me-1"
+  }), "Tanggal Lahir"), /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    className: "form-control",
+    value: dob,
+    onChange: e => setDob(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label fw-bold small text-muted"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "users",
+    size: 14,
+    className: "me-1"
+  }), "Jenis Kelamin"), /*#__PURE__*/React.createElement("select", {
+    className: "form-select",
+    value: gender,
+    onChange: e => setGender(e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "Pilih..."), /*#__PURE__*/React.createElement("option", {
+    value: "L"
+  }, "Laki-laki"), /*#__PURE__*/React.createElement("option", {
+    value: "P"
+  }, "Perempuan"))), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label fw-bold small text-muted"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "map",
+    size: 14,
+    className: "me-1"
+  }), "Kota Tempat Tinggal"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-control",
+    value: city,
+    onChange: e => setCity(e.target.value)
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "mb-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label fw-bold small text-muted"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "lock",
+    size: 14,
+    className: "me-1"
+  }), "Password Baru ", /*#__PURE__*/React.createElement("span", {
+    className: "small text-muted fw-normal"
+  }, "(kosongkan jika tidak diubah)")), /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    className: "form-control",
+    value: password,
+    onChange: e => setPassword(e.target.value)
+  })), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "btn btn-primary",
+    disabled: isSaving
+  }, isSaving ? 'Menyimpan...' : 'Simpan Perubahan'))), activeTab === 'categories' && /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between align-items-center mb-4"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-0"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "tag",
+    size: 18,
+    className: "me-2"
+  }), "Manage Categories"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-primary d-flex align-items-center gap-1",
+    onClick: () => setShowCatForm(!showCatForm)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: showCatForm ? 'x' : 'plus-circle',
+    size: 16
+  }), " ", showCatForm ? 'Cancel' : 'New')), showCatForm && /*#__PURE__*/React.createElement("div", {
+    className: "card-trip mb-4 bg-light border"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "row g-2 align-items-end"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-5"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label small"
+  }, "Name"), /*#__PURE__*/React.createElement("input", {
+    className: "form-control form-control-sm",
+    placeholder: "e.g. Flight",
+    value: catName,
+    onChange: e => setCatName(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label small"
+  }, "Color"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex gap-2 align-items-center"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "color",
+    className: "form-control form-control-color form-control-sm",
+    value: catColor,
+    onChange: e => setCatColor(e.target.value),
+    style: {
+      width: 40
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "small text-muted"
+  }, catColor))), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-primary w-100",
+    onClick: handleCreateCategory
+  }, "Save"))))), /*#__PURE__*/React.createElement("div", {
+    className: "row g-3"
+  }, categories.map(cat => /*#__PURE__*/React.createElement("div", {
+    key: cat.id,
+    className: "col-md-4 col-sm-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-trip text-center py-3 h-100 position-relative group-hover-show",
+    style: {
+      borderTop: `4px solid ${cat.color}`
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-2 d-flex flex-column justify-content-center"
+  }, editCatId === cat.id ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
+    className: "form-control form-control-sm text-center mb-2",
+    value: editCatName,
+    onChange: e => setEditCatName(e.target.value)
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-center mb-2"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "color",
+    className: "form-control form-control-color form-control-sm",
+    value: editCatColor,
+    onChange: e => setEditCatColor(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex gap-2 justify-content-center mt-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-light border text-secondary d-flex align-items-center justify-content-center p-0",
+    style: {
+      width: '32px',
+      height: '32px'
+    },
+    onClick: () => setEditCatId(null),
+    title: "Cancel"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 16
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-primary d-flex align-items-center justify-content-center p-0",
+    style: {
+      width: '32px',
+      height: '32px'
+    },
+    onClick: () => handleUpdateCategory(cat.id),
+    title: "Save"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    size: 16
+  })))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center",
+    style: {
+      width: 40,
+      height: 40,
+      backgroundColor: cat.color + '20'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "tag",
+    size: 18,
+    style: {
+      color: cat.color
+    }
+  })), /*#__PURE__*/React.createElement("h6", {
+    className: "mb-0 small fw-bold"
+  }, cat.name), cat.owner !== 'default' && /*#__PURE__*/React.createElement("div", {
+    className: "d-flex gap-2 justify-content-center mt-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-light border text-primary d-flex align-items-center justify-content-center p-0",
+    style: {
+      width: '32px',
+      height: '32px'
+    },
+    onClick: () => startEditCategory(cat),
+    title: "Edit Category"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "edit",
+    size: 16
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-light border text-danger d-flex align-items-center justify-content-center p-0",
+    style: {
+      width: '32px',
+      height: '32px'
+    },
+    onClick: () => {
+      if (window.confirm('Delete category?')) deleteCategory(cat.id);
+    },
+    title: "Delete Category"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "trash",
+    size: 16
+  })))))))))), activeTab === 'appearance' && /*#__PURE__*/React.createElement("div", {
     className: "animate-fade-in",
-    children: [/*#__PURE__*/_jsxDEV("button", {
-      className: "btn btn-link text-muted p-0 mb-4",
-      onClick: () => navigateTo('my-trips'),
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "arrow-left",
-        size: 16
-      }, void 0, false), " Back"]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("h2", {
-      className: "fw-bold mb-4",
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "settings",
-        size: 24
-      }, void 0, false), " Settings"]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: `row g-4 settings-layout ${mobileView === 'menu' ? 'mobile-menu-active' : 'mobile-content-active'}`,
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "col-md-3 settings-menu-container",
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "settings-sidebar",
-          style: {
-            position: 'sticky',
-            top: '80px'
-          },
-          children: /*#__PURE__*/_jsxDEV("div", {
-            className: "nav flex-column nav-pills gap-1",
-            children: [/*#__PURE__*/_jsxDEV("button", {
-              className: `nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'account' ? 'active bg-primary text-white' : 'text-dark'}`,
-              onClick: () => {
-                setActiveTab('account');
-                setMobileView('content');
-              },
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "user",
-                size: 18
-              }, void 0, false), " Account"]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              className: `nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'categories' ? 'active bg-primary text-white' : 'text-dark'}`,
-              onClick: () => {
-                setActiveTab('categories');
-                setMobileView('content');
-              },
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "tag",
-                size: 18
-              }, void 0, false), " Categories"]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              className: `nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'appearance' ? 'active bg-primary text-white' : 'text-dark'}`,
-              onClick: () => {
-                setActiveTab('appearance');
-                setMobileView('content');
-              },
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "monitor",
-                size: 18
-              }, void 0, false), " Appearance"]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              className: `nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'preferences' ? 'active bg-primary text-white' : 'text-dark'}`,
-              onClick: () => {
-                setActiveTab('preferences');
-                setMobileView('content');
-              },
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "settings",
-                size: 18
-              }, void 0, false), " Preferensi Sistem"]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              children: [/*#__PURE__*/_jsxDEV("button", {
-                className: `nav-link w-100 text-start d-flex align-items-center justify-content-between ${isAboutExpanded ? 'active bg-primary text-white' : 'text-dark'}`,
-                onClick: () => setIsAboutExpanded(!isAboutExpanded),
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "d-flex align-items-center gap-2",
-                  children: [/*#__PURE__*/_jsxDEV(Icon, {
-                    name: "info",
-                    size: 18
-                  }, void 0, false), " Tentang"]
-                }, void 0, true), /*#__PURE__*/_jsxDEV(Icon, {
-                  name: isAboutExpanded ? "chevron-up" : "chevron-down",
-                  size: 16
-                }, void 0, false)]
-              }, void 0, true), isAboutExpanded && /*#__PURE__*/_jsxDEV("div", {
-                className: "ps-4 mt-2 mb-1 d-flex flex-column gap-2",
-                children: [/*#__PURE__*/_jsxDEV("button", {
-                  className: `btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'version' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
-                  onClick: () => {
-                    setActiveTab('about');
-                    setAboutTab('version');
-                    setMobileView('content');
-                  },
-                  style: {
-                    border: 'none',
-                    background: 'transparent'
-                  },
-                  children: [/*#__PURE__*/_jsxDEV(Icon, {
-                    name: "tag",
-                    size: 14,
-                    className: "me-2"
-                  }, void 0, false), " Versi Aplikasi"]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                  className: `btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'kenali' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
-                  onClick: () => {
-                    setActiveTab('about');
-                    setAboutTab('kenali');
-                    setMobileView('content');
-                  },
-                  style: {
-                    border: 'none',
-                    background: 'transparent'
-                  },
-                  children: [/*#__PURE__*/_jsxDEV(Icon, {
-                    name: "info",
-                    size: 14,
-                    className: "me-2"
-                  }, void 0, false), " Kenali TripNan"]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                  className: `btn btn-sm text-start w-100 px-2 py-1 ${activeTab === 'about' && aboutTab === 'ulas' ? 'fw-bold text-primary bg-primary-subtle' : 'text-muted'}`,
-                  onClick: () => {
-                    setActiveTab('about');
-                    setAboutTab('ulas');
-                    setMobileView('content');
-                  },
-                  style: {
-                    border: 'none',
-                    background: 'transparent'
-                  },
-                  children: [/*#__PURE__*/_jsxDEV(Icon, {
-                    name: "star",
-                    size: 14,
-                    className: "me-2"
-                  }, void 0, false), " Ulas Aplikasi Ini"]
-                }, void 0, true)]
-              }, void 0, true)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("hr", {
-              className: "my-2"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-              className: "nav-link text-start d-flex align-items-center gap-2 text-danger",
-              onClick: clearCache,
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "trash",
-                size: 18
-              }, void 0, false), " Bersihkan Cache"]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              className: "nav-link text-start d-flex align-items-center gap-2 text-danger",
-              onClick: logout,
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "log-out",
-                size: 18
-              }, void 0, false), " Logout Akun"]
-            }, void 0, true)]
-          }, void 0, true)
-        }, void 0, false)
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        className: "col-md-9 settings-content-container",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "d-md-none mb-3",
-          children: /*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-link text-muted p-0 d-flex align-items-center gap-1",
-            onClick: () => setMobileView('menu'),
-            children: [/*#__PURE__*/_jsxDEV(Icon, {
-              name: "arrow-left",
-              size: 16
-            }, void 0, false), " Back to Menu"]
-          }, void 0, true)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "card-trip h-100",
-          children: /*#__PURE__*/_jsxDEV("div", {
-            className: "card-body p-4 p-md-5",
-            children: [activeTab === 'account' && /*#__PURE__*/_jsxDEV("div", {
-              className: "animate-fade-in",
-              children: [/*#__PURE__*/_jsxDEV("h5", {
-                className: "fw-bold mb-4",
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "user",
-                  size: 18,
-                  className: "me-2"
-                }, void 0, false), "Account Settings"]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("form", {
-                onSubmit: handleSaveAccount,
-                style: {
-                  maxWidth: '600px'
-                },
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "d-flex flex-column align-items-center mb-4",
-                  children: /*#__PURE__*/_jsxDEV("div", {
-                    className: "position-relative",
-                    style: {
-                      width: '100px',
-                      height: '100px'
-                    },
-                    children: [/*#__PURE__*/_jsxDEV("div", {
-                      className: "rounded-circle bg-light border d-flex align-items-center justify-content-center overflow-hidden w-100 h-100",
-                      children: profilePic ? /*#__PURE__*/_jsxDEV("img", {
-                        src: profilePic,
-                        alt: "Profile",
-                        style: {
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover'
-                        }
-                      }, void 0, false) : /*#__PURE__*/_jsxDEV(Icon, {
-                        name: "user",
-                        size: 48,
-                        className: "text-muted"
-                      }, void 0, false)
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                      type: "button",
-                      className: "btn btn-primary btn-sm rounded-circle position-absolute bottom-0 end-0 d-flex align-items-center justify-content-center",
-                      style: {
-                        width: '32px',
-                        height: '32px'
-                      },
-                      onClick: () => fileInputRef.current?.click(),
-                      title: "Ubah Foto Profil",
-                      children: /*#__PURE__*/_jsxDEV(Icon, {
-                        name: "camera",
-                        size: 14
-                      }, void 0, false)
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                      type: "file",
-                      ref: fileInputRef,
-                      className: "d-none",
-                      accept: "image/*",
-                      onChange: handleProfilePicChange
-                    }, void 0, false)]
-                  }, void 0, true)
-                }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                  className: "mb-3",
-                  children: [/*#__PURE__*/_jsxDEV("label", {
-                    className: "form-label fw-bold small text-muted",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "user",
-                      size: 14,
-                      className: "me-1"
-                    }, void 0, false), "Username (Read-only)"]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("input", {
-                    type: "text",
-                    className: "form-control",
-                    value: currentUser,
-                    disabled: true
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "row g-3 mb-3",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "col-md-6",
-                    children: [/*#__PURE__*/_jsxDEV("label", {
-                      className: "form-label fw-bold small text-muted",
-                      children: [/*#__PURE__*/_jsxDEV(Icon, {
-                        name: "user",
-                        size: 14,
-                        className: "me-1"
-                      }, void 0, false), "Nama Lengkap"]
-                    }, void 0, true), /*#__PURE__*/_jsxDEV("input", {
-                      type: "text",
-                      className: "form-control",
-                      value: fullName,
-                      onChange: e => setFullName(e.target.value)
-                    }, void 0, false)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "col-md-6",
-                    children: [/*#__PURE__*/_jsxDEV("label", {
-                      className: "form-label fw-bold small text-muted",
-                      children: [/*#__PURE__*/_jsxDEV(Icon, {
-                        name: "mail",
-                        size: 14,
-                        className: "me-1"
-                      }, void 0, false), "Email"]
-                    }, void 0, true), /*#__PURE__*/_jsxDEV("input", {
-                      type: "email",
-                      className: "form-control",
-                      value: email,
-                      onChange: e => setEmail(e.target.value)
-                    }, void 0, false)]
-                  }, void 0, true)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "row g-3 mb-3",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "col-md-4",
-                    children: [/*#__PURE__*/_jsxDEV("label", {
-                      className: "form-label fw-bold small text-muted",
-                      children: [/*#__PURE__*/_jsxDEV(Icon, {
-                        name: "calendar",
-                        size: 14,
-                        className: "me-1"
-                      }, void 0, false), "Tanggal Lahir"]
-                    }, void 0, true), /*#__PURE__*/_jsxDEV("input", {
-                      type: "date",
-                      className: "form-control",
-                      value: dob,
-                      onChange: e => setDob(e.target.value)
-                    }, void 0, false)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "col-md-4",
-                    children: [/*#__PURE__*/_jsxDEV("label", {
-                      className: "form-label fw-bold small text-muted",
-                      children: [/*#__PURE__*/_jsxDEV(Icon, {
-                        name: "users",
-                        size: 14,
-                        className: "me-1"
-                      }, void 0, false), "Jenis Kelamin"]
-                    }, void 0, true), /*#__PURE__*/_jsxDEV("select", {
-                      className: "form-select",
-                      value: gender,
-                      onChange: e => setGender(e.target.value),
-                      children: [/*#__PURE__*/_jsxDEV("option", {
-                        value: "",
-                        children: "Pilih..."
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-                        value: "L",
-                        children: "Laki-laki"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-                        value: "P",
-                        children: "Perempuan"
-                      }, void 0, false)]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "col-md-4",
-                    children: [/*#__PURE__*/_jsxDEV("label", {
-                      className: "form-label fw-bold small text-muted",
-                      children: [/*#__PURE__*/_jsxDEV(Icon, {
-                        name: "map",
-                        size: 14,
-                        className: "me-1"
-                      }, void 0, false), "Kota Tempat Tinggal"]
-                    }, void 0, true), /*#__PURE__*/_jsxDEV("input", {
-                      type: "text",
-                      className: "form-control",
-                      value: city,
-                      onChange: e => setCity(e.target.value)
-                    }, void 0, false)]
-                  }, void 0, true)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "mb-4",
-                  children: [/*#__PURE__*/_jsxDEV("label", {
-                    className: "form-label fw-bold small text-muted",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "lock",
-                      size: 14,
-                      className: "me-1"
-                    }, void 0, false), "Password Baru ", /*#__PURE__*/_jsxDEV("span", {
-                      className: "small text-muted fw-normal",
-                      children: "(kosongkan jika tidak diubah)"
-                    }, void 0, false)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("input", {
-                    type: "password",
-                    className: "form-control",
-                    value: password,
-                    onChange: e => setPassword(e.target.value)
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                  type: "submit",
-                  className: "btn btn-primary",
-                  disabled: isSaving,
-                  children: isSaving ? 'Menyimpan...' : 'Simpan Perubahan'
-                }, void 0, false)]
-              }, void 0, true)]
-            }, void 0, true), activeTab === 'categories' && /*#__PURE__*/_jsxDEV("div", {
-              className: "animate-fade-in",
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                className: "d-flex justify-content-between align-items-center mb-4",
-                children: [/*#__PURE__*/_jsxDEV("h5", {
-                  className: "fw-bold mb-0",
-                  children: [/*#__PURE__*/_jsxDEV(Icon, {
-                    name: "tag",
-                    size: 18,
-                    className: "me-2"
-                  }, void 0, false), "Manage Categories"]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                  className: "btn btn-sm btn-primary d-flex align-items-center gap-1",
-                  onClick: () => setShowCatForm(!showCatForm),
-                  children: [/*#__PURE__*/_jsxDEV(Icon, {
-                    name: showCatForm ? 'x' : 'plus-circle',
-                    size: 16
-                  }, void 0, false), " ", showCatForm ? 'Cancel' : 'New']
-                }, void 0, true)]
-              }, void 0, true), showCatForm && /*#__PURE__*/_jsxDEV("div", {
-                className: "card-trip mb-4 bg-light border",
-                children: /*#__PURE__*/_jsxDEV("div", {
-                  className: "card-body",
-                  children: /*#__PURE__*/_jsxDEV("div", {
-                    className: "row g-2 align-items-end",
-                    children: [/*#__PURE__*/_jsxDEV("div", {
-                      className: "col-md-5",
-                      children: [/*#__PURE__*/_jsxDEV("label", {
-                        className: "form-label small",
-                        children: "Name"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                        className: "form-control form-control-sm",
-                        placeholder: "e.g. Flight",
-                        value: catName,
-                        onChange: e => setCatName(e.target.value)
-                      }, void 0, false)]
-                    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                      className: "col-md-4",
-                      children: [/*#__PURE__*/_jsxDEV("label", {
-                        className: "form-label small",
-                        children: "Color"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                        className: "d-flex gap-2 align-items-center",
-                        children: [/*#__PURE__*/_jsxDEV("input", {
-                          type: "color",
-                          className: "form-control form-control-color form-control-sm",
-                          value: catColor,
-                          onChange: e => setCatColor(e.target.value),
-                          style: {
-                            width: 40
-                          }
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                          className: "small text-muted",
-                          children: catColor
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                      className: "col-md-3",
-                      children: /*#__PURE__*/_jsxDEV("button", {
-                        className: "btn btn-sm btn-primary w-100",
-                        onClick: handleCreateCategory,
-                        children: "Save"
-                      }, void 0, false)
-                    }, void 0, false)]
-                  }, void 0, true)
-                }, void 0, false)
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                className: "row g-3",
-                children: categories.map(cat => /*#__PURE__*/_jsxDEV("div", {
-                  className: "col-md-4 col-sm-6",
-                  children: /*#__PURE__*/_jsxDEV("div", {
-                    className: "card-trip text-center py-3 h-100 position-relative group-hover-show",
-                    style: {
-                      borderTop: `4px solid ${cat.color}`
-                    },
-                    children: /*#__PURE__*/_jsxDEV("div", {
-                      className: "card-body p-2 d-flex flex-column justify-content-center",
-                      children: editCatId === cat.id ? /*#__PURE__*/_jsxDEV("div", {
-                        children: [/*#__PURE__*/_jsxDEV("input", {
-                          className: "form-control form-control-sm text-center mb-2",
-                          value: editCatName,
-                          onChange: e => setEditCatName(e.target.value)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                          className: "d-flex justify-content-center mb-2",
-                          children: /*#__PURE__*/_jsxDEV("input", {
-                            type: "color",
-                            className: "form-control form-control-color form-control-sm",
-                            value: editCatColor,
-                            onChange: e => setEditCatColor(e.target.value)
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                          className: "d-flex gap-2 justify-content-center mt-3",
-                          children: [/*#__PURE__*/_jsxDEV("button", {
-                            className: "btn btn-sm btn-light border text-secondary d-flex align-items-center justify-content-center p-0",
-                            style: {
-                              width: '32px',
-                              height: '32px'
-                            },
-                            onClick: () => setEditCatId(null),
-                            title: "Cancel",
-                            children: /*#__PURE__*/_jsxDEV(Icon, {
-                              name: "x",
-                              size: 16
-                            }, void 0, false)
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                            className: "btn btn-sm btn-primary d-flex align-items-center justify-content-center p-0",
-                            style: {
-                              width: '32px',
-                              height: '32px'
-                            },
-                            onClick: () => handleUpdateCategory(cat.id),
-                            title: "Save",
-                            children: /*#__PURE__*/_jsxDEV(Icon, {
-                              name: "check",
-                              size: 16
-                            }, void 0, false)
-                          }, void 0, false)]
-                        }, void 0, true)]
-                      }, void 0, true) : /*#__PURE__*/_jsxDEV(_Fragment, {
-                        children: [/*#__PURE__*/_jsxDEV("div", {
-                          className: "rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center",
-                          style: {
-                            width: 40,
-                            height: 40,
-                            backgroundColor: cat.color + '20'
-                          },
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "tag",
-                            size: 18,
-                            style: {
-                              color: cat.color
-                            }
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("h6", {
-                          className: "mb-0 small fw-bold",
-                          children: cat.name
-                        }, void 0, false), cat.owner !== 'default' && /*#__PURE__*/_jsxDEV("div", {
-                          className: "d-flex gap-2 justify-content-center mt-3",
-                          children: [/*#__PURE__*/_jsxDEV("button", {
-                            className: "btn btn-sm btn-light border text-primary d-flex align-items-center justify-content-center p-0",
-                            style: {
-                              width: '32px',
-                              height: '32px'
-                            },
-                            onClick: () => startEditCategory(cat),
-                            title: "Edit Category",
-                            children: /*#__PURE__*/_jsxDEV(Icon, {
-                              name: "edit",
-                              size: 16
-                            }, void 0, false)
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                            className: "btn btn-sm btn-light border text-danger d-flex align-items-center justify-content-center p-0",
-                            style: {
-                              width: '32px',
-                              height: '32px'
-                            },
-                            onClick: () => {
-                              if (window.confirm('Delete category?')) deleteCategory(cat.id);
-                            },
-                            title: "Delete Category",
-                            children: /*#__PURE__*/_jsxDEV(Icon, {
-                              name: "trash",
-                              size: 16
-                            }, void 0, false)
-                          }, void 0, false)]
-                        }, void 0, true)]
-                      }, void 0, true)
-                    }, void 0, false)
-                  }, void 0, false)
-                }, cat.id, false))
-              }, void 0, false)]
-            }, void 0, true), activeTab === 'appearance' && /*#__PURE__*/_jsxDEV("div", {
-              className: "animate-fade-in",
-              style: {
-                maxWidth: '600px'
-              },
-              children: [/*#__PURE__*/_jsxDEV("h5", {
-                className: "fw-bold mb-4",
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "monitor",
-                  size: 18,
-                  className: "me-2"
-                }, void 0, false), "Appearance"]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "p-3 border rounded mb-3",
-                children: /*#__PURE__*/_jsxDEV("div", {
-                  className: "mb-3",
-                  children: [/*#__PURE__*/_jsxDEV("label", {
-                    className: "form-label fw-bold small text-muted",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "monitor",
-                      size: 14,
-                      className: "me-1"
-                    }, void 0, false), "Mode Tampilan"]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("select", {
-                    className: "form-select",
-                    value: darkMode ? 'dark' : 'light',
-                    onChange: e => {
-                      const isDark = e.target.value === 'dark';
-                      if (isDark !== darkMode) toggleDarkMode();
-                    },
-                    children: [/*#__PURE__*/_jsxDEV("option", {
-                      value: "light",
-                      children: "Light Mode"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-                      value: "dark",
-                      children: "Dark Mode"
-                    }, void 0, false)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-                    className: "text-muted small mt-2 mb-0",
-                    children: "Ubah tampilan menjadi mode gelap agar nyaman di mata"
-                  }, void 0, false)]
-                }, void 0, true)
-              }, void 0, false)]
-            }, void 0, true), activeTab === 'preferences' && /*#__PURE__*/_jsxDEV("div", {
-              className: "animate-fade-in",
-              style: {
-                maxWidth: '600px'
-              },
-              children: [/*#__PURE__*/_jsxDEV("h5", {
-                className: "fw-bold mb-4",
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "settings",
-                  size: 18,
-                  className: "me-2"
-                }, void 0, false), "Preferensi Sistem"]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "p-3 border rounded mb-3",
-                children: /*#__PURE__*/_jsxDEV("div", {
-                  className: "mb-3",
-                  children: [/*#__PURE__*/_jsxDEV("label", {
-                    className: "form-label fw-bold small text-muted",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "globe",
-                      size: 14,
-                      className: "me-1"
-                    }, void 0, false), "Bahasa Aplikasi"]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("select", {
-                    className: "form-select",
-                    value: language,
-                    onChange: e => setLanguage(e.target.value),
-                    children: [/*#__PURE__*/_jsxDEV("option", {
-                      value: "id",
-                      children: "Bahasa Indonesia"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-                      value: "en",
-                      children: "English (US)"
-                    }, void 0, false)]
-                  }, void 0, true)]
-                }, void 0, true)
-              }, void 0, false)]
-            }, void 0, true), activeTab === 'about' && /*#__PURE__*/_jsxDEV("div", {
-              className: "animate-fade-in",
-              style: {
-                maxWidth: '600px'
-              },
-              children: [/*#__PURE__*/_jsxDEV("h5", {
-                className: "fw-bold mb-4",
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "info",
-                  size: 18,
-                  className: "me-2"
-                }, void 0, false), "Tentang TripNan"]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "p-4 border rounded bg-light text-center",
-                children: [aboutTab === 'version' && /*#__PURE__*/_jsxDEV("div", {
-                  className: "animate-fade-in py-3",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "rounded-circle mx-auto mb-3 bg-primary text-white d-flex align-items-center justify-content-center shadow-sm",
-                    style: {
-                      width: 64,
-                      height: 64
-                    },
-                    children: /*#__PURE__*/_jsxDEV(Icon, {
-                      name: "map",
-                      size: 32
-                    }, void 0, false)
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                    className: "fw-bold mb-1",
-                    children: "TripNan"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                    className: "text-primary fw-bold mb-0",
-                    children: "Version 2.0.0"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                    className: "small text-muted mt-2",
-                    children: "WebP Optimized & Responsive"
-                  }, void 0, false)]
-                }, void 0, true), aboutTab === 'kenali' && /*#__PURE__*/_jsxDEV("div", {
-                  className: "animate-fade-in text-start py-2",
-                  children: [/*#__PURE__*/_jsxDEV("h6", {
-                    className: "fw-bold text-primary mb-3",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "info",
-                      size: 18,
-                      className: "me-2"
-                    }, void 0, false), "Kenali TripNan"]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-                    className: "small text-muted mb-0 lh-lg",
-                    children: "TripNan adalah aplikasi super-ringan untuk pencatatan dan manajemen perjalanan yang dirancang untuk memudahkan Anda merencanakan liburan, memantau anggaran (budget), serta mengelola aset perjalanan Anda secara mandiri."
-                  }, void 0, false)]
-                }, void 0, true), aboutTab === 'ulas' && /*#__PURE__*/_jsxDEV("div", {
-                  className: "animate-fade-in py-2",
-                  children: [/*#__PURE__*/_jsxDEV("h6", {
-                    className: "fw-bold text-warning mb-3",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "star",
-                      size: 18,
-                      className: "me-2"
-                    }, void 0, false), "Ulas Aplikasi ini"]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-                    className: "small text-muted mb-3",
-                    children: "Bagaimana pengalaman Anda menggunakan TripNan?"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                    className: "d-flex gap-2 justify-content-center mb-4",
-                    children: [1, 2, 3, 4, 5].map(s => /*#__PURE__*/_jsxDEV(Icon, {
-                      name: "star",
-                      size: 28,
-                      className: "text-warning cursor-pointer"
-                    }, s, false))
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                    className: "btn btn-sm btn-primary px-4",
-                    children: "Kirim Ulasan"
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-                className: "small text-muted mt-5 text-center",
-                children: "© 2026 TripNan. All rights reserved."
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true)
-        }, void 0, false)]
-      }, void 0, true)]
-    }, void 0, true)]
-  }, void 0, true);
+    style: {
+      maxWidth: '600px'
+    }
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-4"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "monitor",
+    size: 18,
+    className: "me-2"
+  }), "Appearance"), /*#__PURE__*/React.createElement("div", {
+    className: "p-3 border rounded mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mb-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label fw-bold small text-muted"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "monitor",
+    size: 14,
+    className: "me-1"
+  }), "Mode Tampilan"), /*#__PURE__*/React.createElement("select", {
+    className: "form-select",
+    value: darkMode ? 'dark' : 'light',
+    onChange: e => {
+      const isDark = e.target.value === 'dark';
+      if (isDark !== darkMode) toggleDarkMode();
+    }
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "light"
+  }, "Light Mode"), /*#__PURE__*/React.createElement("option", {
+    value: "dark"
+  }, "Dark Mode")), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small mt-2 mb-0"
+  }, "Ubah tampilan menjadi mode gelap agar nyaman di mata")))), activeTab === 'preferences' && /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in",
+    style: {
+      maxWidth: '600px'
+    }
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-4"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "settings",
+    size: 18,
+    className: "me-2"
+  }), "Preferensi Sistem"), /*#__PURE__*/React.createElement("div", {
+    className: "p-3 border rounded mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mb-3"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label fw-bold small text-muted"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "globe",
+    size: 14,
+    className: "me-1"
+  }), "Bahasa Aplikasi"), /*#__PURE__*/React.createElement("select", {
+    className: "form-select",
+    value: language,
+    onChange: e => setLanguage(e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "id"
+  }, "Bahasa Indonesia"), /*#__PURE__*/React.createElement("option", {
+    value: "en"
+  }, "English (US)"))))), activeTab === 'about' && /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in",
+    style: {
+      maxWidth: '600px'
+    }
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-4"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "info",
+    size: 18,
+    className: "me-2"
+  }), "Tentang TripNan"), /*#__PURE__*/React.createElement("div", {
+    className: "p-4 border rounded bg-light text-center"
+  }, aboutTab === 'version' && /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in py-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "rounded-circle mx-auto mb-3 bg-primary text-white d-flex align-items-center justify-content-center shadow-sm",
+    style: {
+      width: 64,
+      height: 64
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "map",
+    size: 32
+  })), /*#__PURE__*/React.createElement("h4", {
+    className: "fw-bold mb-1"
+  }, "TripNan"), /*#__PURE__*/React.createElement("p", {
+    className: "text-primary fw-bold mb-0"
+  }, "Version 2.0.0"), /*#__PURE__*/React.createElement("p", {
+    className: "small text-muted mt-2"
+  }, "WebP Optimized & Responsive")), aboutTab === 'kenali' && /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in text-start py-2"
+  }, /*#__PURE__*/React.createElement("h6", {
+    className: "fw-bold text-primary mb-3"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "info",
+    size: 18,
+    className: "me-2"
+  }), "Kenali TripNan"), /*#__PURE__*/React.createElement("p", {
+    className: "small text-muted mb-0 lh-lg"
+  }, "TripNan adalah aplikasi super-ringan untuk pencatatan dan manajemen perjalanan yang dirancang untuk memudahkan Anda merencanakan liburan, memantau anggaran (budget), serta mengelola aset perjalanan Anda secara mandiri.")), aboutTab === 'ulas' && /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in py-2"
+  }, /*#__PURE__*/React.createElement("h6", {
+    className: "fw-bold text-warning mb-3"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "star",
+    size: 18,
+    className: "me-2"
+  }), "Ulas Aplikasi ini"), /*#__PURE__*/React.createElement("p", {
+    className: "small text-muted mb-3"
+  }, "Bagaimana pengalaman Anda menggunakan TripNan?"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex gap-2 justify-content-center mb-4"
+  }, [1, 2, 3, 4, 5].map(s => /*#__PURE__*/React.createElement(Icon, {
+    key: s,
+    name: "star",
+    size: 28,
+    className: "text-warning cursor-pointer"
+  }))), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-primary px-4"
+  }, "Kirim Ulasan"))), /*#__PURE__*/React.createElement("p", {
+    className: "small text-muted mt-5 text-center"
+  }, "© 2026 TripNan. All rights reserved.")))))));
 };
 
 // Templates Page
@@ -3414,121 +2936,94 @@ const TemplatesPage = () => {
     setDesc('');
     setShow(false);
   };
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "animate-fade-in",
-    children: [/*#__PURE__*/_jsxDEV("button", {
-      className: "btn btn-link text-muted p-0 mb-4",
-      onClick: () => navigateTo('my-trips'),
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "arrow-left",
-        size: 16
-      }, void 0, false), " Back"]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "d-flex justify-content-between align-items-center mb-4",
-      children: [/*#__PURE__*/_jsxDEV("h2", {
-        className: "fw-bold mb-0",
-        children: [/*#__PURE__*/_jsxDEV(Icon, {
-          name: "layout",
-          size: 24
-        }, void 0, false), " Templates"]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-        className: "btn btn-primary",
-        disabled: !activeTrip,
-        onClick: () => setShow(!show),
-        children: [/*#__PURE__*/_jsxDEV(Icon, {
-          name: show ? 'x' : 'plus',
-          size: 18
-        }, void 0, false), " ", show ? 'Cancel' : 'Save Current']
-      }, void 0, true)]
-    }, void 0, true), show && /*#__PURE__*/_jsxDEV("div", {
-      className: "card-trip mb-4",
-      style: {
-        border: '2px solid var(--primary)'
-      },
-      children: /*#__PURE__*/_jsxDEV("div", {
-        className: "card-body",
-        children: [/*#__PURE__*/_jsxDEV("h5", {
-          className: "fw-bold mb-3",
-          children: "Save as Template"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-          className: "text-muted small",
-          children: ["Save \"", activeTrip?.name, "\" for reuse"]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "row g-3",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "col-md-6",
-            children: /*#__PURE__*/_jsxDEV("input", {
-              className: "form-control",
-              placeholder: "Template name",
-              value: name,
-              onChange: e => setName(e.target.value)
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "col-md-4",
-            children: /*#__PURE__*/_jsxDEV("input", {
-              className: "form-control",
-              placeholder: "Description",
-              value: desc,
-              onChange: e => setDesc(e.target.value)
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "col-md-2",
-            children: /*#__PURE__*/_jsxDEV("button", {
-              className: "btn btn-primary",
-              onClick: handleCreate,
-              children: "Save"
-            }, void 0, false)
-          }, void 0, false)]
-        }, void 0, true)]
-      }, void 0, true)
-    }, void 0, false), templates.length === 0 ? /*#__PURE__*/_jsxDEV("div", {
-      className: "empty-state",
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "layout",
-        size: 64
-      }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-        className: "fw-bold",
-        children: "No templates"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-        children: "Create a trip first, then save as template"
-      }, void 0, false)]
-    }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-      className: "row g-4",
-      children: templates.map(t => /*#__PURE__*/_jsxDEV("div", {
-        className: "col-md-4",
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "card-trip",
-          children: /*#__PURE__*/_jsxDEV("div", {
-            className: "card-body p-4",
-            children: [/*#__PURE__*/_jsxDEV("h5", {
-              className: "fw-bold",
-              children: t.name
-            }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-              className: "text-muted small",
-              children: t.description || 'No description'
-            }, void 0, false), /*#__PURE__*/_jsxDEV("small", {
-              className: "text-muted",
-              children: new Date(t.created_at).toLocaleDateString()
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "mt-3",
-              children: [/*#__PURE__*/_jsxDEV("button", {
-                className: "btn btn-sm btn-primary me-2",
-                onClick: () => useTemplate(t.id),
-                children: "Use"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                className: "btn btn-sm btn-outline-danger",
-                onClick: () => deleteTemplate(t.id),
-                children: /*#__PURE__*/_jsxDEV(Icon, {
-                  name: "trash",
-                  size: 14
-                }, void 0, false)
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true)
-        }, void 0, false)
-      }, t.id, false))
-    }, void 0, false)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-link text-muted p-0 mb-4",
+    onClick: () => navigateTo('my-trips')
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "arrow-left",
+    size: 16
+  }), " Back"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between align-items-center mb-4"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "fw-bold mb-0"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "layout",
+    size: 24
+  }), " Templates"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-primary",
+    disabled: !activeTrip,
+    onClick: () => setShow(!show)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: show ? 'x' : 'plus',
+    size: 18
+  }), " ", show ? 'Cancel' : 'Save Current')), show && /*#__PURE__*/React.createElement("div", {
+    className: "card-trip mb-4",
+    style: {
+      border: '2px solid var(--primary)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-3"
+  }, "Save as Template"), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small"
+  }, "Save \"", activeTrip?.name, "\" for reuse"), /*#__PURE__*/React.createElement("div", {
+    className: "row g-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-6"
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "form-control",
+    placeholder: "Template name",
+    value: name,
+    onChange: e => setName(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "form-control",
+    placeholder: "Description",
+    value: desc,
+    onChange: e => setDesc(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-primary",
+    onClick: handleCreate
+  }, "Save"))))), templates.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "empty-state"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "layout",
+    size: 64
+  }), /*#__PURE__*/React.createElement("h4", {
+    className: "fw-bold"
+  }, "No templates"), /*#__PURE__*/React.createElement("p", null, "Create a trip first, then save as template")) : /*#__PURE__*/React.createElement("div", {
+    className: "row g-4"
+  }, templates.map(t => /*#__PURE__*/React.createElement("div", {
+    key: t.id,
+    className: "col-md-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-trip"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-4"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold"
+  }, t.name), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small"
+  }, t.description || 'No description'), /*#__PURE__*/React.createElement("small", {
+    className: "text-muted"
+  }, new Date(t.created_at).toLocaleDateString()), /*#__PURE__*/React.createElement("div", {
+    className: "mt-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-primary me-2",
+    onClick: () => useTemplate(t.id)
+  }, "Use"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline-danger",
+    onClick: () => deleteTemplate(t.id)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "trash",
+    size: 14
+  })))))))));
 };
 
 // Notifications Page
@@ -3539,74 +3034,61 @@ const NotificationsPage = () => {
     markAllNotificationsRead,
     navigateTo
   } = useTrip();
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "animate-fade-in",
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      className: "d-flex justify-content-between align-items-center mb-4",
-      children: [/*#__PURE__*/_jsxDEV("h2", {
-        className: "fw-bold mb-0",
-        children: [/*#__PURE__*/_jsxDEV(Icon, {
-          name: "bell",
-          size: 24
-        }, void 0, false), " Notifications"]
-      }, void 0, true), notifications.some(n => !n.is_read) && /*#__PURE__*/_jsxDEV("button", {
-        className: "btn btn-sm btn-outline-primary",
-        onClick: markAllNotificationsRead,
-        children: "Mark all read"
-      }, void 0, false)]
-    }, void 0, true), notifications.length === 0 ? /*#__PURE__*/_jsxDEV("div", {
-      className: "empty-state",
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "bell",
-        size: 64
-      }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-        className: "fw-bold",
-        children: "No notifications"
-      }, void 0, false)]
-    }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-      className: "d-flex flex-column gap-2",
-      children: notifications.map(n => /*#__PURE__*/_jsxDEV("div", {
-        className: `card-trip ${!n.is_read ? '' : 'opacity-75'}`,
-        onClick: () => !n.is_read && markNotificationRead(n.id),
-        style: {
-          cursor: 'pointer'
-        },
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "card-body p-3 d-flex align-items-center gap-3",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: `rounded-circle d-flex align-items-center justify-content-center ${n.is_read ? 'bg-light' : 'bg-primary'}`,
-            style: {
-              width: 40,
-              height: 40,
-              color: n.is_read ? 'var(--text-muted)' : 'white'
-            },
-            children: /*#__PURE__*/_jsxDEV(Icon, {
-              name: n.type === 'trip_shared' ? 'share-2' : 'info',
-              size: 18
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "flex-grow-1",
-            children: [/*#__PURE__*/_jsxDEV("h6", {
-              className: "mb-1",
-              children: n.title
-            }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-              className: "text-muted small mb-0",
-              children: n.message
-            }, void 0, false), /*#__PURE__*/_jsxDEV("small", {
-              className: "text-muted",
-              children: new Date(n.created_at).toLocaleString('en-US')
-            }, void 0, false)]
-          }, void 0, true), !n.is_read && /*#__PURE__*/_jsxDEV("span", {
-            className: "rounded-circle bg-primary",
-            style: {
-              width: 8,
-              height: 8
-            }
-          }, void 0, false)]
-        }, void 0, true)
-      }, n.id, false))
-    }, void 0, false)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between align-items-center mb-4"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "fw-bold mb-0"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "bell",
+    size: 24
+  }), " Notifications"), notifications.some(n => !n.is_read) && /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline-primary",
+    onClick: markAllNotificationsRead
+  }, "Mark all read")), notifications.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "empty-state"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "bell",
+    size: 64
+  }), /*#__PURE__*/React.createElement("h4", {
+    className: "fw-bold"
+  }, "No notifications")) : /*#__PURE__*/React.createElement("div", {
+    className: "d-flex flex-column gap-2"
+  }, notifications.map(n => /*#__PURE__*/React.createElement("div", {
+    key: n.id,
+    className: `card-trip ${!n.is_read ? '' : 'opacity-75'}`,
+    onClick: () => !n.is_read && markNotificationRead(n.id),
+    style: {
+      cursor: 'pointer'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-3 d-flex align-items-center gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `rounded-circle d-flex align-items-center justify-content-center ${n.is_read ? 'bg-light' : 'bg-primary'}`,
+    style: {
+      width: 40,
+      height: 40,
+      color: n.is_read ? 'var(--text-muted)' : 'white'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: n.type === 'trip_shared' ? 'share-2' : 'info',
+    size: 18
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "flex-grow-1"
+  }, /*#__PURE__*/React.createElement("h6", {
+    className: "mb-1"
+  }, n.title), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small mb-0"
+  }, n.message), /*#__PURE__*/React.createElement("small", {
+    className: "text-muted"
+  }, new Date(n.created_at).toLocaleString('en-US'))), !n.is_read && /*#__PURE__*/React.createElement("span", {
+    className: "rounded-circle bg-primary",
+    style: {
+      width: 8,
+      height: 8
+    }
+  }))))));
 };
 
 // ---------------------------------------------------------
@@ -3644,159 +3126,113 @@ const AllBudgetsReport = () => {
   const overallReal = tripBudgets.reduce((a, t) => a + t.totalReal, 0);
   const overallDiff = overallReal - overallPlan;
   const overallIsOver = overallDiff > 0;
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "animate-fade-in",
-    children: [/*#__PURE__*/_jsxDEV("h2", {
-      className: "fw-bold mb-4",
-      children: "All Budgets"
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      className: "card-trip mb-4 overflow-hidden border",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "card-body p-4 text-center border-bottom",
-        style: {
-          background: overallIsOver ? 'linear-gradient(135deg, #fff, #fef2f2)' : 'linear-gradient(135deg, #fff, #f0fdf4)'
-        },
-        children: [/*#__PURE__*/_jsxDEV("h4", {
-          className: "mb-3 text-muted",
-          children: "Overall Budget Status"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("h2", {
-          className: `fw-bold ${overallIsOver ? 'text-danger' : 'text-success'}`,
-          children: overallIsOver ? 'OVER BUDGET' : 'ON BUDGET'
-        }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-          className: "fs-5 text-muted mb-0",
-          children: overallIsOver ? /*#__PURE__*/_jsxDEV(_Fragment, {
-            children: ["Total Overspend ", /*#__PURE__*/_jsxDEV("strong", {
-              className: "text-danger",
-              children: ["Rp ", overallDiff.toLocaleString('en-US')]
-            }, void 0, true)]
-          }, void 0, true) : /*#__PURE__*/_jsxDEV(_Fragment, {
-            children: ["Total Savings ", /*#__PURE__*/_jsxDEV("strong", {
-              className: "text-success",
-              children: ["Rp ", Math.abs(overallDiff).toLocaleString('en-US')]
-            }, void 0, true)]
-          }, void 0, true)
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "card-body p-3",
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "row text-center",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "col-6 border-end",
-            children: [/*#__PURE__*/_jsxDEV("p", {
-              className: "text-muted small fw-bold mb-1",
-              children: "TOTAL BUDGET"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("h5", {
-              className: "fw-bold",
-              style: {
-                color: 'var(--primary)'
-              },
-              children: ["Rp ", overallPlan.toLocaleString('en-US')]
-            }, void 0, true)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "col-6",
-            children: [/*#__PURE__*/_jsxDEV("p", {
-              className: "text-muted small fw-bold mb-1",
-              children: "TOTAL ACTUAL"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("h5", {
-              className: `fw-bold ${overallIsOver ? 'text-danger' : 'text-success'}`,
-              children: ["Rp ", overallReal.toLocaleString('en-US')]
-            }, void 0, true)]
-          }, void 0, true)]
-        }, void 0, true)
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("h4", {
-      className: "fw-bold mb-3",
-      children: "Trips Breakdown"
-    }, void 0, false), tripBudgets.length === 0 ? /*#__PURE__*/_jsxDEV("div", {
-      className: "text-center text-muted py-5",
-      children: [/*#__PURE__*/_jsxDEV(Icon, {
-        name: "folder",
-        size: 48,
-        className: "opacity-50 mb-3"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-        children: "No trips available."
-      }, void 0, false)]
-    }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-      className: "row g-3",
-      children: tripBudgets.map(trip => /*#__PURE__*/_jsxDEV("div", {
-        className: "col-12",
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "card-trip border",
-          style: {
-            borderLeft: `4px solid ${trip.isOver ? 'var(--bs-danger)' : 'var(--bs-success)'}`
-          },
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "p-3 d-flex justify-content-between align-items-center",
-            onClick: () => toggleExpand(trip.id),
-            style: {
-              cursor: 'pointer'
-            },
-            children: [/*#__PURE__*/_jsxDEV("h5", {
-              className: "fw-bold mb-0 text-truncate",
-              children: trip.name
-            }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-              name: expandedTripId === trip.id ? 'chevron-up' : 'chevron-down',
-              size: 20,
-              className: "text-muted"
-            }, void 0, false)]
-          }, void 0, true), expandedTripId === trip.id && /*#__PURE__*/_jsxDEV("div", {
-            className: "p-3 pt-0 border-top mt-2",
-            children: /*#__PURE__*/_jsxDEV("div", {
-              className: "mt-3",
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                className: "d-flex justify-content-between mb-2 small",
-                children: [/*#__PURE__*/_jsxDEV("span", {
-                  className: "text-muted",
-                  children: "Budget:"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                  className: "fw-bold",
-                  children: ["Rp ", trip.totalPlan.toLocaleString('en-US')]
-                }, void 0, true)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "d-flex justify-content-between mb-2 small",
-                children: [/*#__PURE__*/_jsxDEV("span", {
-                  className: "text-muted",
-                  children: "Itinerary Spending:"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                  className: "fw-medium",
-                  children: ["Rp ", trip.itineraryReal.toLocaleString('en-US')]
-                }, void 0, true)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "d-flex justify-content-between mb-2 small",
-                children: [/*#__PURE__*/_jsxDEV("span", {
-                  className: "text-muted",
-                  children: "Add-ons Spending:"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                  className: "fw-medium",
-                  children: ["Rp ", trip.addonReal.toLocaleString('en-US')]
-                }, void 0, true)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "d-flex justify-content-between mb-2 small",
-                children: [/*#__PURE__*/_jsxDEV("span", {
-                  className: "text-muted fw-bold",
-                  children: "Total Actual:"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                  className: `fw-bold ${trip.isOver ? 'text-danger' : 'text-success'}`,
-                  children: ["Rp ", trip.totalReal.toLocaleString('en-US')]
-                }, void 0, true)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("hr", {
-                className: "my-2"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                className: "d-flex justify-content-between align-items-center",
-                children: [/*#__PURE__*/_jsxDEV("span", {
-                  className: `badge ${trip.isOver ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success'}`,
-                  children: trip.isOver ? 'Over Budget' : 'On Budget'
-                }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                  className: `small fw-bold ${trip.isOver ? 'text-danger' : 'text-success'}`,
-                  children: [trip.isOver ? '+' : '-', "Rp ", Math.abs(trip.diff).toLocaleString('en-US')]
-                }, void 0, true)]
-              }, void 0, true)]
-            }, void 0, true)
-          }, void 0, false)]
-        }, void 0, true)
-      }, trip.id, false))
-    }, void 0, false)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "fw-bold mb-4"
+  }, "All Budgets"), /*#__PURE__*/React.createElement("div", {
+    className: "card-trip mb-4 overflow-hidden border"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-4 text-center border-bottom",
+    style: {
+      background: overallIsOver ? 'linear-gradient(135deg, #fff, #fef2f2)' : 'linear-gradient(135deg, #fff, #f0fdf4)'
+    }
+  }, /*#__PURE__*/React.createElement("h4", {
+    className: "mb-3 text-muted"
+  }, "Overall Budget Status"), /*#__PURE__*/React.createElement("h2", {
+    className: `fw-bold ${overallIsOver ? 'text-danger' : 'text-success'}`
+  }, overallIsOver ? 'OVER BUDGET' : 'ON BUDGET'), /*#__PURE__*/React.createElement("p", {
+    className: "fs-5 text-muted mb-0"
+  }, overallIsOver ? /*#__PURE__*/React.createElement(React.Fragment, null, "Total Overspend ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-danger"
+  }, "Rp ", overallDiff.toLocaleString('en-US'))) : /*#__PURE__*/React.createElement(React.Fragment, null, "Total Savings ", /*#__PURE__*/React.createElement("strong", {
+    className: "text-success"
+  }, "Rp ", Math.abs(overallDiff).toLocaleString('en-US'))))), /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "row text-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-6 border-end"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small fw-bold mb-1"
+  }, "TOTAL BUDGET"), /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold",
+    style: {
+      color: 'var(--primary)'
+    }
+  }, "Rp ", overallPlan.toLocaleString('en-US'))), /*#__PURE__*/React.createElement("div", {
+    className: "col-6"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small fw-bold mb-1"
+  }, "TOTAL ACTUAL"), /*#__PURE__*/React.createElement("h5", {
+    className: `fw-bold ${overallIsOver ? 'text-danger' : 'text-success'}`
+  }, "Rp ", overallReal.toLocaleString('en-US')))))), /*#__PURE__*/React.createElement("h4", {
+    className: "fw-bold mb-3"
+  }, "Trips Breakdown"), tripBudgets.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "text-center text-muted py-5"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "folder",
+    size: 48,
+    className: "opacity-50 mb-3"
+  }), /*#__PURE__*/React.createElement("p", null, "No trips available.")) : /*#__PURE__*/React.createElement("div", {
+    className: "row g-3"
+  }, tripBudgets.map(trip => /*#__PURE__*/React.createElement("div", {
+    className: "col-12",
+    key: trip.id
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-trip border",
+    style: {
+      borderLeft: `4px solid ${trip.isOver ? 'var(--bs-danger)' : 'var(--bs-success)'}`
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "p-3 d-flex justify-content-between align-items-center",
+    onClick: () => toggleExpand(trip.id),
+    style: {
+      cursor: 'pointer'
+    }
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-0 text-truncate"
+  }, trip.name), /*#__PURE__*/React.createElement(Icon, {
+    name: expandedTripId === trip.id ? 'chevron-up' : 'chevron-down',
+    size: 20,
+    className: "text-muted"
+  })), expandedTripId === trip.id && /*#__PURE__*/React.createElement("div", {
+    className: "p-3 pt-0 border-top mt-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mt-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between mb-2 small"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-muted"
+  }, "Budget:"), /*#__PURE__*/React.createElement("span", {
+    className: "fw-bold"
+  }, "Rp ", trip.totalPlan.toLocaleString('en-US'))), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between mb-2 small"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-muted"
+  }, "Itinerary Spending:"), /*#__PURE__*/React.createElement("span", {
+    className: "fw-medium"
+  }, "Rp ", trip.itineraryReal.toLocaleString('en-US'))), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between mb-2 small"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-muted"
+  }, "Add-ons Spending:"), /*#__PURE__*/React.createElement("span", {
+    className: "fw-medium"
+  }, "Rp ", trip.addonReal.toLocaleString('en-US'))), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between mb-2 small"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-muted fw-bold"
+  }, "Total Actual:"), /*#__PURE__*/React.createElement("span", {
+    className: `fw-bold ${trip.isOver ? 'text-danger' : 'text-success'}`
+  }, "Rp ", trip.totalReal.toLocaleString('en-US'))), /*#__PURE__*/React.createElement("hr", {
+    className: "my-2"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between align-items-center"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `badge ${trip.isOver ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success'}`
+  }, trip.isOver ? 'Over Budget' : 'On Budget'), /*#__PURE__*/React.createElement("span", {
+    className: `small fw-bold ${trip.isOver ? 'text-danger' : 'text-success'}`
+  }, trip.isOver ? '+' : '-', "Rp ", Math.abs(trip.diff).toLocaleString('en-US'))))))))));
 };
 
 // App Content
@@ -3819,195 +3255,162 @@ const AppContent = () => {
     navigateTo(key);
     closeSidebar();
   };
-  if (!currentUser) return /*#__PURE__*/_jsxDEV(AuthPage, {}, void 0, false);
+  if (!currentUser) return /*#__PURE__*/React.createElement(AuthPage, null);
   const pages = {
-    'my-trips': /*#__PURE__*/_jsxDEV(MyTrips, {}, void 0, false),
-    'trip-dashboard': /*#__PURE__*/_jsxDEV(TripDashboard, {}, void 0, false),
-    itinerary: /*#__PURE__*/_jsxDEV(Itinerary, {}, void 0, false),
-    addons: /*#__PURE__*/_jsxDEV(AddOns, {}, void 0, false),
-    friends: /*#__PURE__*/_jsxDEV(Friends, {}, void 0, false),
-    budget: /*#__PURE__*/_jsxDEV(BudgetReport, {}, void 0, false),
-    settings: /*#__PURE__*/_jsxDEV(SettingsPage, {}, void 0, false),
-    templates: /*#__PURE__*/_jsxDEV(TemplatesPage, {}, void 0, false),
-    notifications: /*#__PURE__*/_jsxDEV(NotificationsPage, {}, void 0, false),
-    'all-budgets': /*#__PURE__*/_jsxDEV(AllBudgetsReport, {}, void 0, false)
+    'my-trips': /*#__PURE__*/React.createElement(MyTrips, null),
+    'trip-dashboard': /*#__PURE__*/React.createElement(TripDashboard, null),
+    itinerary: /*#__PURE__*/React.createElement(Itinerary, null),
+    addons: /*#__PURE__*/React.createElement(AddOns, null),
+    friends: /*#__PURE__*/React.createElement(Friends, null),
+    budget: /*#__PURE__*/React.createElement(BudgetReport, null),
+    settings: /*#__PURE__*/React.createElement(SettingsPage, null),
+    templates: /*#__PURE__*/React.createElement(TemplatesPage, null),
+    notifications: /*#__PURE__*/React.createElement(NotificationsPage, null),
+    'all-budgets': /*#__PURE__*/React.createElement(AllBudgetsReport, null)
   };
-  return /*#__PURE__*/_jsxDEV("div", {
+  return /*#__PURE__*/React.createElement("div", {
     style: {
       minHeight: '100dvh',
       display: 'flex',
       flexDirection: 'column'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center justify-content-between p-3 border-bottom bg-white sticky-top shadow-sm",
+    style: {
+      zIndex: 1030
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: toggleSidebar,
+    className: "btn p-2 me-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "menu",
+    size: 24
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "fw-bold fs-5 d-flex align-items-center gap-2",
+    style: {
+      color: 'var(--primary)'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "map",
+    size: 24
+  }), " TripNan")), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center gap-1 ms-auto"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center",
+    onClick: () => {
+      navigateTo('notifications');
+      closeSidebar();
     },
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      className: "d-flex align-items-center justify-content-between p-3 border-bottom bg-white sticky-top shadow-sm",
-      style: {
-        zIndex: 1030
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "d-flex align-items-center",
-        children: [/*#__PURE__*/_jsxDEV("button", {
-          onClick: toggleSidebar,
-          className: "btn p-2 me-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center",
-          children: /*#__PURE__*/_jsxDEV(Icon, {
-            name: "menu",
-            size: 24
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "fw-bold fs-5 d-flex align-items-center gap-2",
-          style: {
-            color: 'var(--primary)'
-          },
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "map",
-            size: 24
-          }, void 0, false), " TripNan"]
-        }, void 0, true)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "d-flex align-items-center gap-1 ms-auto",
-        children: [/*#__PURE__*/_jsxDEV("button", {
-          className: "btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center",
-          onClick: () => {
-            navigateTo('notifications');
-            closeSidebar();
-          },
-          title: "Notifications",
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "bell",
-            size: 22
-          }, void 0, false), unreadCount > 0 && /*#__PURE__*/_jsxDEV("span", {
-            className: "position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger",
-            style: {
-              fontSize: '0.6rem',
-              padding: '0.25em 0.4em',
-              transform: 'translate(-60%, 20%)'
-            },
-            children: unreadCount
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-          className: "btn p-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center",
-          onClick: logout,
-          title: "Logout",
-          children: /*#__PURE__*/_jsxDEV(Icon, {
-            name: "log-out",
-            size: 22
-          }, void 0, false)
-        }, void 0, false)]
-      }, void 0, true)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: `sidebar-overlay ${sidebarOpen ? 'active' : ''}`,
-      onClick: closeSidebar
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      className: `sidebar ${sidebarOpen ? 'open' : ''}`,
-      children: [/*#__PURE__*/_jsxDEV("nav", {
-        className: "sidebar-nav pt-3",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "sidebar-group-title text-muted small fw-bold px-3 mb-2 mt-2 text-uppercase",
-          children: "Dashboard"
-        }, void 0, false), [{
-          key: 'my-trips',
-          icon: 'map',
-          label: 'My Trips'
-        }, {
-          key: 'all-budgets',
-          icon: 'dollar-sign',
-          label: 'All Budgets'
-        }].map(item => /*#__PURE__*/_jsxDEV("button", {
-          className: `sidebar-nav-item ${activeView === item.key ? 'active' : ''}`,
-          onClick: () => handleNavClick(item.key),
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: item.icon,
-            size: 18
-          }, void 0, false), " ", item.label, item.badge > 0 && /*#__PURE__*/_jsxDEV("span", {
-            className: "sidebar-badge",
-            children: item.badge
-          }, void 0, false)]
-        }, item.key, true)), /*#__PURE__*/_jsxDEV("div", {
-          className: "sidebar-group-title text-muted small fw-bold px-3 mb-2 mt-4 text-uppercase",
-          children: "Management"
-        }, void 0, false), [{
-          key: 'templates',
-          icon: 'layout',
-          label: 'Templates'
-        }].map(item => /*#__PURE__*/_jsxDEV("button", {
-          className: `sidebar-nav-item ${activeView === item.key ? 'active' : ''}`,
-          onClick: () => handleNavClick(item.key),
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: item.icon,
-            size: 18
-          }, void 0, false), " ", item.label, item.badge > 0 && /*#__PURE__*/_jsxDEV("span", {
-            className: "sidebar-badge",
-            children: item.badge
-          }, void 0, false)]
-        }, item.key, true))]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "sidebar-user-card mt-auto d-flex flex-column gap-2",
-        style: {
-          marginBottom: 0
-        },
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "d-flex align-items-center gap-3",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "sidebar-user-avatar",
-            children: currentUser?.charAt(0).toUpperCase()
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            children: [/*#__PURE__*/_jsxDEV("p", {
-              className: "small mb-0",
-              style: {
-                color: 'var(--text-muted)'
-              },
-              children: "Logged in as"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-              className: "fw-bold mb-0",
-              style: {
-                color: 'var(--text-primary)'
-              },
-              children: currentUser
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-          className: `btn btn-sm w-100 d-flex align-items-center justify-content-center gap-2 mt-2 ${activeView === 'settings' ? 'btn-primary' : 'btn-light border'}`,
-          onClick: () => handleNavClick('settings'),
-          children: [/*#__PURE__*/_jsxDEV(Icon, {
-            name: "settings",
-            size: 16
-          }, void 0, false), " Settings"]
-        }, void 0, true)]
-      }, void 0, true)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "main-content d-flex flex-column flex-grow-1",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "px-3 px-md-5 pt-3 pt-md-4 pb-5 flex-grow-1",
-        children: pages[activeView] || /*#__PURE__*/_jsxDEV(MyTrips, {}, void 0, false)
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        className: "mt-auto",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "px-3 px-md-5 pb-3",
-          children: /*#__PURE__*/_jsxDEV("button", {
-            className: "btn btn-link text-danger text-decoration-none p-0 d-flex align-items-center gap-2",
-            onClick: logout,
-            style: {
-              fontWeight: '500'
-            },
-            children: [/*#__PURE__*/_jsxDEV(Icon, {
-              name: "log-out",
-              size: 18
-            }, void 0, false), " Logout Akun"]
-          }, void 0, true)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("footer", {
-          className: "text-center text-muted py-4",
-          style: {
-            borderTop: '1px solid var(--border)'
-          },
-          children: /*#__PURE__*/_jsxDEV("small", {
-            children: ["© ", new Date().getFullYear(), " Dnan Dev. All rights reserved."]
-          }, void 0, true)
-        }, void 0, false)]
-      }, void 0, true)]
-    }, void 0, true)]
-  }, void 0, true);
+    title: "Notifications"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "bell",
+    size: 22
+  }), unreadCount > 0 && /*#__PURE__*/React.createElement("span", {
+    className: "position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger",
+    style: {
+      fontSize: '0.6rem',
+      padding: '0.25em 0.4em',
+      transform: 'translate(-60%, 20%)'
+    }
+  }, unreadCount)), /*#__PURE__*/React.createElement("button", {
+    className: "btn p-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center",
+    onClick: logout,
+    title: "Logout"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "log-out",
+    size: 22
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: `sidebar-overlay ${sidebarOpen ? 'active' : ''}`,
+    onClick: closeSidebar
+  }), /*#__PURE__*/React.createElement("div", {
+    className: `sidebar ${sidebarOpen ? 'open' : ''}`
+  }, /*#__PURE__*/React.createElement("nav", {
+    className: "sidebar-nav pt-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-group-title text-muted small fw-bold px-3 mb-2 mt-2 text-uppercase"
+  }, "Dashboard"), [{
+    key: 'my-trips',
+    icon: 'map',
+    label: 'My Trips'
+  }, {
+    key: 'all-budgets',
+    icon: 'dollar-sign',
+    label: 'All Budgets'
+  }].map(item => /*#__PURE__*/React.createElement("button", {
+    key: item.key,
+    className: `sidebar-nav-item ${activeView === item.key ? 'active' : ''}`,
+    onClick: () => handleNavClick(item.key)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: item.icon,
+    size: 18
+  }), " ", item.label, item.badge > 0 && /*#__PURE__*/React.createElement("span", {
+    className: "sidebar-badge"
+  }, item.badge))), /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-group-title text-muted small fw-bold px-3 mb-2 mt-4 text-uppercase"
+  }, "Management"), [{
+    key: 'templates',
+    icon: 'layout',
+    label: 'Templates'
+  }].map(item => /*#__PURE__*/React.createElement("button", {
+    key: item.key,
+    className: `sidebar-nav-item ${activeView === item.key ? 'active' : ''}`,
+    onClick: () => handleNavClick(item.key)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: item.icon,
+    size: 18
+  }), " ", item.label, item.badge > 0 && /*#__PURE__*/React.createElement("span", {
+    className: "sidebar-badge"
+  }, item.badge)))), /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-user-card mt-auto d-flex flex-column gap-2",
+    style: {
+      marginBottom: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-user-avatar"
+  }, currentUser?.charAt(0).toUpperCase()), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    className: "small mb-0",
+    style: {
+      color: 'var(--text-muted)'
+    }
+  }, "Logged in as"), /*#__PURE__*/React.createElement("p", {
+    className: "fw-bold mb-0",
+    style: {
+      color: 'var(--text-primary)'
+    }
+  }, currentUser))), /*#__PURE__*/React.createElement("button", {
+    className: `btn btn-sm w-100 d-flex align-items-center justify-content-center gap-2 mt-2 ${activeView === 'settings' ? 'btn-primary' : 'btn-light border'}`,
+    onClick: () => handleNavClick('settings')
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "settings",
+    size: 16
+  }), " Settings"))), /*#__PURE__*/React.createElement("div", {
+    className: "main-content d-flex flex-column flex-grow-1"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "px-3 px-md-5 pt-3 pt-md-4 pb-5 flex-grow-1"
+  }, pages[activeView] || /*#__PURE__*/React.createElement(MyTrips, null)), /*#__PURE__*/React.createElement("div", {
+    className: "mt-auto"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "px-3 px-md-5 pb-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-link text-danger text-decoration-none p-0 d-flex align-items-center gap-2",
+    onClick: logout,
+    style: {
+      fontWeight: '500'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "log-out",
+    size: 18
+  }), " Logout Akun")), /*#__PURE__*/React.createElement("footer", {
+    className: "text-center text-muted py-4",
+    style: {
+      borderTop: '1px solid var(--border)'
+    }
+  }, /*#__PURE__*/React.createElement("small", null, "© ", new Date().getFullYear(), " Dnan Dev. All rights reserved.")))));
 };
-const App = () => /*#__PURE__*/_jsxDEV(TripProvider, {
-  children: /*#__PURE__*/_jsxDEV(AppContent, {}, void 0, false)
-}, void 0, false);
+const App = () => /*#__PURE__*/React.createElement(TripProvider, null, /*#__PURE__*/React.createElement(AppContent, null));
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(/*#__PURE__*/_jsxDEV(App, {}, void 0, false));
+root.render(/*#__PURE__*/React.createElement(App, null));
