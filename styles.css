@@ -1421,3 +1421,12 @@ body.dark-mode .dropdown-item:hover {
     min-height: 60vh;
   }
 }
+
+@media (max-width: 767px) {
+  .settings-layout.mobile-menu-active .settings-content-container {
+    display: none !important;
+  }
+  .settings-layout.mobile-content-active .settings-menu-container {
+    display: none !important;
+  }
+}

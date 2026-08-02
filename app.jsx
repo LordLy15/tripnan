@@ -1463,6 +1463,7 @@ const SettingsPage = () => {
   
   // Tab state
   const [activeTab, setActiveTab] = useState('account');
+  const [mobileView, setMobileView] = useState('menu');
 
   // Account state
   const [fullName, setFullName] = useState(currentUser || '');
@@ -1513,27 +1514,32 @@ const SettingsPage = () => {
       <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('my-trips')}><Icon name="arrow-left" size={16} /> Back</button>
       <h2 className="fw-bold mb-4"><Icon name="settings" size={24} /> Settings</h2>
       
-      <div className="row g-4">
-        <div className="col-md-3">
+      <div className={`row g-4 settings-layout ${mobileView === 'menu' ? 'mobile-menu-active' : 'mobile-content-active'}`}>
+        <div className="col-md-3 settings-menu-container">
           <div className="settings-sidebar" style={{ position: 'sticky', top: '80px' }}>
             <div className="nav flex-column nav-pills gap-1">
-              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'account' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('account')}>
+              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'account' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => { setActiveTab('account'); setMobileView('content'); }}>
                 <Icon name="user" size={18} /> Account
               </button>
-              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'categories' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('categories')}>
+              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'categories' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => { setActiveTab('categories'); setMobileView('content'); }}>
                 <Icon name="tag" size={18} /> Categories
               </button>
-              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'appearance' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('appearance')}>
+              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'appearance' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => { setActiveTab('appearance'); setMobileView('content'); }}>
                 <Icon name="monitor" size={18} /> Appearance
               </button>
-              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'about' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => setActiveTab('about')}>
+              <button className={`nav-link text-start d-flex align-items-center gap-2 ${activeTab === 'about' ? 'active bg-primary text-white' : 'text-dark'}`} onClick={() => { setActiveTab('about'); setMobileView('content'); }}>
                 <Icon name="info" size={18} /> About & Logout
               </button>
             </div>
           </div>
         </div>
         
-        <div className="col-md-9">
+        <div className="col-md-9 settings-content-container">
+          <div className="d-md-none mb-3">
+            <button className="btn btn-link text-muted p-0 d-flex align-items-center gap-1" onClick={() => setMobileView('menu')}>
+              <Icon name="arrow-left" size={16} /> Back to Menu
+            </button>
+          </div>
           <div className="card-trip h-100">
             <div className="card-body p-4 p-md-5">
               {activeTab === 'account' && (
