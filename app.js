@@ -49,26 +49,25 @@ const ToastNotification = () => {
   } = useTrip();
   if (!toastMessage) return null;
   return /*#__PURE__*/React.createElement("div", {
-    className: "position-fixed top-0 end-0 p-3 mt-5 pt-5",
+    className: "position-fixed top-0 end-0 p-4 mt-5",
     style: {
-      zIndex: 1050,
-      transition: 'all 0.3s ease-in-out'
+      zIndex: 99999,
+      transition: 'all 0.3s ease-in-out',
+      pointerEvents: 'none'
     }
   }, /*#__PURE__*/React.createElement("div", {
-    className: `toast show align-items-center text-bg-${toastMessage.type} border-0 shadow-lg`,
-    role: "alert",
+    className: `alert alert-${toastMessage.type} shadow-lg d-flex align-items-center gap-3 m-0`,
     style: {
       minWidth: '300px',
-      borderRadius: '12px'
+      borderRadius: '12px',
+      borderLeft: `6px solid var(--bs-${toastMessage.type})`
     }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "d-flex"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "toast-body fw-medium px-4 py-3 d-flex align-items-center gap-2 fs-6"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: toastMessage.type === 'success' ? 'check-circle' : 'alert-circle',
-    size: 20
-  }), toastMessage.message))));
+    size: 24
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "fw-medium fs-6"
+  }, toastMessage.message)));
 };
 
 // Context
@@ -631,6 +630,11 @@ const icons = {
   download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>',
   upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',
   'check-circle': '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+  'check-square': '<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+  'clock': '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  'plus-circle': '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>',
+  'moon': '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+  'folder': '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
   'alert-circle': '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
   'alert-triangle': '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
   trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
@@ -1125,23 +1129,26 @@ const MyTrips = () => {
   }), "Join via Code"))))), /*#__PURE__*/React.createElement("div", {
     className: "btn-group border bg-white rounded-3 shadow-sm d-flex",
     style: {
-      padding: '2px'
+      padding: '2px',
+      height: '39px'
     }
   }, /*#__PURE__*/React.createElement("button", {
-    className: `btn btn-sm ${viewMode === 'grid' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted border-0'}`,
+    className: `btn btn-sm d-flex align-items-center justify-content-center ${viewMode === 'grid' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted'}`,
     onClick: () => setViewMode('grid'),
     style: {
-      padding: '6px 12px'
+      padding: '0 12px',
+      height: '100%'
     },
     title: "Grid View"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "layout",
     size: 16
   })), /*#__PURE__*/React.createElement("button", {
-    className: `btn btn-sm ${viewMode === 'list' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted border-0'}`,
+    className: `btn btn-sm d-flex align-items-center justify-content-center ${viewMode === 'list' ? 'btn-light border shadow-sm rounded-2 text-primary' : 'btn-white text-muted'}`,
     onClick: () => setViewMode('list'),
     style: {
-      padding: '6px 12px'
+      padding: '0 12px',
+      height: '100%'
     },
     title: "List View"
   }, /*#__PURE__*/React.createElement(Icon, {
