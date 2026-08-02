@@ -2483,7 +2483,18 @@ const SettingsPage = () => {
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "trash",
     size: 18
-  }), " Bersihkan Cache")))), /*#__PURE__*/React.createElement("div", {
+  }), " Bersihkan Cache"), /*#__PURE__*/React.createElement("div", {
+    className: "mt-4 px-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-danger text-white w-100 d-flex align-items-center justify-content-center gap-2 py-2",
+    style: {
+      borderRadius: '10px'
+    },
+    onClick: logout
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "log-out",
+    size: 18
+  }), " Logout Akun"))))), /*#__PURE__*/React.createElement("div", {
     className: "col-md-9 settings-content-container"
   }, /*#__PURE__*/React.createElement("div", {
     className: "d-md-none mb-3"
@@ -2986,20 +2997,7 @@ const SettingsPage = () => {
     className: "btn btn-sm btn-primary px-4"
   }, "Kirim Ulasan"))), /*#__PURE__*/React.createElement("p", {
     className: "small text-muted mt-5 text-center"
-  }, "© 2026 TripNan. All rights reserved.")))))), /*#__PURE__*/React.createElement("div", {
-    className: "mt-5 text-center"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-danger text-white px-5 py-2 fw-bold w-100",
-    style: {
-      maxWidth: '400px',
-      borderRadius: '12px'
-    },
-    onClick: logout
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "log-out",
-    size: 20,
-    className: "me-2"
-  }), " Logout Akun")));
+  }, "© 2026 TripNan. All rights reserved.")))))));
 };
 
 // Templates Page
