@@ -1314,3 +1314,93 @@ input[type="color"] {
   height: auto;
   width: 50px;
 }
+
+/* ============================================
+   Dark Mode Definitions
+   ============================================ */
+body.dark-mode {
+  --bg-body: #0f172a;
+  --bg-card: #1e293b;
+  --bg-sidebar: #1e293b;
+  --bg-input: #334155;
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  
+  --border: #334155;
+  
+  --primary: #38bdf8;
+  --primary-dark: #0ea5e9;
+  --primary-light: #7dd3fc;
+  --primary-lighter: #0c4a6e;
+  --primary-50: #0c4a6e;
+  
+  --gray-50: #0f172a;
+  --gray-100: #1e293b;
+  --gray-200: #334155;
+  
+  background-color: var(--bg-body);
+  color: var(--text-primary);
+}
+
+body.dark-mode .card-trip,
+body.dark-mode .sidebar,
+body.dark-mode .bg-white,
+body.dark-mode .module-card,
+body.dark-mode .auth-card {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary);
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+  background-color: var(--bg-input);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus {
+  background-color: var(--bg-input);
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+body.dark-mode .text-dark {
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .text-muted {
+  color: var(--text-muted) !important;
+}
+
+body.dark-mode .btn-light {
+  background-color: var(--gray-200);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+body.dark-mode .btn-light:hover {
+  background-color: var(--gray-100);
+}
+
+body.dark-mode .btn-white {
+  background-color: transparent;
+  color: var(--text-secondary);
+}
+
+body.dark-mode .dropdown-menu {
+  background-color: var(--bg-card);
+  border-color: var(--border);
+}
+
+body.dark-mode .dropdown-item {
+  color: var(--text-primary);
+}
+
+body.dark-mode .dropdown-item:hover {
+  background-color: var(--gray-200);
+  color: var(--text-primary);
+}

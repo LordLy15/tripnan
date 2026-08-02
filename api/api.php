@@ -91,6 +91,44 @@ try {
             break;
         }
 
+        case 'update_user': {
+            $username = isset($input['username']) ? trim($input['username']) : '';
+            $full_name = isset($input['full_name']) ? trim($input['full_name']) : '';
+            $password = isset($input['password']) ? $input['password'] : '';
+            
+            if (empty($username)) {
+                echo json_encode(['success' => false, 'message' => 'Username required.']);
+                break;
+            }
+
+            $updates = [];
+            $params = [];
+
+            if (!empty($full_name)) {
+                $updates[] = "full_name = ?";
+                $params[] = $full_name;
+            }
+
+            if (!empty($password)) {
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $updates[] = "password = ?";
+                $params[] = $hashedPassword;
+            }
+
+            if (empty($updates)) {
+                echo json_encode(['success' => false, 'message' => 'No fields to update.']);
+                break;
+            }
+
+            $params[] = $username;
+            $sql = "UPDATE users SET " . implode(', ', $updates) . " WHERE username = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($params);
+
+            echo json_encode(['success' => true]);
+            break;
+        }
+
         case 'get_trips': {
             $owner = isset($_GET['owner']) ? $_GET['owner'] : '';
             if (empty($owner)) {
@@ -379,6 +417,18 @@ try {
             $id = isset($input['id']) ? $input['id'] : '';
             $stmt = $pdo->prepare("DELETE FROM trip_categories WHERE id = ? AND owner != 'default'");
             $stmt->execute([$id]);
+            echo json_encode(['success' => true]);
+            break;
+        }
+
+        case 'update_category': {
+            $id = isset($input['id']) ? $input['id'] : '';
+            $name = isset($input['name']) ? $input['name'] : '';
+            $color = isset($input['color']) ? $input['color'] : '#0d6efd';
+            $icon = isset($input['icon']) ? $input['icon'] : 'tag';
+            
+            $stmt = $pdo->prepare("UPDATE trip_categories SET name = ?, color = ?, icon = ? WHERE id = ? AND owner != 'default'");
+            $stmt->execute([$name, $color, $icon, $id]);
             echo json_encode(['success' => true]);
             break;
         }

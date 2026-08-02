@@ -51,6 +51,21 @@ const TripProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeView, setActiveView] = useState('my-trips');
   const [activeTripId, setActiveTripId] = useState(null);
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('tripDarkMode') === 'true');
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem('tripDarkMode', newMode);
+  };
 
   const fetchAPI = async (action, data = {}) => {
     try {
@@ -259,6 +274,16 @@ const TripProvider = ({ children }) => {
     setCategories(categories.filter(c => c.id !== id));
   };
 
+  const updateCategory = async (id, name, color, icon) => {
+    await fetchAPI('update_category', { id, name, color, icon });
+    setCategories(categories.map(c => c.id === id ? { ...c, name, color, icon } : c));
+  };
+
+  const updateUser = async (full_name, password) => {
+    const res = await fetchAPI('update_user', { username: currentUser, full_name, password });
+    return res;
+  };
+
   const updateProfile = async (profileData) => {
     await fetchAPI('update_profile', { username: currentUser, ...profileData });
   };
@@ -290,10 +315,11 @@ const TripProvider = ({ children }) => {
     joinTrip,
     exportTrip, importTrip,
     saveTemplate, deleteTemplate, useTemplate,
-    createCategory, deleteCategory,
-    updateProfile,
+    createCategory, deleteCategory, updateCategory,
+    updateProfile, updateUser,
     markNotificationRead, markAllNotificationsRead,
-    navigateTo, activeView
+    navigateTo, activeView,
+    darkMode, toggleDarkMode
   };
 
   return <TripContext.Provider value={value}>{children}</TripContext.Provider>;
@@ -1391,19 +1417,84 @@ const BudgetReport = () => {
 };
 
 // Profile Page
-const ProfilePage = () => {
-  const { currentUser, navigateTo } = useTrip();
+const SettingsPage = () => {
+  const { currentUser, navigateTo, updateUser, darkMode, toggleDarkMode, logout } = useTrip();
+  const [fullName, setFullName] = useState(currentUser || '');
+  const [password, setPassword] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    setIsSaving(true);
+    const res = await updateUser(fullName, password);
+    setIsSaving(false);
+    if (res.success) {
+      alert('Settings saved successfully!');
+      setPassword('');
+    } else {
+      alert(res.message || 'Failed to save settings');
+    }
+  };
+
   return (
     <div className="animate-fade-in">
       <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('my-trips')}><Icon name="arrow-left" size={16} /> Back</button>
-      <h2 className="fw-bold mb-4"><Icon name="user" size={24} /> My Profile</h2>
-      <div className="card-trip">
-        <div className="card-body p-4 text-center">
-          <div className="rounded-circle bg-primary d-inline-flex align-items-center justify-content-center mb-3" style={{ width: 80, height: 80 }}>
-            <span style={{ fontSize: 32, color: 'white', fontWeight: 'bold' }}>{currentUser?.charAt(0).toUpperCase()}</span>
+      <h2 className="fw-bold mb-4"><Icon name="settings" size={24} /> Settings</h2>
+      
+      <div className="row g-4">
+        <div className="col-lg-8">
+          <div className="card-trip mb-4">
+            <div className="card-body p-4">
+              <h5 className="fw-bold mb-4"><Icon name="user" size={18} className="me-2" />Account Settings</h5>
+              <form onSubmit={handleSave}>
+                <div className="mb-3">
+                  <label className="form-label">Username (Read-only)</label>
+                  <input type="text" className="form-control" value={currentUser} disabled />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Full Name</label>
+                  <input type="text" className="form-control" value={fullName} onChange={e => setFullName(e.target.value)} />
+                </div>
+                <div className="mb-4">
+                  <label className="form-label">New Password (leave blank to keep current)</label>
+                  <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
+                </div>
+                <button type="submit" className="btn btn-primary px-4" disabled={isSaving}>
+                  {isSaving ? 'Saving...' : 'Save Changes'}
+                </button>
+              </form>
+            </div>
           </div>
-          <h4 className="fw-bold">{currentUser}</h4>
-          <p className="text-muted">Profile settings coming soon</p>
+
+          <div className="card-trip mb-4">
+            <div className="card-body p-4">
+              <h5 className="fw-bold mb-4"><Icon name="monitor" size={18} className="me-2" />Appearance</h5>
+              <div className="d-flex align-items-center justify-content-between">
+                <div>
+                  <h6 className="mb-1">Dark Mode</h6>
+                  <p className="text-muted small mb-0">Switch to a dark theme to reduce eye strain</p>
+                </div>
+                <div className="form-check form-switch" style={{ fontSize: '1.5rem' }}>
+                  <input className="form-check-input cursor-pointer" type="checkbox" checked={darkMode} onChange={toggleDarkMode} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-4">
+          <div className="card-trip mb-4 text-center">
+            <div className="card-body p-4">
+              <div className="mb-3">
+                <Icon name="map" size={48} style={{ color: 'var(--primary)' }} />
+              </div>
+              <h5 className="fw-bold mb-1">TripNan App</h5>
+              <p className="text-muted small mb-4">Version 1.0.0</p>
+              <button className="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2" onClick={logout}>
+                <Icon name="log-out" size={18} /> Logout
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1412,16 +1503,30 @@ const ProfilePage = () => {
 
 // Categories Page
 const CategoriesPage = () => {
-  const { categories, createCategory, deleteCategory, navigateTo } = useTrip();
+  const { categories, createCategory, updateCategory, deleteCategory, navigateTo } = useTrip();
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
   const [color, setColor] = useState('#6366f1');
+  const [editId, setEditId] = useState(null);
+  const [editName, setEditName] = useState('');
+  const [editColor, setEditColor] = useState('');
 
   const handleCreate = async (e) => {
     e.preventDefault();
     await createCategory(name, color, 'tag');
     setName('');
     setShow(false);
+  };
+
+  const startEdit = (cat) => {
+    setEditId(cat.id);
+    setEditName(cat.name);
+    setEditColor(cat.color);
+  };
+
+  const handleUpdate = async (id) => {
+    await updateCategory(id, editName, editColor, 'tag');
+    setEditId(null);
   };
 
   return (
@@ -1455,14 +1560,32 @@ const CategoriesPage = () => {
       <div className="row g-3">
         {categories.map(cat => (
           <div key={cat.id} className="col-md-3 col-6">
-            <div className="card-trip text-center py-4" style={{ borderLeft: `4px solid ${cat.color}` }}>
-              <div className="card-body">
-                <div className="rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style={{ width: 48, height: 48, backgroundColor: cat.color + '20' }}>
-                  <Icon name="tag" size={20} style={{ color: cat.color }} />
-                </div>
-                <h6 className="mb-0">{cat.name}</h6>
-                {cat.owner !== 'default' && (
-                  <button className="btn btn-sm text-danger p-0 mt-2" onClick={() => deleteCategory(cat.id)}><Icon name="trash" size={14} /></button>
+            <div className="card-trip text-center py-4 h-100 position-relative group-hover-show" style={{ borderLeft: `4px solid ${cat.color}` }}>
+              <div className="card-body d-flex flex-column justify-content-center">
+                {editId === cat.id ? (
+                  <div>
+                    <input className="form-control form-control-sm text-center mb-2" value={editName} onChange={e => setEditName(e.target.value)} />
+                    <div className="d-flex justify-content-center mb-3">
+                      <input type="color" className="form-control form-control-color form-control-sm" value={editColor} onChange={e => setEditColor(e.target.value)} />
+                    </div>
+                    <div className="d-flex gap-2 justify-content-center">
+                      <button className="btn btn-sm btn-outline-secondary" onClick={() => setEditId(null)}><Icon name="x" size={14} /></button>
+                      <button className="btn btn-sm btn-primary" onClick={() => handleUpdate(cat.id)}><Icon name="check" size={14} /></button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style={{ width: 48, height: 48, backgroundColor: cat.color + '20' }}>
+                      <Icon name="tag" size={20} style={{ color: cat.color }} />
+                    </div>
+                    <h6 className="mb-0">{cat.name}</h6>
+                    {cat.owner !== 'default' && (
+                      <div className="d-flex gap-2 justify-content-center mt-3">
+                        <button className="btn btn-sm btn-light border" onClick={() => startEdit(cat)} title="Edit Category"><Icon name="edit-2" size={14} /></button>
+                        <button className="btn btn-sm btn-outline-danger" onClick={() => { if(window.confirm('Delete category?')) deleteCategory(cat.id); }} title="Delete Category"><Icon name="trash" size={14} /></button>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
@@ -1738,7 +1861,7 @@ const AppContent = () => {
     addons: <AddOns />,
     friends: <Friends />,
     budget: <BudgetReport />,
-    profile: <ProfilePage />,
+    settings: <SettingsPage />,
     categories: <CategoriesPage />,
     templates: <TemplatesPage />,
     notifications: <NotificationsPage />,
@@ -1777,10 +1900,23 @@ const AppContent = () => {
       {/* Sidebar */}
       <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <nav className="sidebar-nav pt-3">
+          <div className="sidebar-group-title text-muted small fw-bold px-3 mb-2 mt-2 text-uppercase">Dashboard</div>
           {[
             { key: 'my-trips', icon: 'map', label: 'My Trips' },
-            { key: 'all-budgets', icon: 'dollar-sign', label: 'All Budgets' },
-            { key: 'profile', icon: 'user', label: 'Profile' },
+            { key: 'all-budgets', icon: 'dollar-sign', label: 'All Budgets' }
+          ].map(item => (
+            <button
+              key={item.key}
+              className={`sidebar-nav-item ${activeView === item.key ? 'active' : ''}`}
+              onClick={() => handleNavClick(item.key)}
+            >
+              <Icon name={item.icon} size={18} /> {item.label}
+              {item.badge > 0 && <span className="sidebar-badge">{item.badge}</span>}
+            </button>
+          ))}
+          
+          <div className="sidebar-group-title text-muted small fw-bold px-3 mb-2 mt-4 text-uppercase">Management</div>
+          {[
             { key: 'categories', icon: 'tag', label: 'Categories' },
             { key: 'templates', icon: 'layout', label: 'Templates' }
           ].map(item => (
@@ -1795,7 +1931,7 @@ const AppContent = () => {
           ))}
         </nav>
 
-        <div className="sidebar-user-card mt-auto" style={{ marginBottom: 0 }}>
+        <div className="sidebar-user-card mt-auto d-flex flex-column gap-2" style={{ marginBottom: 0 }}>
           <div className="d-flex align-items-center gap-3">
             <div className="sidebar-user-avatar">{currentUser?.charAt(0).toUpperCase()}</div>
             <div>
@@ -1803,6 +1939,12 @@ const AppContent = () => {
               <p className="fw-bold mb-0" style={{ color: 'var(--text-primary)' }}>{currentUser}</p>
             </div>
           </div>
+          <button 
+            className={`btn btn-sm w-100 d-flex align-items-center justify-content-center gap-2 mt-2 ${activeView === 'settings' ? 'btn-primary' : 'btn-light border'}`} 
+            onClick={() => handleNavClick('settings')}
+          >
+            <Icon name="settings" size={16} /> Settings
+          </button>
         </div>
       </div>
 
