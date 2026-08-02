@@ -36,6 +36,25 @@ const compressImage = (file, maxWidth = 800) => {
     reader.readAsDataURL(file);
   });
 };
+// Toast Component
+const ToastNotification = () => {
+  const { toastMessage } = useTrip();
+
+  if (!toastMessage) return null;
+
+  return (
+    <div className="position-fixed top-0 end-0 p-3 mt-5 pt-5" style={{ zIndex: 1050, transition: 'all 0.3s ease-in-out' }}>
+      <div className={`toast show align-items-center text-bg-${toastMessage.type} border-0 shadow-lg`} role="alert" style={{ minWidth: '300px', borderRadius: '12px' }}>
+        <div className="d-flex">
+          <div className="toast-body fw-medium px-4 py-3 d-flex align-items-center gap-2 fs-6">
+            <Icon name={toastMessage.type === 'success' ? 'check-circle' : 'alert-circle'} size={20} />
+            {toastMessage.message}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Context
 const TripContext = createContext();
@@ -54,6 +73,14 @@ const TripProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('tripDarkMode') === 'true');
   const [themeColor, setThemeColor] = useState(() => localStorage.getItem('tripThemeColor') || '#0ea5e9');
   const [bgColor, setBgColor] = useState(() => localStorage.getItem('tripBgColor') || '');
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const showToast = (message, type = 'success') => {
+    setToastMessage({ message, type });
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 4000); // 4 seconds duration
+  };
 
   useEffect(() => {
     if (darkMode) {
@@ -431,10 +458,16 @@ const TripProvider = ({ children }) => {
     navigateTo, activeView,
     darkMode, toggleDarkMode,
     themeColor, setThemeColor,
-    bgColor, setBgColor
+    bgColor, setBgColor,
+    toastMessage, showToast
   };
 
-  return <TripContext.Provider value={value}>{children}</TripContext.Provider>;
+  return (
+    <TripContext.Provider value={value}>
+      {children}
+      <ToastNotification />
+    </TripContext.Provider>
+  );
 };
 
 // Icons
@@ -1617,10 +1650,10 @@ const SettingsPage = () => {
     const res = await updateUser(fullName, password); 
     setIsSaving(false);
     if (res.success) {
-      alert('Settings saved successfully!');
+      showToast('Perubahan berhasil disimpan!', 'success');
       setPassword('');
     } else {
-      alert(res.message || 'Failed to save settings');
+      showToast(res.message || 'Gagal menyimpan perubahan', 'danger');
     }
   };
 
@@ -1633,7 +1666,7 @@ const SettingsPage = () => {
   };
 
   const clearCache = () => {
-    alert('Cache berhasil dibersihkan! Aplikasi akan terasa lebih ringan dan cepat.');
+    showToast('Cache berhasil dibersihkan! Aplikasi akan terasa lebih ringan dan cepat.', 'success');
   };
 
   const handleCreateCategory = async (e) => {

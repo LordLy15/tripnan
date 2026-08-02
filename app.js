@@ -42,6 +42,34 @@ const compressImage = (file, maxWidth = 800) => {
     reader.readAsDataURL(file);
   });
 };
+// Toast Component
+const ToastNotification = () => {
+  const {
+    toastMessage
+  } = useTrip();
+  if (!toastMessage) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "position-fixed top-0 end-0 p-3 mt-5 pt-5",
+    style: {
+      zIndex: 1050,
+      transition: 'all 0.3s ease-in-out'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `toast show align-items-center text-bg-${toastMessage.type} border-0 shadow-lg`,
+    role: "alert",
+    style: {
+      minWidth: '300px',
+      borderRadius: '12px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "toast-body fw-medium px-4 py-3 d-flex align-items-center gap-2 fs-6"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: toastMessage.type === 'success' ? 'check-circle' : 'alert-circle',
+    size: 20
+  }), toastMessage.message))));
+};
 
 // Context
 const TripContext = createContext();
@@ -61,6 +89,16 @@ const TripProvider = ({
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('tripDarkMode') === 'true');
   const [themeColor, setThemeColor] = useState(() => localStorage.getItem('tripThemeColor') || '#0ea5e9');
   const [bgColor, setBgColor] = useState(() => localStorage.getItem('tripBgColor') || '');
+  const [toastMessage, setToastMessage] = useState(null);
+  const showToast = (message, type = 'success') => {
+    setToastMessage({
+      message,
+      type
+    });
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 4000); // 4 seconds duration
+  };
   useEffect(() => {
     if (darkMode) {
       document.body.classList.add('dark-mode');
@@ -562,11 +600,13 @@ const TripProvider = ({
     themeColor,
     setThemeColor,
     bgColor,
-    setBgColor
+    setBgColor,
+    toastMessage,
+    showToast
   };
   return /*#__PURE__*/React.createElement(TripContext.Provider, {
     value: value
-  }, children);
+  }, children, /*#__PURE__*/React.createElement(ToastNotification, null));
 };
 
 // Icons
@@ -2459,10 +2499,10 @@ const SettingsPage = () => {
     const res = await updateUser(fullName, password);
     setIsSaving(false);
     if (res.success) {
-      alert('Settings saved successfully!');
+      showToast('Perubahan berhasil disimpan!', 'success');
       setPassword('');
     } else {
-      alert(res.message || 'Failed to save settings');
+      showToast(res.message || 'Gagal menyimpan perubahan', 'danger');
     }
   };
   const handleProfilePicChange = async e => {
@@ -2473,7 +2513,7 @@ const SettingsPage = () => {
     }
   };
   const clearCache = () => {
-    alert('Cache berhasil dibersihkan! Aplikasi akan terasa lebih ringan dan cepat.');
+    showToast('Cache berhasil dibersihkan! Aplikasi akan terasa lebih ringan dan cepat.', 'success');
   };
   const handleCreateCategory = async e => {
     e.preventDefault();
