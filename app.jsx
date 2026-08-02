@@ -1151,7 +1151,7 @@ const BudgetReport = () => {
   if (!activeTrip) return null;
 
   const schedules = activeTrip.schedules || [];
-  const totalPlan = schedules.reduce((a, c) => a + parseFloat(c.planBudget || 0), 0);
+  const totalPlan = parseFloat(activeTrip.totalPlanBudget || 0);
   const totalReal = schedules.filter(s => s.isCompleted).reduce((a, c) => a + parseFloat(c.realBudget || 0), 0);
   const diff = totalReal - totalPlan;
   const isOver = diff > 0;
@@ -1183,7 +1183,7 @@ const BudgetReport = () => {
         <div className="card-body p-4 p-md-5">
           <div className="row g-4 mb-4 text-center">
             <div className="col-6 border-end">
-              <p className="text-muted small fw-bold mb-2">PLANNED</p>
+              <p className="text-muted small fw-bold mb-2">BUDGET</p>
               <h3 className="fw-bold" style={{ color: 'var(--primary)' }}>Rp {totalPlan.toLocaleString('en-US')}</h3>
             </div>
             <div className="col-6">
@@ -1405,10 +1405,15 @@ const NotificationsPage = () => {
 // ---------------------------------------------------------
 const AllBudgetsReport = () => {
   const { trips } = useTrip();
+  const [expandedTripId, setExpandedTripId] = useState(null);
+
+  const toggleExpand = (id) => {
+    setExpandedTripId(prev => prev === id ? null : id);
+  };
   
   const tripBudgets = trips.map(trip => {
     const schedules = trip.schedules || [];
-    const totalPlan = schedules.reduce((a, c) => a + parseFloat(c.planBudget || 0), 0);
+    const totalPlan = parseFloat(trip.totalPlanBudget || 0);
     const totalReal = schedules.filter(s => s.isCompleted).reduce((a, c) => a + parseFloat(c.realBudget || 0), 0);
     const diff = totalReal - totalPlan;
     const isOver = diff > 0;
@@ -1445,7 +1450,7 @@ const AllBudgetsReport = () => {
         <div className="card-body p-3">
           <div className="row text-center">
             <div className="col-6 border-end">
-              <p className="text-muted small fw-bold mb-1">TOTAL PLANNED</p>
+              <p className="text-muted small fw-bold mb-1">TOTAL BUDGET</p>
               <h5 className="fw-bold" style={{ color: 'var(--primary)' }}>Rp {overallPlan.toLocaleString('en-US')}</h5>
             </div>
             <div className="col-6">
@@ -1466,29 +1471,44 @@ const AllBudgetsReport = () => {
       ) : (
         <div className="row g-3">
           {tripBudgets.map(trip => (
-            <div className="col-12 col-md-6 col-lg-4" key={trip.id}>
-              <div className="card-trip h-100 border p-3" style={{ borderLeft: `4px solid ${trip.isOver ? 'var(--bs-danger)' : 'var(--bs-success)'}` }}>
-                <h5 className="fw-bold text-truncate mb-3">{trip.name}</h5>
-                
-                <div className="d-flex justify-content-between mb-2 small">
-                  <span className="text-muted">Plan:</span>
-                  <span className="fw-bold">Rp {trip.totalPlan.toLocaleString('en-US')}</span>
+            <div className="col-12" key={trip.id}>
+              <div className="card-trip border" style={{ borderLeft: `4px solid ${trip.isOver ? 'var(--bs-danger)' : 'var(--bs-success)'}` }}>
+                {/* Header (Clickable) */}
+                <div 
+                  className="p-3 d-flex justify-content-between align-items-center" 
+                  onClick={() => toggleExpand(trip.id)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <h5 className="fw-bold mb-0 text-truncate">{trip.name}</h5>
+                  <Icon name={expandedTripId === trip.id ? 'chevron-up' : 'chevron-down'} size={20} className="text-muted" />
                 </div>
-                <div className="d-flex justify-content-between mb-2 small">
-                  <span className="text-muted">Actual:</span>
-                  <span className={`fw-bold ${trip.isOver ? 'text-danger' : 'text-success'}`}>Rp {trip.totalReal.toLocaleString('en-US')}</span>
-                </div>
                 
-                <hr className="my-2" />
-                
-                <div className="d-flex justify-content-between align-items-center">
-                  <span className={`badge ${trip.isOver ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success'}`}>
-                    {trip.isOver ? 'Over Budget' : 'On Budget'}
-                  </span>
-                  <span className={`small fw-bold ${trip.isOver ? 'text-danger' : 'text-success'}`}>
-                    {trip.isOver ? '+' : '-'}Rp {Math.abs(trip.diff).toLocaleString('en-US')}
-                  </span>
-                </div>
+                {/* Body (Expanded) */}
+                {expandedTripId === trip.id && (
+                  <div className="p-3 pt-0 border-top mt-2">
+                    <div className="mt-3">
+                      <div className="d-flex justify-content-between mb-2 small">
+                        <span className="text-muted">Budget:</span>
+                        <span className="fw-bold">Rp {trip.totalPlan.toLocaleString('en-US')}</span>
+                      </div>
+                      <div className="d-flex justify-content-between mb-2 small">
+                        <span className="text-muted">Actual:</span>
+                        <span className={`fw-bold ${trip.isOver ? 'text-danger' : 'text-success'}`}>Rp {trip.totalReal.toLocaleString('en-US')}</span>
+                      </div>
+                      
+                      <hr className="my-2" />
+                      
+                      <div className="d-flex justify-content-between align-items-center">
+                        <span className={`badge ${trip.isOver ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success'}`}>
+                          {trip.isOver ? 'Over Budget' : 'On Budget'}
+                        </span>
+                        <span className={`small fw-bold ${trip.isOver ? 'text-danger' : 'text-success'}`}>
+                          {trip.isOver ? '+' : '-'}Rp {Math.abs(trip.diff).toLocaleString('en-US')}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
