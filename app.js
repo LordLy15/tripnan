@@ -1284,21 +1284,7 @@ const MyTrips = () => {
     size: 64
   }), /*#__PURE__*/React.createElement("h4", {
     className: "fw-bold"
-  }, "No trips yet"), /*#__PURE__*/React.createElement("p", null, "Create your first trip to get started!"), /*#__PURE__*/React.createElement("div", {
-    className: "d-flex gap-2 justify-content-center mt-2"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-primary",
-    onClick: () => setShowCreate(true)
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "plus",
-    size: 16
-  }), " Create Trip"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-outline-primary",
-    onClick: () => setShowJoin(true)
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "user-plus",
-    size: 16
-  }), " Join Trip"))) : /*#__PURE__*/React.createElement(React.Fragment, null, (() => {
+  }, "No trips yet"), /*#__PURE__*/React.createElement("p", null, "Create your first trip to get started!")) : /*#__PURE__*/React.createElement(React.Fragment, null, (() => {
     const inProgressTrips = filtered.filter(t => !t.is_finished);
     const completedTrips = filtered.filter(t => t.is_finished);
     const renderTripCards = tripList => /*#__PURE__*/React.createElement("div", {

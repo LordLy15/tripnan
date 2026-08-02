@@ -876,10 +876,6 @@ const MyTrips = () => {
           <Icon name="compass" size={64} />
           <h4 className="fw-bold">No trips yet</h4>
           <p>Create your first trip to get started!</p>
-          <div className="d-flex gap-2 justify-content-center mt-2">
-            <button className="btn btn-primary" onClick={() => setShowCreate(true)}><Icon name="plus" size={16} /> Create Trip</button>
-            <button className="btn btn-outline-primary" onClick={() => setShowJoin(true)}><Icon name="user-plus" size={16} /> Join Trip</button>
-          </div>
         </div>
       ) : (
         <>
