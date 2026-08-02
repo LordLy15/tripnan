@@ -59,6 +59,7 @@ const TripProvider = ({
   const [activeView, setActiveView] = useState('my-trips');
   const [activeTripId, setActiveTripId] = useState(null);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('tripDarkMode') === 'true');
+  const [themeColor, setThemeColor] = useState(() => localStorage.getItem('tripThemeColor') || '#0ea5e9');
   useEffect(() => {
     if (darkMode) {
       document.body.classList.add('dark-mode');
@@ -66,6 +67,18 @@ const TripProvider = ({
       document.body.classList.remove('dark-mode');
     }
   }, [darkMode]);
+  useEffect(() => {
+    // Apply primary color directly to root CSS variables
+    const root = document.documentElement;
+    root.style.setProperty('--primary', themeColor);
+    root.style.setProperty('--bs-primary', themeColor); // Bootstrap override
+
+    // Calculate simple dark and light shades using color-mix (modern browser feature)
+    root.style.setProperty('--primary-dark', `color-mix(in srgb, ${themeColor}, black 20%)`);
+    root.style.setProperty('--primary-light', `color-mix(in srgb, ${themeColor}, white 20%)`);
+    root.style.setProperty('--primary-subtle', `color-mix(in srgb, ${themeColor}, white 85%)`);
+    localStorage.setItem('tripThemeColor', themeColor);
+  }, [themeColor]);
   const toggleDarkMode = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
@@ -469,7 +482,9 @@ const TripProvider = ({
     navigateTo,
     activeView,
     darkMode,
-    toggleDarkMode
+    toggleDarkMode,
+    themeColor,
+    setThemeColor
   };
   return /*#__PURE__*/React.createElement(TripContext.Provider, {
     value: value
@@ -2271,7 +2286,9 @@ const SettingsPage = () => {
     categories,
     createCategory,
     deleteCategory,
-    updateCategory
+    updateCategory,
+    themeColor,
+    setThemeColor
   } = useTrip();
 
   // Tab state
@@ -2791,29 +2808,69 @@ const SettingsPage = () => {
     size: 18,
     className: "me-2"
   }), "Appearance"), /*#__PURE__*/React.createElement("div", {
-    className: "p-3 border rounded mb-3"
+    className: "p-4 border rounded mb-3 bg-light"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "mb-3"
+    className: "mb-4"
   }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label fw-bold small text-muted"
+    className: "form-label fw-bold text-muted mb-3"
   }, /*#__PURE__*/React.createElement(Icon, {
-    name: "monitor",
-    size: 14,
-    className: "me-1"
-  }), "Mode Tampilan"), /*#__PURE__*/React.createElement("select", {
-    className: "form-select",
-    value: darkMode ? 'dark' : 'light',
-    onChange: e => {
-      const isDark = e.target.value === 'dark';
-      if (isDark !== darkMode) toggleDarkMode();
+    name: "moon",
+    size: 16,
+    className: "me-2"
+  }), "Tema Tampilan"), /*#__PURE__*/React.createElement("div", {
+    className: "form-check form-switch d-flex align-items-center gap-2"
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "form-check-input mt-0 shadow-sm",
+    type: "checkbox",
+    role: "switch",
+    id: "darkModeSwitch",
+    checked: darkMode,
+    onChange: toggleDarkMode,
+    style: {
+      width: '45px',
+      height: '24px',
+      cursor: 'pointer'
     }
-  }, /*#__PURE__*/React.createElement("option", {
-    value: "light"
-  }, "Light Mode"), /*#__PURE__*/React.createElement("option", {
-    value: "dark"
-  }, "Dark Mode")), /*#__PURE__*/React.createElement("p", {
+  }), /*#__PURE__*/React.createElement("label", {
+    className: "form-check-label ms-2",
+    htmlFor: "darkModeSwitch",
+    style: {
+      cursor: 'pointer',
+      userSelect: 'none'
+    }
+  }, darkMode ? /*#__PURE__*/React.createElement("span", {
+    className: "fw-bold"
+  }, "Dark Mode") : /*#__PURE__*/React.createElement("span", null, "Light Mode"))), /*#__PURE__*/React.createElement("p", {
     className: "text-muted small mt-2 mb-0"
-  }, "Ubah tampilan menjadi mode gelap agar nyaman di mata")))), activeTab === 'preferences' && /*#__PURE__*/React.createElement("div", {
+  }, "Ubah tampilan menjadi mode gelap agar lebih nyaman di mata saat malam hari.")), /*#__PURE__*/React.createElement("hr", {
+    className: "my-4"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "mb-2"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label fw-bold text-muted mb-3"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "edit",
+    size: 16,
+    className: "me-2"
+  }), "Warna Aksen Aplikasi"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex gap-3 flex-wrap"
+  }, ['#0ea5e9', '#10b981', '#8b5cf6', '#f43f5e', '#f97316', '#eab308'].map(color => /*#__PURE__*/React.createElement("div", {
+    key: color,
+    className: `rounded-circle cursor-pointer border ${themeColor === color ? 'shadow' : ''}`,
+    style: {
+      width: '40px',
+      height: '40px',
+      backgroundColor: color,
+      borderWidth: themeColor === color ? '3px !important' : '1px !important',
+      borderColor: themeColor === color ? 'var(--text-primary)' : 'var(--border)',
+      transform: themeColor === color ? 'scale(1.15)' : 'scale(1)',
+      transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+    },
+    onClick: () => setThemeColor(color),
+    title: `Set theme to ${color}`
+  }))), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small mt-3 mb-0"
+  }, "Personalisasikan warna utama aplikasi sesuai selera Anda.")))), activeTab === 'preferences' && /*#__PURE__*/React.createElement("div", {
     className: "animate-fade-in",
     style: {
       maxWidth: '600px'

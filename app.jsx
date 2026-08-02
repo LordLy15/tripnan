@@ -52,6 +52,7 @@ const TripProvider = ({ children }) => {
   const [activeView, setActiveView] = useState('my-trips');
   const [activeTripId, setActiveTripId] = useState(null);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('tripDarkMode') === 'true');
+  const [themeColor, setThemeColor] = useState(() => localStorage.getItem('tripThemeColor') || '#0ea5e9');
 
   useEffect(() => {
     if (darkMode) {
@@ -60,6 +61,20 @@ const TripProvider = ({ children }) => {
       document.body.classList.remove('dark-mode');
     }
   }, [darkMode]);
+
+  useEffect(() => {
+    // Apply primary color directly to root CSS variables
+    const root = document.documentElement;
+    root.style.setProperty('--primary', themeColor);
+    root.style.setProperty('--bs-primary', themeColor); // Bootstrap override
+    
+    // Calculate simple dark and light shades using color-mix (modern browser feature)
+    root.style.setProperty('--primary-dark', `color-mix(in srgb, ${themeColor}, black 20%)`);
+    root.style.setProperty('--primary-light', `color-mix(in srgb, ${themeColor}, white 20%)`);
+    root.style.setProperty('--primary-subtle', `color-mix(in srgb, ${themeColor}, white 85%)`);
+    
+    localStorage.setItem('tripThemeColor', themeColor);
+  }, [themeColor]);
 
   const toggleDarkMode = () => {
     const newMode = !darkMode;
@@ -319,7 +334,8 @@ const TripProvider = ({ children }) => {
     updateProfile, updateUser,
     markNotificationRead, markAllNotificationsRead,
     navigateTo, activeView,
-    darkMode, toggleDarkMode
+    darkMode, toggleDarkMode,
+    themeColor, setThemeColor
   };
 
   return <TripContext.Provider value={value}>{children}</TripContext.Provider>;
@@ -1461,7 +1477,7 @@ const BudgetReport = () => {
 
 // Settings Page
 const SettingsPage = () => {
-  const { currentUser, navigateTo, updateUser, darkMode, toggleDarkMode, logout, categories, createCategory, deleteCategory, updateCategory } = useTrip();
+  const { currentUser, navigateTo, updateUser, darkMode, toggleDarkMode, logout, categories, createCategory, deleteCategory, updateCategory, themeColor, setThemeColor } = useTrip();
   
   // Tab state
   const [activeTab, setActiveTab] = useState('account');
@@ -1753,17 +1769,42 @@ const SettingsPage = () => {
                 <div className="animate-fade-in" style={{ maxWidth: '600px' }}>
                   <h5 className="fw-bold mb-4"><Icon name="monitor" size={18} className="me-2" />Appearance</h5>
                   
-                  <div className="p-3 border rounded mb-3">
-                    <div className="mb-3">
-                      <label className="form-label fw-bold small text-muted"><Icon name="monitor" size={14} className="me-1" />Mode Tampilan</label>
-                      <select className="form-select" value={darkMode ? 'dark' : 'light'} onChange={e => {
-                        const isDark = e.target.value === 'dark';
-                        if (isDark !== darkMode) toggleDarkMode();
-                      }}>
-                        <option value="light">Light Mode</option>
-                        <option value="dark">Dark Mode</option>
-                      </select>
-                      <p className="text-muted small mt-2 mb-0">Ubah tampilan menjadi mode gelap agar nyaman di mata</p>
+                  <div className="p-4 border rounded mb-3 bg-light">
+                    <div className="mb-4">
+                      <label className="form-label fw-bold text-muted mb-3"><Icon name="moon" size={16} className="me-2" />Tema Tampilan</label>
+                      <div className="form-check form-switch d-flex align-items-center gap-2">
+                        <input className="form-check-input mt-0 shadow-sm" type="checkbox" role="switch" id="darkModeSwitch" checked={darkMode} onChange={toggleDarkMode} style={{ width: '45px', height: '24px', cursor: 'pointer' }} />
+                        <label className="form-check-label ms-2" htmlFor="darkModeSwitch" style={{ cursor: 'pointer', userSelect: 'none' }}>
+                          {darkMode ? <span className="fw-bold">Dark Mode</span> : <span>Light Mode</span>}
+                        </label>
+                      </div>
+                      <p className="text-muted small mt-2 mb-0">Ubah tampilan menjadi mode gelap agar lebih nyaman di mata saat malam hari.</p>
+                    </div>
+
+                    <hr className="my-4" />
+
+                    <div className="mb-2">
+                      <label className="form-label fw-bold text-muted mb-3"><Icon name="edit" size={16} className="me-2" />Warna Aksen Aplikasi</label>
+                      <div className="d-flex gap-3 flex-wrap">
+                        {['#0ea5e9', '#10b981', '#8b5cf6', '#f43f5e', '#f97316', '#eab308'].map(color => (
+                          <div 
+                            key={color}
+                            className={`rounded-circle cursor-pointer border ${themeColor === color ? 'shadow' : ''}`}
+                            style={{ 
+                              width: '40px', 
+                              height: '40px', 
+                              backgroundColor: color,
+                              borderWidth: themeColor === color ? '3px !important' : '1px !important',
+                              borderColor: themeColor === color ? 'var(--text-primary)' : 'var(--border)',
+                              transform: themeColor === color ? 'scale(1.15)' : 'scale(1)',
+                              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                            }}
+                            onClick={() => setThemeColor(color)}
+                            title={`Set theme to ${color}`}
+                          />
+                        ))}
+                      </div>
+                      <p className="text-muted small mt-3 mb-0">Personalisasikan warna utama aplikasi sesuai selera Anda.</p>
                     </div>
                   </div>
                 </div>
