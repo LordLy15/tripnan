@@ -29,7 +29,7 @@ const compressImage = (file, maxWidth = 800) => {
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL('image/jpeg', 0.6));
+        resolve(canvas.toDataURL('image/webp', 0.7));
       };
       img.src = event.target.result;
     };
@@ -362,7 +362,9 @@ const icons = {
   download2: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>',
   'user-plus': '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>',
   'chevron-down': '<polyline points="6 9 12 15 18 9"/>',
-  'chevron-up': '<polyline points="18 15 12 9 6 15"/>'
+  'chevron-up': '<polyline points="18 15 12 9 6 15"/>',
+  'settings': '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  'monitor': '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>'
 };
 
 const Icon = ({ name, size = 20, className = "", color }) => (
@@ -458,7 +460,7 @@ const PhotoGallery = ({ photos = [], onAdd, onDelete, editable = false, showHead
       <div className={`photo-gallery ${gridClass}`}>
         {photos.map((photo, i) => (
           <div key={i} className="photo-item" onClick={() => setPreviewImage(photo)}>
-            <img src={photo} alt={`Photo ${i + 1}`} />
+            <img src={photo} alt={`Photo ${i + 1}`} loading="lazy" />
             <span className="photo-number">{i + 1}</span>
             <div className="photo-overlay">
               <button className="photo-action" onClick={(e) => { e.stopPropagation(); handleDownload(photo, i); }} title="Download Photo">
@@ -570,8 +572,6 @@ const MyTrips = () => {
 
   const filtered = filterCat ? trips.filter(t => t.category_id === filterCat) : trips;
 
-  if (isLoading) return <div className="text-center p-5"><Icon name="loader" size={24} className="spin me-2" /> Loading...</div>;
-
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour >= 4 && hour < 10) return 'Selamat Pagi';
@@ -579,6 +579,35 @@ const MyTrips = () => {
     if (hour >= 15 && hour < 18) return 'Selamat Sore';
     return 'Selamat Malam';
   };
+
+  if (isLoading) {
+    return (
+      <div className="animate-fade-in">
+        <div className="row align-items-center mb-4 gap-3 gap-md-0">
+          <div className="col-12 col-md-auto">
+            <h4 className="text-muted mb-2 fw-normal">{getGreeting()}, <span className="fw-bold" style={{ color: 'var(--primary)' }}>{currentUser}</span>!</h4>
+            <div className="placeholder-glow"><span className="placeholder col-6 fs-3 rounded"></span></div>
+            <div className="placeholder-glow"><span className="placeholder col-4 rounded mt-1"></span></div>
+          </div>
+        </div>
+        <div className="row g-4">
+          {[1, 2, 3].map(i => (
+            <div key={i} className={viewMode === 'grid' ? 'col-6 col-md-4' : 'col-12'}>
+              <div className="card-trip trip-card placeholder-glow" style={{ height: '280px' }}>
+                <div className="trip-cover placeholder w-100" style={{ height: '140px' }}></div>
+                <div className="card-body">
+                  <span className="placeholder col-8 mb-2 rounded"></span>
+                  <span className="placeholder col-4 mb-3 rounded"></span>
+                  <span className="placeholder col-12 mb-2 rounded"></span>
+                  <span className="placeholder col-12 rounded"></span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="animate-fade-in">
@@ -703,15 +732,25 @@ const MyTrips = () => {
             
             const renderTripCards = (tripList) => (
               <div className="row g-4">
-                {tripList.map(trip => {
+                {tripList.map((trip, index) => {
                   const completed = trip.schedules?.filter(s => s.isCompleted).length || 0;
                   const total = trip.schedules?.length || 0;
                   const progress = total ? Math.round((completed / total) * 100) : 0;
                   const cat = categories.find(c => c.id === trip.category_id);
+                  const isEager = index < 2;
                   return (
                     <div key={trip.id} className={viewMode === 'grid' ? 'col-6 col-md-4' : 'col-12'}>
                       <div className="card-trip trip-card" onClick={() => navigateTo('trip-dashboard', trip.id)}>
-                        <div className="trip-cover" style={{ backgroundImage: trip.coverUrl ? `url(${trip.coverUrl})` : 'linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%)' }}>
+                        <div className="trip-cover" style={{ background: trip.coverUrl ? 'transparent' : 'linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%)' }}>
+                          {trip.coverUrl && (
+                            <img 
+                              src={trip.coverUrl} 
+                              alt="Trip Cover" 
+                              className="cover-img"
+                              loading={isEager ? "eager" : "lazy"} 
+                              fetchpriority={isEager ? "high" : "auto"} 
+                            />
+                          )}
                           <span className="trip-code">{trip.tripCode}</span>
                           {!trip.isOwner && <span className="trip-shared-badge">Shared</span>}
                           {cat && (
@@ -1416,186 +1455,6 @@ const BudgetReport = () => {
   );
 };
 
-// Profile Page
-const SettingsPage = () => {
-  const { currentUser, navigateTo, updateUser, darkMode, toggleDarkMode, logout } = useTrip();
-  const [fullName, setFullName] = useState(currentUser || '');
-  const [password, setPassword] = useState('');
-  const [isSaving, setIsSaving] = useState(false);
-
-  const handleSave = async (e) => {
-    e.preventDefault();
-    setIsSaving(true);
-    const res = await updateUser(fullName, password);
-    setIsSaving(false);
-    if (res.success) {
-      alert('Settings saved successfully!');
-      setPassword('');
-    } else {
-      alert(res.message || 'Failed to save settings');
-    }
-  };
-
-  return (
-    <div className="animate-fade-in">
-      <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('my-trips')}><Icon name="arrow-left" size={16} /> Back</button>
-      <h2 className="fw-bold mb-4"><Icon name="settings" size={24} /> Settings</h2>
-      
-      <div className="row g-4">
-        <div className="col-lg-8">
-          <div className="card-trip mb-4">
-            <div className="card-body p-4">
-              <h5 className="fw-bold mb-4"><Icon name="user" size={18} className="me-2" />Account Settings</h5>
-              <form onSubmit={handleSave}>
-                <div className="mb-3">
-                  <label className="form-label">Username (Read-only)</label>
-                  <input type="text" className="form-control" value={currentUser} disabled />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Full Name</label>
-                  <input type="text" className="form-control" value={fullName} onChange={e => setFullName(e.target.value)} />
-                </div>
-                <div className="mb-4">
-                  <label className="form-label">New Password (leave blank to keep current)</label>
-                  <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
-                </div>
-                <button type="submit" className="btn btn-primary px-4" disabled={isSaving}>
-                  {isSaving ? 'Saving...' : 'Save Changes'}
-                </button>
-              </form>
-            </div>
-          </div>
-
-          <div className="card-trip mb-4">
-            <div className="card-body p-4">
-              <h5 className="fw-bold mb-4"><Icon name="monitor" size={18} className="me-2" />Appearance</h5>
-              <div className="d-flex align-items-center justify-content-between">
-                <div>
-                  <h6 className="mb-1">Dark Mode</h6>
-                  <p className="text-muted small mb-0">Switch to a dark theme to reduce eye strain</p>
-                </div>
-                <div className="form-check form-switch" style={{ fontSize: '1.5rem' }}>
-                  <input className="form-check-input cursor-pointer" type="checkbox" checked={darkMode} onChange={toggleDarkMode} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-4">
-          <div className="card-trip mb-4 text-center">
-            <div className="card-body p-4">
-              <div className="mb-3">
-                <Icon name="map" size={48} style={{ color: 'var(--primary)' }} />
-              </div>
-              <h5 className="fw-bold mb-1">TripNan App</h5>
-              <p className="text-muted small mb-4">Version 1.0.0</p>
-              <button className="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2" onClick={logout}>
-                <Icon name="log-out" size={18} /> Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Categories Page
-const CategoriesPage = () => {
-  const { categories, createCategory, updateCategory, deleteCategory, navigateTo } = useTrip();
-  const [show, setShow] = useState(false);
-  const [name, setName] = useState('');
-  const [color, setColor] = useState('#6366f1');
-  const [editId, setEditId] = useState(null);
-  const [editName, setEditName] = useState('');
-  const [editColor, setEditColor] = useState('');
-
-  const handleCreate = async (e) => {
-    e.preventDefault();
-    await createCategory(name, color, 'tag');
-    setName('');
-    setShow(false);
-  };
-
-  const startEdit = (cat) => {
-    setEditId(cat.id);
-    setEditName(cat.name);
-    setEditColor(cat.color);
-  };
-
-  const handleUpdate = async (id) => {
-    await updateCategory(id, editName, editColor, 'tag');
-    setEditId(null);
-  };
-
-  return (
-    <div className="animate-fade-in">
-      <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('my-trips')}><Icon name="arrow-left" size={16} /> Back</button>
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold mb-0"><Icon name="tag" size={24} /> Categories</h2>
-        <button className="btn btn-primary" onClick={() => setShow(!show)}><Icon name={show ? 'x' : 'plus'} size={18} /> {show ? 'Cancel' : 'New'}</button>
-      </div>
-      {show && (
-        <div className="card-trip mb-4" style={{ border: '2px solid var(--primary)' }}>
-          <div className="card-body">
-            <h5 className="fw-bold mb-3">Create Category</h5>
-            <div className="row g-3">
-              <div className="col-md-6">
-                <input className="form-control" placeholder="Category name" value={name} onChange={e => setName(e.target.value)} />
-              </div>
-              <div className="col-md-4">
-                <div className="d-flex align-items-center gap-2">
-                  <input type="color" className="form-control form-control-color" value={color} onChange={e => setColor(e.target.value)} style={{ width: 50 }} />
-                  <span className="text-muted small">{color}</span>
-                </div>
-              </div>
-              <div className="col-md-2">
-                <button className="btn btn-primary" onClick={handleCreate}>Create</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      <div className="row g-3">
-        {categories.map(cat => (
-          <div key={cat.id} className="col-md-3 col-6">
-            <div className="card-trip text-center py-4 h-100 position-relative group-hover-show" style={{ borderLeft: `4px solid ${cat.color}` }}>
-              <div className="card-body d-flex flex-column justify-content-center">
-                {editId === cat.id ? (
-                  <div>
-                    <input className="form-control form-control-sm text-center mb-2" value={editName} onChange={e => setEditName(e.target.value)} />
-                    <div className="d-flex justify-content-center mb-3">
-                      <input type="color" className="form-control form-control-color form-control-sm" value={editColor} onChange={e => setEditColor(e.target.value)} />
-                    </div>
-                    <div className="d-flex gap-2 justify-content-center">
-                      <button className="btn btn-sm btn-outline-secondary" onClick={() => setEditId(null)}><Icon name="x" size={14} /></button>
-                      <button className="btn btn-sm btn-primary" onClick={() => handleUpdate(cat.id)}><Icon name="check" size={14} /></button>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <div className="rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style={{ width: 48, height: 48, backgroundColor: cat.color + '20' }}>
-                      <Icon name="tag" size={20} style={{ color: cat.color }} />
-                    </div>
-                    <h6 className="mb-0">{cat.name}</h6>
-                    {cat.owner !== 'default' && (
-                      <div className="d-flex gap-2 justify-content-center mt-3">
-                        <button className="btn btn-sm btn-light border" onClick={() => startEdit(cat)} title="Edit Category"><Icon name="edit-2" size={14} /></button>
-                        <button className="btn btn-sm btn-outline-danger" onClick={() => { if(window.confirm('Delete category?')) deleteCategory(cat.id); }} title="Delete Category"><Icon name="trash" size={14} /></button>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
 // Templates Page
 const TemplatesPage = () => {
   const { templates, saveTemplate, deleteTemplate, useTemplate, activeTrip, navigateTo } = useTrip();
@@ -1862,7 +1721,6 @@ const AppContent = () => {
     friends: <Friends />,
     budget: <BudgetReport />,
     settings: <SettingsPage />,
-    categories: <CategoriesPage />,
     templates: <TemplatesPage />,
     notifications: <NotificationsPage />,
     'all-budgets': <AllBudgetsReport />
@@ -1917,7 +1775,6 @@ const AppContent = () => {
           
           <div className="sidebar-group-title text-muted small fw-bold px-3 mb-2 mt-4 text-uppercase">Management</div>
           {[
-            { key: 'categories', icon: 'tag', label: 'Categories' },
             { key: 'templates', icon: 'layout', label: 'Templates' }
           ].map(item => (
             <button
