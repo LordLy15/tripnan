@@ -2462,7 +2462,8 @@ const SettingsPage = () => {
     themeColor,
     setThemeColor,
     bgColor,
-    setBgColor
+    setBgColor,
+    showToast
   } = useTrip();
 
   // Tab state

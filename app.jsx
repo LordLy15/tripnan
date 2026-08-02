@@ -1613,7 +1613,7 @@ const BudgetReport = () => {
 
 // Settings Page
 const SettingsPage = () => {
-  const { currentUser, navigateTo, updateUser, darkMode, toggleDarkMode, logout, categories, createCategory, deleteCategory, updateCategory, themeColor, setThemeColor, bgColor, setBgColor } = useTrip();
+  const { currentUser, navigateTo, updateUser, darkMode, toggleDarkMode, logout, categories, createCategory, deleteCategory, updateCategory, themeColor, setThemeColor, bgColor, setBgColor, showToast } = useTrip();
   
   // Tab state
   const [activeTab, setActiveTab] = useState('account');
