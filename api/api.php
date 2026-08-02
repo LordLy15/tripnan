@@ -203,9 +203,10 @@ try {
             $time = isset($input['time']) ? $input['time'] : null;
             $title = isset($input['title']) ? $input['title'] : 'New Activity';
             $planBudget = isset($input['planBudget']) ? $input['planBudget'] : 0;
+            $is_addon = isset($input['is_addon']) ? ($input['is_addon'] ? 'true' : 'false') : 'false';
 
-            $stmt = $pdo->prepare("INSERT INTO schedules (id, trip_id, date, time, title, planBudget) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$id, $trip_id, $date, $time, $title, $planBudget]);
+            $stmt = $pdo->prepare("INSERT INTO schedules (id, trip_id, date, time, title, planBudget, is_addon) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$id, $trip_id, $date, $time, $title, $planBudget, $is_addon]);
             echo json_encode(['success' => true, 'id' => $id]);
             break;
         }

@@ -150,7 +150,7 @@ const TripProvider = ({ children }) => {
   };
 
   const addSchedule = async (schedule) => {
-    const newSch = { ...schedule, id: generateId(), trip_id: activeTripId, photos: [] };
+    const newSch = { ...schedule, id: generateId(), trip_id: activeTripId, photos: [], is_addon: schedule.is_addon || false };
     setTrips(trips.map(t => t.id === activeTripId ? { ...t, schedules: [...t.schedules, newSch] } : t));
     fetchAPI('add_schedule', newSch);
   };
@@ -808,7 +808,8 @@ const TripDashboard = () => {
 
       <div className="row g-4">
         {[
-          { key: 'itinerary', icon: 'calendar', color: 'var(--primary)', title: 'Itinerary', desc: `${activeTrip.schedules?.length || 0} activities` },
+          { key: 'itinerary', icon: 'calendar', color: 'var(--primary)', title: 'Itinerary', desc: `${activeTrip.schedules?.filter(s => !s.is_addon).length || 0} activities` },
+          { key: 'addons', icon: 'tag', color: 'var(--info)', title: 'Add-ons', desc: `${activeTrip.schedules?.filter(s => s.is_addon).length || 0} add-ons` },
           { key: 'friends', icon: 'users', color: 'var(--success)', title: 'Travel Buddies', desc: `${activeTrip.friends?.length || 0} friends` },
           { key: 'budget', icon: 'pie-chart', color: 'var(--warning)', title: 'Budget Report', desc: 'View analytics' }
         ].map(m => (
@@ -839,11 +840,13 @@ const Itinerary = () => {
     setShowAdd(false);
   };
 
-  const sorted = [...(activeTrip.schedules || [])].sort((a, b) => {
-    const timeA = a.time || '00:00';
-    const timeB = b.time || '00:00';
-    return new Date(`${a.date}T${timeA}`) - new Date(`${b.date}T${timeB}`);
-  });
+  const sorted = [...(activeTrip.schedules || [])]
+    .filter(s => !s.is_addon)
+    .sort((a, b) => {
+      const timeA = a.time || '00:00';
+      const timeB = b.time || '00:00';
+      return new Date(`${a.date}T${timeA}`) - new Date(`${b.date}T${timeB}`);
+    });
 
   return (
     <div className="animate-fade-in">
@@ -891,6 +894,84 @@ const Itinerary = () => {
         <div className="empty-state">
           <Icon name="calendar" size={64} />
           <h4 className="fw-bold">No activities yet</h4>
+        </div>
+      ) : (
+        <div className="d-flex flex-column gap-3">
+          {sorted.map(s => <ScheduleCard key={s.id} schedule={s} />)}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Add-Ons Page
+const AddOns = () => {
+  const { activeTrip, addSchedule, navigateTo } = useTrip();
+  const [showAdd, setShowAdd] = useState(false);
+  const [newSch, setNewSch] = useState({ date: '', time: '', title: '', planBudget: '' });
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    if (!newSch.date || !newSch.title) return;
+    await addSchedule({ date: newSch.date, time: newSch.time, title: newSch.title, planBudget: parseCurrency(newSch.planBudget), is_addon: true });
+    setNewSch({ date: '', time: '', title: '', planBudget: '' });
+    setShowAdd(false);
+  };
+
+  const sorted = [...(activeTrip.schedules || [])]
+    .filter(s => s.is_addon)
+    .sort((a, b) => {
+      const timeA = a.time || '00:00';
+      const timeB = b.time || '00:00';
+      return new Date(`${a.date}T${timeA}`) - new Date(`${b.date}T${timeB}`);
+    });
+
+  return (
+    <div className="animate-fade-in">
+      <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('trip-dashboard')}><Icon name="arrow-left" size={16} /> Back</button>
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div><h2 className="fw-bold mb-1">Add-ons</h2><p className="text-muted mb-0">Plan minor expenses (parking, snacks, etc.)</p></div>
+        <button className={`btn ${showAdd ? 'btn-secondary' : 'btn-primary'}`} onClick={() => setShowAdd(!showAdd)}>
+          <Icon name={showAdd ? 'x' : 'plus'} size={16} /> {showAdd ? 'Cancel' : 'Add Add-on'}
+        </button>
+      </div>
+
+      {showAdd && (
+        <div className="card-trip mb-4" style={{ border: '2px solid var(--primary)' }}>
+          <div className="card-body">
+            <h5 className="fw-bold mb-3">New Add-on</h5>
+            <form onSubmit={handleAdd}>
+              <div className="row g-3">
+                <div className="col-md-3">
+                  <label className="form-label">Date</label>
+                  <input type="date" className="form-control" value={newSch.date} onChange={e => setNewSch({...newSch, date: e.target.value})} required />
+                </div>
+                <div className="col-md-3">
+                  <label className="form-label">Time <span className="text-muted fw-normal">(Opt)</span></label>
+                  <input type="time" className="form-control" value={newSch.time} onChange={e => setNewSch({...newSch, time: e.target.value})} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Title</label>
+                  <input type="text" className="form-control" placeholder="Toll, Parking, Snack..." value={newSch.title} onChange={e => setNewSch({...newSch, title: e.target.value})} required />
+                </div>
+                <div className="col-md-4">
+                  <label className="form-label">Budget (IDR)</label>
+                  <div className="input-group">
+                    <span className="input-group-text">Rp</span>
+                    <input type="text" inputMode="numeric" className="form-control" placeholder="0" value={newSch.planBudget} onChange={e => setNewSch({...newSch, planBudget: formatCurrency(e.target.value)})} />
+                  </div>
+                </div>
+              </div>
+              <button type="submit" className="btn btn-primary mt-3">Save Add-on</button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {sorted.length === 0 ? (
+        <div className="empty-state">
+          <Icon name="tag" size={64} />
+          <h4 className="fw-bold">No add-ons yet</h4>
         </div>
       ) : (
         <div className="d-flex flex-column gap-3">
@@ -1182,6 +1263,10 @@ const BudgetReport = () => {
   const schedules = activeTrip.schedules || [];
   const totalPlan = parseFloat(activeTrip.totalPlanBudget || 0);
   const totalReal = schedules.filter(s => s.isCompleted).reduce((a, c) => a + parseFloat(c.realBudget || 0), 0);
+  
+  const itineraryReal = schedules.filter(s => s.isCompleted && !s.is_addon).reduce((a, c) => a + parseFloat(c.realBudget || 0), 0);
+  const addonReal = schedules.filter(s => s.isCompleted && s.is_addon).reduce((a, c) => a + parseFloat(c.realBudget || 0), 0);
+  
   const diff = totalReal - totalPlan;
   const isOver = diff > 0;
   const completion = schedules.length ? (schedules.filter(s => s.isCompleted).length / schedules.length) * 100 : 0;
@@ -1224,6 +1309,18 @@ const BudgetReport = () => {
           <div className="p-4 bg-light rounded-3 border">
             <h5 className="fw-bold mb-1">Trip Allowance</h5>
             <p className="text-muted small mb-3">Total Budget: Rp {parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')}</p>
+            
+            <div className="d-flex flex-column gap-2 mb-3">
+              <div className="d-flex justify-content-between">
+                <span className="text-muted small">Itinerary Spending:</span>
+                <span className="fw-medium small">Rp {itineraryReal.toLocaleString('en-US')}</span>
+              </div>
+              <div className="d-flex justify-content-between">
+                <span className="text-muted small">Add-ons Spending:</span>
+                <span className="fw-medium small">Rp {addonReal.toLocaleString('en-US')}</span>
+              </div>
+            </div>
+
             {totalReal > activeTrip.totalPlanBudget ? (
               <div className="alert alert-danger mb-0 py-2 px-3 d-flex align-items-center gap-2"><Icon name="alert-triangle" size={18} /> Exceeded by Rp {(totalReal - activeTrip.totalPlanBudget).toLocaleString('en-US')}</div>
             ) : (
@@ -1444,6 +1541,9 @@ const AllBudgetsReport = () => {
     const schedules = trip.schedules || [];
     const totalPlan = parseFloat(trip.totalPlanBudget || 0);
     const totalReal = schedules.filter(s => s.isCompleted).reduce((a, c) => a + parseFloat(c.realBudget || 0), 0);
+    const itineraryReal = schedules.filter(s => s.isCompleted && !s.is_addon).reduce((a, c) => a + parseFloat(c.realBudget || 0), 0);
+    const addonReal = schedules.filter(s => s.isCompleted && s.is_addon).reduce((a, c) => a + parseFloat(c.realBudget || 0), 0);
+    
     const diff = totalReal - totalPlan;
     const isOver = diff > 0;
     
@@ -1452,6 +1552,8 @@ const AllBudgetsReport = () => {
       name: trip.name,
       totalPlan,
       totalReal,
+      itineraryReal,
+      addonReal,
       diff,
       isOver,
       hasSchedules: schedules.length > 0
@@ -1521,7 +1623,15 @@ const AllBudgetsReport = () => {
                         <span className="fw-bold">Rp {trip.totalPlan.toLocaleString('en-US')}</span>
                       </div>
                       <div className="d-flex justify-content-between mb-2 small">
-                        <span className="text-muted">Actual:</span>
+                        <span className="text-muted">Itinerary Spending:</span>
+                        <span className="fw-medium">Rp {trip.itineraryReal.toLocaleString('en-US')}</span>
+                      </div>
+                      <div className="d-flex justify-content-between mb-2 small">
+                        <span className="text-muted">Add-ons Spending:</span>
+                        <span className="fw-medium">Rp {trip.addonReal.toLocaleString('en-US')}</span>
+                      </div>
+                      <div className="d-flex justify-content-between mb-2 small">
+                        <span className="text-muted fw-bold">Total Actual:</span>
                         <span className={`fw-bold ${trip.isOver ? 'text-danger' : 'text-success'}`}>Rp {trip.totalReal.toLocaleString('en-US')}</span>
                       </div>
                       
@@ -1568,6 +1678,7 @@ const AppContent = () => {
     'my-trips': <MyTrips />,
     'trip-dashboard': <TripDashboard />,
     itinerary: <Itinerary />,
+    addons: <AddOns />,
     friends: <Friends />,
     budget: <BudgetReport />,
     profile: <ProfilePage />,
