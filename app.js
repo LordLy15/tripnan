@@ -80,41 +80,69 @@ const TripProvider = ({
     root.style.setProperty('--primary-subtle', `color-mix(in srgb, ${themeColor}, white 85%)`);
     localStorage.setItem('tripThemeColor', themeColor);
   }, [themeColor]);
-  const getContrastColor = hex => {
-    if (!hex) return '#1e293b';
-    hex = hex.replace('#', '');
+  const generateThemeFromBg = bgHex => {
+    if (!bgHex) return {};
+    let hex = bgHex.replace('#', '');
     if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 2), 16);
     const b = parseInt(hex.substring(4, 2), 16);
     const yiq = (r * 299 + g * 587 + b * 114) / 1000;
-    return yiq >= 128 ? '#1e293b' : '#ffffff';
+    const isLight = yiq >= 128;
+    const adjust = amount => {
+      let rNew = Math.max(0, Math.min(255, r + amount));
+      let gNew = Math.max(0, Math.min(255, g + amount));
+      let bNew = Math.max(0, Math.min(255, b + amount));
+      return `#${rNew.toString(16).padStart(2, '0')}${gNew.toString(16).padStart(2, '0')}${bNew.toString(16).padStart(2, '0')}`;
+    };
+    const textPrimary = isLight ? '#1e293b' : '#f8fafc';
+    const textSecondary = isLight ? '#475569' : '#cbd5e1';
+    const textMuted = isLight ? '#64748b' : '#94a3b8';
+    let bgCard;
+    if (isLight) {
+      if (yiq > 240) bgCard = '#ffffff';else bgCard = adjust(15);
+    } else {
+      bgCard = adjust(15);
+    }
+    let bgInput = isLight ? '#ffffff' : adjust(25);
+    let border = isLight ? adjust(-20) : adjust(30);
+    return {
+      '--bg-body': bgHex,
+      '--bg-card': bgCard,
+      '--bg-sidebar': bgCard,
+      '--bg-input': bgInput,
+      '--text-primary': textPrimary,
+      '--text-secondary': textSecondary,
+      '--text-muted': textMuted,
+      '--border': border,
+      '--gray-50': bgHex,
+      '--gray-100': bgCard,
+      '--gray-200': border,
+      '--bs-body-bg': bgHex,
+      '--bs-body-color': textPrimary,
+      '--bs-secondary-color': textMuted
+    };
   };
   useEffect(() => {
-    const root = document.documentElement;
+    const body = document.body;
     if (bgColor) {
-      const contrast = getContrastColor(bgColor);
-      const mutedContrast = contrast === '#ffffff' ? 'rgba(255,255,255,0.7)' : '#64748b';
-      root.style.setProperty('--bg-body', bgColor);
-      root.style.setProperty('--bs-body-bg', bgColor); // Override Bootstrap default
-      root.style.setProperty('--bs-body-color', contrast); // Font color adjustment
-      root.style.setProperty('--bs-secondary-color', mutedContrast); // Muted font adjustment
+      const themeVars = generateThemeFromBg(bgColor);
+      Object.entries(themeVars).forEach(([key, value]) => {
+        body.style.setProperty(key, value);
+      });
 
-      document.body.style.setProperty('background-color', bgColor, 'important'); // Force apply directly with important
-      document.body.style.color = contrast;
+      // Cleanup old hardcoded properties from previous version just in case
+      body.style.removeProperty('background-color');
+      body.style.removeProperty('color');
       localStorage.setItem('tripBgColor', bgColor);
-
-      // Auto-sync theme color so buttons match the background user selected
       if (themeColor !== bgColor) {
         setThemeColor(bgColor);
       }
     } else {
-      root.style.removeProperty('--bg-body');
-      root.style.removeProperty('--bs-body-bg');
-      root.style.removeProperty('--bs-body-color');
-      root.style.removeProperty('--bs-secondary-color');
-      document.body.style.removeProperty('background-color');
-      document.body.style.color = '';
+      const varsToRemove = ['--bg-body', '--bg-card', '--bg-sidebar', '--bg-input', '--text-primary', '--text-secondary', '--text-muted', '--border', '--gray-50', '--gray-100', '--gray-200', '--bs-body-bg', '--bs-body-color', '--bs-secondary-color'];
+      varsToRemove.forEach(key => body.style.removeProperty(key));
+      body.style.removeProperty('background-color');
+      body.style.removeProperty('color');
       localStorage.removeItem('tripBgColor');
     }
   }, [bgColor]);
