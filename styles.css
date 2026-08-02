@@ -35,6 +35,8 @@
   --danger-light: #fee2e2;
   --warning: #f59e0b;
   --warning-light: #fef3c7;
+  --info: #3b82f6;
+  --info-light: #dbeafe;
 
   /* Backgrounds */
   --bg-body: #f8fafc;
@@ -241,6 +243,18 @@ a:hover {
   background: var(--danger-light);
   color: var(--danger);
   border-color: var(--danger);
+}
+
+.btn-outline-success {
+  background: transparent;
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.btn-outline-success:hover {
+  background: var(--success-light);
+  color: var(--success);
+  border-color: var(--success);
 }
 
 /* Link Button */
