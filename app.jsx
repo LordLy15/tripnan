@@ -1596,9 +1596,6 @@ const SettingsPage = () => {
               <button className="nav-link text-start d-flex align-items-center gap-2 text-danger" onClick={clearCache}>
                 <Icon name="trash" size={18} /> Bersihkan Cache
               </button>
-              <button className="nav-link text-start d-flex align-items-center gap-2 text-danger" onClick={logout}>
-                <Icon name="log-out" size={18} /> Logout Akun
-              </button>
             </div>
           </div>
         </div>
@@ -1831,6 +1828,12 @@ const SettingsPage = () => {
             </div>
           </div>
         </div>
+      </div>
+      
+      <div className="mt-5 text-center">
+        <button className="btn btn-danger text-white px-5 py-2 fw-bold w-100" style={{ maxWidth: '400px', borderRadius: '12px' }} onClick={logout}>
+          <Icon name="log-out" size={20} className="me-2" /> Logout Akun
+        </button>
       </div>
     </div>
   );
