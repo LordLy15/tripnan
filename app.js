@@ -60,6 +60,7 @@ const TripProvider = ({
   const [activeTripId, setActiveTripId] = useState(null);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('tripDarkMode') === 'true');
   const [themeColor, setThemeColor] = useState(() => localStorage.getItem('tripThemeColor') || '#0ea5e9');
+  const [bgColor, setBgColor] = useState(() => localStorage.getItem('tripBgColor') || '');
   useEffect(() => {
     if (darkMode) {
       document.body.classList.add('dark-mode');
@@ -79,6 +80,16 @@ const TripProvider = ({
     root.style.setProperty('--primary-subtle', `color-mix(in srgb, ${themeColor}, white 85%)`);
     localStorage.setItem('tripThemeColor', themeColor);
   }, [themeColor]);
+  useEffect(() => {
+    const root = document.documentElement;
+    if (bgColor) {
+      root.style.setProperty('--bg-body', bgColor);
+      localStorage.setItem('tripBgColor', bgColor);
+    } else {
+      root.style.removeProperty('--bg-body');
+      localStorage.removeItem('tripBgColor');
+    }
+  }, [bgColor]);
   const toggleDarkMode = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
@@ -484,7 +495,9 @@ const TripProvider = ({
     darkMode,
     toggleDarkMode,
     themeColor,
-    setThemeColor
+    setThemeColor,
+    bgColor,
+    setBgColor
   };
   return /*#__PURE__*/React.createElement(TripContext.Provider, {
     value: value
@@ -2288,7 +2301,9 @@ const SettingsPage = () => {
     deleteCategory,
     updateCategory,
     themeColor,
-    setThemeColor
+    setThemeColor,
+    bgColor,
+    setBgColor
   } = useTrip();
 
   // Tab state
@@ -2907,7 +2922,54 @@ const SettingsPage = () => {
     onChange: e => setThemeColor(e.target.value)
   }))), /*#__PURE__*/React.createElement("p", {
     className: "text-muted small mt-3 mb-0"
-  }, "Personalisasikan warna utama aplikasi sesuai selera Anda.")))), activeTab === 'preferences' && /*#__PURE__*/React.createElement("div", {
+  }, "Personalisasikan warna utama aplikasi sesuai selera Anda.")), /*#__PURE__*/React.createElement("hr", {
+    className: "my-4"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "mb-2"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label fw-bold text-muted mb-3"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "layout",
+    size: 16,
+    className: "me-2"
+  }), "Warna Latar Belakang (Background)"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center justify-content-center rounded border shadow-sm position-relative overflow-hidden",
+    style: {
+      width: '48px',
+      height: '48px',
+      backgroundColor: bgColor || 'var(--bg-body)',
+      cursor: 'pointer'
+    },
+    title: "Pilih Warna Background"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "edit-2",
+    size: 18,
+    className: "text-secondary position-absolute mix-blend-difference",
+    style: {
+      pointerEvents: 'none'
+    }
+  }), /*#__PURE__*/React.createElement("input", {
+    type: "color",
+    className: "position-absolute opacity-0 w-100 h-100",
+    style: {
+      cursor: 'pointer',
+      transform: 'scale(1.5)'
+    },
+    value: bgColor || '#f8fafc',
+    onChange: e => setBgColor(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline-secondary",
+    onClick: () => setBgColor(''),
+    disabled: !bgColor
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "rotate-ccw",
+    size: 14,
+    className: "me-1"
+  }), " Reset ke Default"))), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small mt-3 mb-0"
+  }, "Ubah warna latar belakang project sesuka hati Anda.")))), activeTab === 'preferences' && /*#__PURE__*/React.createElement("div", {
     className: "animate-fade-in",
     style: {
       maxWidth: '600px'

@@ -53,6 +53,7 @@ const TripProvider = ({ children }) => {
   const [activeTripId, setActiveTripId] = useState(null);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('tripDarkMode') === 'true');
   const [themeColor, setThemeColor] = useState(() => localStorage.getItem('tripThemeColor') || '#0ea5e9');
+  const [bgColor, setBgColor] = useState(() => localStorage.getItem('tripBgColor') || '');
 
   useEffect(() => {
     if (darkMode) {
@@ -73,8 +74,20 @@ const TripProvider = ({ children }) => {
     root.style.setProperty('--primary-light', `color-mix(in srgb, ${themeColor}, white 20%)`);
     root.style.setProperty('--primary-subtle', `color-mix(in srgb, ${themeColor}, white 85%)`);
     
+    
     localStorage.setItem('tripThemeColor', themeColor);
   }, [themeColor]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (bgColor) {
+      root.style.setProperty('--bg-body', bgColor);
+      localStorage.setItem('tripBgColor', bgColor);
+    } else {
+      root.style.removeProperty('--bg-body');
+      localStorage.removeItem('tripBgColor');
+    }
+  }, [bgColor]);
 
   const toggleDarkMode = () => {
     const newMode = !darkMode;
@@ -335,7 +348,8 @@ const TripProvider = ({ children }) => {
     markNotificationRead, markAllNotificationsRead,
     navigateTo, activeView,
     darkMode, toggleDarkMode,
-    themeColor, setThemeColor
+    themeColor, setThemeColor,
+    bgColor, setBgColor
   };
 
   return <TripContext.Provider value={value}>{children}</TripContext.Provider>;
@@ -1477,7 +1491,7 @@ const BudgetReport = () => {
 
 // Settings Page
 const SettingsPage = () => {
-  const { currentUser, navigateTo, updateUser, darkMode, toggleDarkMode, logout, categories, createCategory, deleteCategory, updateCategory, themeColor, setThemeColor } = useTrip();
+  const { currentUser, navigateTo, updateUser, darkMode, toggleDarkMode, logout, categories, createCategory, deleteCategory, updateCategory, themeColor, setThemeColor, bgColor, setBgColor } = useTrip();
   
   // Tab state
   const [activeTab, setActiveTab] = useState('account');
@@ -1824,6 +1838,32 @@ const SettingsPage = () => {
                         </div>
                       </div>
                       <p className="text-muted small mt-3 mb-0">Personalisasikan warna utama aplikasi sesuai selera Anda.</p>
+                    </div>
+
+                    <hr className="my-4" />
+
+                    <div className="mb-2">
+                      <label className="form-label fw-bold text-muted mb-3"><Icon name="layout" size={16} className="me-2" />Warna Latar Belakang (Background)</label>
+                      <div className="d-flex align-items-center gap-3">
+                        <div className="d-flex align-items-center justify-content-center rounded border shadow-sm position-relative overflow-hidden" 
+                             style={{ width: '48px', height: '48px', backgroundColor: bgColor || 'var(--bg-body)', cursor: 'pointer' }}
+                             title="Pilih Warna Background">
+                          <Icon name="edit-2" size={18} className="text-secondary position-absolute mix-blend-difference" style={{ pointerEvents: 'none' }} />
+                          <input 
+                            type="color" 
+                            className="position-absolute opacity-0 w-100 h-100" 
+                            style={{ cursor: 'pointer', transform: 'scale(1.5)' }}
+                            value={bgColor || '#f8fafc'} 
+                            onChange={(e) => setBgColor(e.target.value)} 
+                          />
+                        </div>
+                        <div>
+                          <button className="btn btn-sm btn-outline-secondary" onClick={() => setBgColor('')} disabled={!bgColor}>
+                            <Icon name="rotate-ccw" size={14} className="me-1" /> Reset ke Default
+                          </button>
+                        </div>
+                      </div>
+                      <p className="text-muted small mt-3 mb-0">Ubah warna latar belakang project sesuka hati Anda.</p>
                     </div>
                   </div>
                 </div>
