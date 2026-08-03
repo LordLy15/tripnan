@@ -89,6 +89,7 @@ const TripProvider = ({
   const [themeColor, setThemeColor] = useState(() => localStorage.getItem('tripThemeColor') || '#0ea5e9');
   const [bgColor, setBgColor] = useState(() => localStorage.getItem('tripBgColor') || '');
   const [toastMessage, setToastMessage] = useState(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const showToast = (message, type = 'success') => {
     setToastMessage({
       message,
@@ -279,9 +280,13 @@ const TripProvider = ({
     return data;
   };
   const logout = () => {
+    setShowLogoutModal(true);
+  };
+  const confirmLogout = () => {
     setCurrentUser(null);
     setActiveView('my-trips');
     setActiveTripId(null);
+    setShowLogoutModal(false);
   };
   const activeTrip = trips.find(t => t.id === activeTripId) || null;
   const createTrip = async (name, budget, category_id = null, coverUrl = null) => {
@@ -605,7 +610,39 @@ const TripProvider = ({
   };
   return /*#__PURE__*/React.createElement(TripContext.Provider, {
     value: value
-  }, children, /*#__PURE__*/React.createElement(ToastNotification, null));
+  }, children, /*#__PURE__*/React.createElement(ToastNotification, null), showLogoutModal && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "position-fixed top-0 start-0 w-100 h-100",
+    style: {
+      zIndex: 1040,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      backdropFilter: 'blur(2px)'
+    },
+    onClick: () => setShowLogoutModal(false)
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "position-fixed top-50 start-50 translate-middle bg-white p-4 rounded-4 shadow-lg text-center animate-fade-in",
+    style: {
+      zIndex: 1050,
+      width: '90%',
+      maxWidth: '320px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mb-3 text-danger"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "log-out",
+    size: 48
+  })), /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-2"
+  }, "Log out"), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted mb-4 text-sm"
+  }, "Are you sure you want to log out of your account?"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-light flex-grow-1 fw-bold",
+    onClick: () => setShowLogoutModal(false)
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-danger flex-grow-1 fw-bold",
+    onClick: confirmLogout
+  }, "Yes, Log out")))));
 };
 
 // Icons

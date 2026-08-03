@@ -70,6 +70,7 @@ const TripProvider = ({ children }) => {
   const [themeColor, setThemeColor] = useState(() => localStorage.getItem('tripThemeColor') || '#0ea5e9');
   const [bgColor, setBgColor] = useState(() => localStorage.getItem('tripBgColor') || '');
   const [toastMessage, setToastMessage] = useState(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const showToast = (message, type = 'success') => {
     setToastMessage({ message, type });
@@ -265,9 +266,14 @@ const TripProvider = ({ children }) => {
   };
 
   const logout = () => {
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
     setCurrentUser(null);
     setActiveView('my-trips');
     setActiveTripId(null);
+    setShowLogoutModal(false);
   };
 
   const activeTrip = trips.find(t => t.id === activeTripId) || null;
@@ -462,6 +468,22 @@ const TripProvider = ({ children }) => {
     <TripContext.Provider value={value}>
       {children}
       <ToastNotification />
+      {showLogoutModal && (
+        <>
+          <div className="position-fixed top-0 start-0 w-100 h-100" style={{ zIndex: 1040, backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(2px)' }} onClick={() => setShowLogoutModal(false)}></div>
+          <div className="position-fixed top-50 start-50 translate-middle bg-white p-4 rounded-4 shadow-lg text-center animate-fade-in" style={{ zIndex: 1050, width: '90%', maxWidth: '320px' }}>
+            <div className="mb-3 text-danger">
+              <Icon name="log-out" size={48} />
+            </div>
+            <h5 className="fw-bold mb-2">Log out</h5>
+            <p className="text-muted mb-4 text-sm">Are you sure you want to log out of your account?</p>
+            <div className="d-flex gap-2">
+              <button className="btn btn-light flex-grow-1 fw-bold" onClick={() => setShowLogoutModal(false)}>Cancel</button>
+              <button className="btn btn-danger flex-grow-1 fw-bold" onClick={confirmLogout}>Yes, Log out</button>
+            </div>
+          </div>
+        </>
+      )}
     </TripContext.Provider>
   );
 };
