@@ -605,7 +605,8 @@ const TripProvider = ({
     bgColor,
     setBgColor,
     toastMessage,
-    showToast
+    showToast,
+    fetchAPI
   };
   return /*#__PURE__*/React.createElement(TripContext.Provider, {
     value: value

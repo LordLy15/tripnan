@@ -461,7 +461,8 @@ const TripProvider = ({ children }) => {
     darkMode, toggleDarkMode,
     themeColor, setThemeColor,
     bgColor, setBgColor,
-    toastMessage, showToast
+    toastMessage, showToast,
+    fetchAPI
   };
 
   return (
