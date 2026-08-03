@@ -2398,6 +2398,23 @@ const AllBudgetsReport = () => {
 const AppContent = () => {
   const { currentUser, activeView, navigateTo, logout, unreadCount } = useTrip();
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setShowHeader(false);
+      } else {
+        setShowHeader(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   // Toggle sidebar
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -2429,7 +2446,14 @@ const AppContent = () => {
   return (
     <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
       {/* Global Header */}
-      <div className="d-flex align-items-center justify-content-between p-3 border-bottom bg-white sticky-top shadow-sm" style={{ zIndex: 1030 }}>
+      <div 
+        className="d-flex align-items-center justify-content-between p-3 border-bottom bg-white sticky-top shadow-sm" 
+        style={{ 
+          zIndex: 1030, 
+          transition: 'transform 0.3s ease-in-out', 
+          transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' 
+        }}
+      >
         <div className="d-flex align-items-center">
           <button onClick={toggleSidebar} className="btn p-2 me-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center">
             <Icon name="menu" size={24} />
