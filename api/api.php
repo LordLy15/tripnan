@@ -180,14 +180,15 @@ try {
             $trips = array_merge($ownedTrips, $sharedTrips);
 
             foreach ($trips as &$trip) {
-                $schStmt = $pdo->prepare("SELECT id, trip_id, date, time, title, planbudget, realbudget, iscompleted, completed_at, (CASE WHEN imageurl IS NOT NULL AND imageurl != '[]' THEN 1 ELSE 0 END) as has_photos FROM schedules WHERE trip_id = ?");
+                $schStmt = $pdo->prepare("SELECT id, trip_id, date, time, title, planbudget, realbudget, iscompleted, completed_at, is_addon, (CASE WHEN imageurl IS NOT NULL AND imageurl != '[]' THEN 1 ELSE 0 END) as has_photos FROM schedules WHERE trip_id = ?");
                 $schStmt->execute([$trip['id']]);
                 $schedules = $schStmt->fetchAll(PDO::FETCH_ASSOC);
                 foreach($schedules as &$s) {
-                    $s['isCompleted'] = (bool)($s['iscompleted'] ?? $s['isCompleted'] ?? 0);
+                    $s['isCompleted'] = filter_var($s['iscompleted'] ?? $s['isCompleted'] ?? false, FILTER_VALIDATE_BOOLEAN);
                     $s['planBudget'] = (float)($s['planbudget'] ?? $s['planBudget'] ?? 0);
                     $s['realBudget'] = (float)($s['realbudget'] ?? $s['realBudget'] ?? 0);
                     $s['has_photos'] = (bool)($s['has_photos'] ?? 0);
+                    $s['is_addon'] = filter_var($s['is_addon'] ?? false, FILTER_VALIDATE_BOOLEAN);
                     $s['photos'] = [];
                     unset($s['iscompleted'], $s['planbudget'], $s['realbudget'], $s['has_photos']);
                 }
@@ -628,7 +629,8 @@ try {
             unset($trip['totalplanbudget'], $trip['tripcode']);
 
             foreach($schedules as &$s) {
-                $s['isCompleted'] = (bool)($s['iscompleted'] ?? $s['isCompleted'] ?? 0);
+                $s['isCompleted'] = filter_var($s['iscompleted'] ?? $s['isCompleted'] ?? false, FILTER_VALIDATE_BOOLEAN);
+                $s['is_addon'] = filter_var($s['is_addon'] ?? false, FILTER_VALIDATE_BOOLEAN);
                 $s['planBudget'] = (float)($s['planbudget'] ?? $s['planBudget'] ?? 0);
                 $s['realBudget'] = (float)($s['realbudget'] ?? $s['realBudget'] ?? 0);
                 $s['imageUrl'] = $s['imageurl'] ?? $s['imageUrl'] ?? null;
@@ -677,7 +679,7 @@ try {
 
             foreach ($importData['schedules'] as $schedule) {
                 $newScheduleId = generateId();
-                $stmt = $pdo->prepare("INSERT INTO schedules (id, trip_id, date, time, title, planBudget, realBudget, isCompleted, completed_at, imageUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $pdo->prepare("INSERT INTO schedules (id, trip_id, date, time, title, planBudget, realBudget, isCompleted, completed_at, imageUrl, is_addon) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 $stmt->execute([
                     $newScheduleId, $newTripId,
                     $schedule['date'], 
@@ -686,7 +688,8 @@ try {
                     isset($schedule['realBudget']) ? $schedule['realBudget'] : 0,
                     isset($schedule['isCompleted']) && $schedule['isCompleted'] ? 1 : 0,
                     isset($schedule['completed_at']) ? $schedule['completed_at'] : null,
-                    isset($schedule['imageUrl']) ? $schedule['imageUrl'] : null
+                    isset($schedule['imageUrl']) ? $schedule['imageUrl'] : null,
+                    isset($schedule['is_addon']) && $schedule['is_addon'] ? 'true' : 'false'
                 ]);
             }
 
