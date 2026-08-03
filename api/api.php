@@ -94,6 +94,11 @@ try {
         case 'update_user': {
             $username = isset($input['username']) ? trim($input['username']) : '';
             $full_name = isset($input['full_name']) ? trim($input['full_name']) : '';
+            $email = isset($input['email']) ? trim($input['email']) : '';
+            $avatar = isset($input['avatar']) ? $input['avatar'] : '';
+            $dob = isset($input['dob']) ? trim($input['dob']) : '';
+            $gender = isset($input['gender']) ? trim($input['gender']) : '';
+            $city = isset($input['city']) ? trim($input['city']) : '';
             $password = isset($input['password']) ? $input['password'] : '';
             
             if (empty($username)) {
@@ -107,6 +112,26 @@ try {
             if (!empty($full_name)) {
                 $updates[] = "full_name = ?";
                 $params[] = $full_name;
+            }
+            if (isset($input['email'])) {
+                $updates[] = "email = ?";
+                $params[] = $email;
+            }
+            if (isset($input['avatar'])) {
+                $updates[] = "avatar = ?";
+                $params[] = $avatar;
+            }
+            if (isset($input['dob'])) {
+                $updates[] = "dob = ?";
+                $params[] = $dob ?: null;
+            }
+            if (isset($input['gender'])) {
+                $updates[] = "gender = ?";
+                $params[] = $gender;
+            }
+            if (isset($input['city'])) {
+                $updates[] = "city = ?";
+                $params[] = $city;
             }
 
             if (!empty($password)) {
@@ -719,7 +744,7 @@ try {
 
         case 'get_profile': {
             $username = isset($_GET['username']) ? $_GET['username'] : '';
-            $stmt = $pdo->prepare("SELECT id, username, email, full_name, avatar, created_at FROM users WHERE username = ?");
+            $stmt = $pdo->prepare("SELECT id, username, email, full_name, avatar, dob, gender, city, created_at FROM users WHERE username = ?");
             $stmt->execute([$username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($user) {

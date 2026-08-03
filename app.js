@@ -525,11 +525,10 @@ const TripProvider = ({
       icon
     } : c));
   };
-  const updateUser = async (full_name, password) => {
+  const updateUser = async profileData => {
     const res = await fetchAPI('update_user', {
       username: currentUser,
-      full_name,
-      password
+      ...profileData
     });
     return res;
   };
@@ -2529,7 +2528,8 @@ const SettingsPage = () => {
     setThemeColor,
     bgColor,
     setBgColor,
-    showToast
+    showToast,
+    fetchAPI
   } = useTrip();
 
   // Tab state
@@ -2544,8 +2544,25 @@ const SettingsPage = () => {
   const [city, setCity] = useState('');
   const [password, setPassword] = useState('');
   const [profilePic, setProfilePic] = useState(null);
+  const [showConfirmSaveModal, setShowConfirmSaveModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef(null);
+  useEffect(() => {
+    // Fetch profile on mount
+    fetchAPI('get_profile', {
+      username: currentUser
+    }).then(res => {
+      if (res && res.success && res.profile) {
+        const p = res.profile;
+        setFullName(p.full_name || currentUser || '');
+        setEmail(p.email || '');
+        setDob(p.dob || '');
+        setGender(p.gender || '');
+        setCity(p.city || '');
+        setProfilePic(p.avatar || null);
+      }
+    });
+  }, [currentUser]);
 
   // App preferences state
   const [language, setLanguage] = useState('id');
@@ -2559,17 +2576,29 @@ const SettingsPage = () => {
   const [editCatId, setEditCatId] = useState(null);
   const [editCatName, setEditCatName] = useState('');
   const [editCatColor, setEditCatColor] = useState('');
-  const handleSaveAccount = async e => {
+  const handleSaveAccountClick = e => {
     e.preventDefault();
+    setShowConfirmSaveModal(true);
+  };
+  const handleConfirmSaveAccount = async () => {
+    setShowConfirmSaveModal(false);
     setIsSaving(true);
-    // Include the new fields in actual app backend API call here
-    const res = await updateUser(fullName, password);
+    const profileData = {
+      full_name: fullName,
+      email: email,
+      dob: dob,
+      gender: gender,
+      city: city,
+      avatar: profilePic,
+      password: password
+    };
+    const res = await updateUser(profileData);
     setIsSaving(false);
-    if (res.success) {
+    if (res && res.success) {
       showToast('Perubahan berhasil disimpan!', 'success');
       setPassword('');
     } else {
-      showToast(res.message || 'Gagal menyimpan perubahan', 'danger');
+      showToast(res?.message || 'Gagal menyimpan perubahan', 'danger');
     }
   };
   const handleProfilePicChange = async e => {
@@ -2758,7 +2787,7 @@ const SettingsPage = () => {
     size: 18,
     className: "me-2"
   }), "Account Settings"), /*#__PURE__*/React.createElement("form", {
-    onSubmit: handleSaveAccount,
+    onSubmit: handleSaveAccountClick,
     style: {
       maxWidth: '600px'
     }
@@ -2912,7 +2941,39 @@ const SettingsPage = () => {
     name: "save",
     size: 18,
     className: "me-2"
-  }), isSaving ? 'Menyimpan...' : 'Simpan Perubahan'))), activeTab === 'categories' && /*#__PURE__*/React.createElement("div", {
+  }), isSaving ? 'Menyimpan...' : 'Simpan Perubahan')), showConfirmSaveModal && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "position-fixed top-0 start-0 w-100 h-100",
+    style: {
+      zIndex: 1040,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      backdropFilter: 'blur(2px)'
+    },
+    onClick: () => setShowConfirmSaveModal(false)
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "position-fixed top-50 start-50 translate-middle bg-white p-4 rounded-4 shadow-lg text-center animate-fade-in",
+    style: {
+      zIndex: 1050,
+      width: '90%',
+      maxWidth: '320px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mb-3 text-primary"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "save",
+    size: 48
+  })), /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-2"
+  }, "Simpan Perubahan?"), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted mb-4 text-sm"
+  }, "Apakah Anda yakin ingin menyimpan perubahan pada profil Anda?"), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-light flex-grow-1 fw-bold",
+    onClick: () => setShowConfirmSaveModal(false)
+  }, "Batal"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-primary flex-grow-1 fw-bold",
+    onClick: handleConfirmSaveAccount
+  }, "Ya, Simpan"))))), activeTab === 'categories' && /*#__PURE__*/React.createElement("div", {
     className: "animate-fade-in"
   }, /*#__PURE__*/React.createElement("div", {
     className: "d-flex justify-content-between align-items-center mb-4"

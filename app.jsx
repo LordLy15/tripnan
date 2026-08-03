@@ -418,8 +418,8 @@ const TripProvider = ({ children }) => {
     setCategories(categories.map(c => c.id === id ? { ...c, name, color, icon } : c));
   };
 
-  const updateUser = async (full_name, password) => {
-    const res = await fetchAPI('update_user', { username: currentUser, full_name, password });
+  const updateUser = async (profileData) => {
+    const res = await fetchAPI('update_user', { username: currentUser, ...profileData });
     return res;
   };
 
@@ -1664,7 +1664,7 @@ const BudgetReport = () => {
 
 // Settings Page
 const SettingsPage = () => {
-  const { currentUser, navigateTo, updateUser, darkMode, toggleDarkMode, logout, categories, createCategory, deleteCategory, updateCategory, themeColor, setThemeColor, bgColor, setBgColor, showToast } = useTrip();
+  const { currentUser, navigateTo, updateUser, darkMode, toggleDarkMode, logout, categories, createCategory, deleteCategory, updateCategory, themeColor, setThemeColor, bgColor, setBgColor, showToast, fetchAPI } = useTrip();
   
   // Tab state
   const [activeTab, setActiveTab] = useState('account');
@@ -1678,8 +1678,25 @@ const SettingsPage = () => {
   const [city, setCity] = useState('');
   const [password, setPassword] = useState('');
   const [profilePic, setProfilePic] = useState(null);
+  const [showConfirmSaveModal, setShowConfirmSaveModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    // Fetch profile on mount
+    fetchAPI('get_profile', { username: currentUser }).then(res => {
+      if (res && res.success && res.profile) {
+        const p = res.profile;
+        setFullName(p.full_name || currentUser || '');
+        setEmail(p.email || '');
+        setDob(p.dob || '');
+        setGender(p.gender || '');
+        setCity(p.city || '');
+        setProfilePic(p.avatar || null);
+      }
+    });
+  }, [currentUser]);
   
   // App preferences state
   const [language, setLanguage] = useState('id');
@@ -1694,17 +1711,30 @@ const SettingsPage = () => {
   const [editCatName, setEditCatName] = useState('');
   const [editCatColor, setEditCatColor] = useState('');
 
-  const handleSaveAccount = async (e) => {
+  const handleSaveAccountClick = (e) => {
     e.preventDefault();
+    setShowConfirmSaveModal(true);
+  };
+
+  const handleConfirmSaveAccount = async () => {
+    setShowConfirmSaveModal(false);
     setIsSaving(true);
-    // Include the new fields in actual app backend API call here
-    const res = await updateUser(fullName, password); 
+    const profileData = {
+      full_name: fullName,
+      email: email,
+      dob: dob,
+      gender: gender,
+      city: city,
+      avatar: profilePic,
+      password: password
+    };
+    const res = await updateUser(profileData); 
     setIsSaving(false);
-    if (res.success) {
+    if (res && res.success) {
       showToast('Perubahan berhasil disimpan!', 'success');
       setPassword('');
     } else {
-      showToast(res.message || 'Gagal menyimpan perubahan', 'danger');
+      showToast(res?.message || 'Gagal menyimpan perubahan', 'danger');
     }
   };
 
@@ -1819,7 +1849,7 @@ const SettingsPage = () => {
               {activeTab === 'account' && (
                 <div className="animate-fade-in">
                   <h5 className="fw-bold mb-4"><Icon name="user" size={18} className="me-2" />Account Settings</h5>
-                  <form onSubmit={handleSaveAccount} style={{ maxWidth: '600px' }}>
+                  <form onSubmit={handleSaveAccountClick} style={{ maxWidth: '600px' }}>
                     <div className="d-flex flex-column align-items-center mb-4">
                       <div className="position-relative" style={{ width: '100px', height: '100px' }}>
                         <div className="rounded-circle bg-light border d-flex align-items-center justify-content-center overflow-hidden w-100 h-100">
@@ -1877,6 +1907,22 @@ const SettingsPage = () => {
                       {isSaving ? 'Menyimpan...' : 'Simpan Perubahan'}
                     </button>
                   </form>
+                  {showConfirmSaveModal && (
+                    <>
+                      <div className="position-fixed top-0 start-0 w-100 h-100" style={{ zIndex: 1040, backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(2px)' }} onClick={() => setShowConfirmSaveModal(false)}></div>
+                      <div className="position-fixed top-50 start-50 translate-middle bg-white p-4 rounded-4 shadow-lg text-center animate-fade-in" style={{ zIndex: 1050, width: '90%', maxWidth: '320px' }}>
+                        <div className="mb-3 text-primary">
+                          <Icon name="save" size={48} />
+                        </div>
+                        <h5 className="fw-bold mb-2">Simpan Perubahan?</h5>
+                        <p className="text-muted mb-4 text-sm">Apakah Anda yakin ingin menyimpan perubahan pada profil Anda?</p>
+                        <div className="d-flex gap-2">
+                          <button className="btn btn-light flex-grow-1 fw-bold" onClick={() => setShowConfirmSaveModal(false)}>Batal</button>
+                          <button className="btn btn-primary flex-grow-1 fw-bold" onClick={handleConfirmSaveAccount}>Ya, Simpan</button>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
 
