@@ -691,6 +691,7 @@ const MyTrips = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [showJoin, setShowJoin] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showCatDropdown, setShowCatDropdown] = useState(false);
   const [newTrip, setNewTrip] = useState({ name: '', budget: '', category_id: '' });
   const [joinCode, setJoinCode] = useState('');
   const [joinError, setJoinError] = useState('');
@@ -775,10 +776,41 @@ const MyTrips = () => {
           <p className="text-muted mb-0">{trips.length} trips planned</p>
         </div>
         <div className="col-12 col-md d-flex justify-content-md-end flex-wrap gap-2">
-          <select className="form-select" value={filterCat} onChange={e => setFilterCat(e.target.value)} style={{ width: 'auto', flexGrow: 1 }}>
-            <option value="">All Categories</option>
-            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-          </select>
+          <div className="position-relative" style={{ flexGrow: 1, minWidth: '150px', height: '39px' }}>
+            <button 
+              className="form-select text-start" 
+              type="button" 
+              onClick={() => setShowCatDropdown(!showCatDropdown)}
+              style={{ width: '100%', height: '100%' }}
+            >
+              {filterCat === '' ? 'All Categories' : (categories.find(c => c.id == filterCat)?.name || 'All Categories')}
+            </button>
+            {showCatDropdown && (
+              <>
+                <div className="position-fixed top-0 start-0 w-100 h-100" style={{ zIndex: 999 }} onClick={() => setShowCatDropdown(false)}></div>
+                <ul className="dropdown-menu shadow show py-1 w-100" style={{ position: 'absolute', left: 0, top: '100%', zIndex: 1000, marginTop: '4px', borderRadius: '8px', border: '1px solid var(--border)', maxHeight: '300px', overflowY: 'auto' }}>
+                  <li>
+                    <button 
+                      className={`dropdown-item py-2 text-truncate ${filterCat === '' ? 'bg-light text-primary fw-bold' : ''}`} 
+                      onClick={() => { setFilterCat(''); setShowCatDropdown(false); }}
+                    >
+                      All Categories
+                    </button>
+                  </li>
+                  {categories.map(c => (
+                    <li key={c.id}>
+                      <button 
+                        className={`dropdown-item py-2 text-truncate ${filterCat == c.id ? 'bg-light text-primary fw-bold' : ''}`} 
+                        onClick={() => { setFilterCat(c.id); setShowCatDropdown(false); }}
+                      >
+                        {c.name}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
           {showCreate || showJoin ? (
             <button className="btn btn-outline-secondary" onClick={() => { setShowCreate(false); setShowJoin(false); }}>
               <Icon name="x" size={16} /> Cancel

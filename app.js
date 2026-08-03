@@ -934,6 +934,7 @@ const MyTrips = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [showJoin, setShowJoin] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showCatDropdown, setShowCatDropdown] = useState(false);
   const [newTrip, setNewTrip] = useState({
     name: '',
     budget: '',
@@ -1051,20 +1052,55 @@ const MyTrips = () => {
     className: "text-muted mb-0"
   }, trips.length, " trips planned")), /*#__PURE__*/React.createElement("div", {
     className: "col-12 col-md d-flex justify-content-md-end flex-wrap gap-2"
-  }, /*#__PURE__*/React.createElement("select", {
-    className: "form-select",
-    value: filterCat,
-    onChange: e => setFilterCat(e.target.value),
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "position-relative",
     style: {
-      width: 'auto',
-      flexGrow: 1
+      flexGrow: 1,
+      minWidth: '150px',
+      height: '39px'
     }
-  }, /*#__PURE__*/React.createElement("option", {
-    value: ""
-  }, "All Categories"), categories.map(c => /*#__PURE__*/React.createElement("option", {
-    key: c.id,
-    value: c.id
-  }, c.name))), showCreate || showJoin ? /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "form-select text-start",
+    type: "button",
+    onClick: () => setShowCatDropdown(!showCatDropdown),
+    style: {
+      width: '100%',
+      height: '100%'
+    }
+  }, filterCat === '' ? 'All Categories' : categories.find(c => c.id == filterCat)?.name || 'All Categories'), showCatDropdown && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "position-fixed top-0 start-0 w-100 h-100",
+    style: {
+      zIndex: 999
+    },
+    onClick: () => setShowCatDropdown(false)
+  }), /*#__PURE__*/React.createElement("ul", {
+    className: "dropdown-menu shadow show py-1 w-100",
+    style: {
+      position: 'absolute',
+      left: 0,
+      top: '100%',
+      zIndex: 1000,
+      marginTop: '4px',
+      borderRadius: '8px',
+      border: '1px solid var(--border)',
+      maxHeight: '300px',
+      overflowY: 'auto'
+    }
+  }, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("button", {
+    className: `dropdown-item py-2 text-truncate ${filterCat === '' ? 'bg-light text-primary fw-bold' : ''}`,
+    onClick: () => {
+      setFilterCat('');
+      setShowCatDropdown(false);
+    }
+  }, "All Categories")), categories.map(c => /*#__PURE__*/React.createElement("li", {
+    key: c.id
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `dropdown-item py-2 text-truncate ${filterCat == c.id ? 'bg-light text-primary fw-bold' : ''}`,
+    onClick: () => {
+      setFilterCat(c.id);
+      setShowCatDropdown(false);
+    }
+  }, c.name)))))), showCreate || showJoin ? /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline-secondary",
     onClick: () => {
       setShowCreate(false);
