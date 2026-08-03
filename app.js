@@ -2935,7 +2935,7 @@ const SettingsPage = () => {
     className: "row g-3"
   }, categories.map(cat => /*#__PURE__*/React.createElement("div", {
     key: cat.id,
-    className: "col-md-4 col-sm-6"
+    className: "col-6 col-md-4"
   }, /*#__PURE__*/React.createElement("div", {
     className: "card-trip text-center py-3 h-100 position-relative group-hover-show",
     style: {

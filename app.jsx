@@ -1892,7 +1892,7 @@ const SettingsPage = () => {
 
                   <div className="row g-3">
                     {categories.map(cat => (
-                      <div key={cat.id} className="col-md-4 col-sm-6">
+                      <div key={cat.id} className="col-6 col-md-4">
                         <div className="card-trip text-center py-3 h-100 position-relative group-hover-show" style={{ borderTop: `4px solid ${cat.color}` }}>
                           <div className="card-body p-2 d-flex flex-column justify-content-center">
                             {editCatId === cat.id ? (
