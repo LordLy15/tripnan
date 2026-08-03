@@ -3706,6 +3706,23 @@ const AppContent = () => {
     unreadCount
   } = useTrip();
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
+  const [showHeader, setShowHeader] = useState(true);
+  const lastScrollY = useRef(0);
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        setShowHeader(false);
+      } else {
+        setShowHeader(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener('scroll', handleScroll, {
+      passive: true
+    });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Toggle sidebar
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -3740,7 +3757,9 @@ const AppContent = () => {
   }, /*#__PURE__*/React.createElement("div", {
     className: "d-flex align-items-center justify-content-between p-3 border-bottom bg-white sticky-top shadow-sm",
     style: {
-      zIndex: 1030
+      zIndex: 1030,
+      transition: 'top 0.3s ease-in-out',
+      top: showHeader ? '0' : '-100px'
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "d-flex align-items-center"
