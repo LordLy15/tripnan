@@ -295,6 +295,7 @@ a:hover {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+  padding-top: max(15vh, 1.5rem);
   background: linear-gradient(135deg, var(--primary-100) 0%, var(--gray-50) 50%, var(--primary-50) 100%);
   position: relative;
 }
@@ -500,6 +501,7 @@ a:hover {
 @media (max-width: 768px) {
   .sidebar {
     top: 0;
+    bottom: 0;
     height: 100vh;
     height: 100dvh;
     transform: translateX(-100%);
