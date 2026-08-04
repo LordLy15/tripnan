@@ -292,10 +292,8 @@ a:hover {
   min-height: 100vh; /* fallback */
   min-height: 100dvh;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   padding: 1.5rem;
-  padding-top: max(15vh, 1.5rem);
   background: linear-gradient(135deg, var(--primary-100) 0%, var(--gray-50) 50%, var(--primary-50) 100%);
   position: relative;
 }
@@ -318,6 +316,7 @@ a:hover {
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
   padding: 2.5rem;
+  margin: auto;
   position: relative;
   border: 1px solid var(--border-light);
 }
@@ -500,10 +499,9 @@ a:hover {
 /* Mobile Sidebar - Hidden by default */
 @media (max-width: 768px) {
   .sidebar {
-    top: 0;
-    bottom: 0;
-    height: 100vh;
-    height: 100dvh;
+    top: 0 !important;
+    bottom: 0 !important;
+    height: auto !important;
     transform: translateX(-100%);
     z-index: 1050; /* Above header and overlay */
   }
