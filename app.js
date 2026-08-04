@@ -3781,15 +3781,7 @@ const AppContent = () => {
     size: 24
   }), " TripNan")), /*#__PURE__*/React.createElement("div", {
     className: "d-flex align-items-center gap-1 ms-auto"
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "/app-release.apk",
-    className: "btn p-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center",
-    title: "Install Android App",
-    download: true
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "smartphone",
-    size: 22
-  })), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("button", {
     className: "btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center",
     onClick: () => {
       navigateTo('notifications');
@@ -3895,7 +3887,7 @@ const AppContent = () => {
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "settings",
     size: 16
-  }), " Settings"), /*#__PURE__*/React.createElement("a", {
+  }), " Settings"), !/wv/i.test(navigator.userAgent) && /*#__PURE__*/React.createElement("a", {
     href: "/app-release.apk",
     className: "btn btn-sm btn-primary w-100 d-flex align-items-center justify-content-center gap-2 mt-2 shadow-sm",
     download: true,
