@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tripnan-cache-v8';
+const CACHE_NAME = 'tripnan-cache-v9';
 const urlsToCache = [
   '/',
   '/index.html',
