@@ -1513,7 +1513,7 @@ const TripDashboard = () => {
   }, "Rp ", parseFloat(activeTrip.totalPlanBudget).toLocaleString('en-US')))), /*#__PURE__*/React.createElement("div", {
     className: "d-flex gap-2"
   }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-light border d-flex align-items-center gap-2 px-3",
+    className: "btn btn-outline-secondary d-flex align-items-center gap-2 px-3",
     onClick: () => {
       setEdit(activeTrip);
       setEditing(true);

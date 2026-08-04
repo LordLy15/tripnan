@@ -1068,7 +1068,7 @@ const TripDashboard = () => {
           </p>
         </div>
         <div className="d-flex gap-2">
-          <button className="btn btn-light border d-flex align-items-center gap-2 px-3" onClick={() => { setEdit(activeTrip); setEditing(true) }}>
+          <button className="btn btn-outline-secondary d-flex align-items-center gap-2 px-3" onClick={() => { setEdit(activeTrip); setEditing(true) }}>
             <Icon name="edit" size={16} /> Edit
           </button>
           
