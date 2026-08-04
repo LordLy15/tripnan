@@ -64,8 +64,6 @@ fun WebViewScreen(url: String, onWebViewCreated: (WebView) -> Unit) {
                 settings.javaScriptEnabled = true
                 settings.domStorageEnabled = true
                 settings.cacheMode = WebSettings.LOAD_DEFAULT
-                settings.useWideViewPort = true
-                settings.loadWithOverviewMode = true
                 webViewClient = WebViewClient()
                 webChromeClient = WebChromeClient()
                 
