@@ -289,22 +289,21 @@ a:hover {
    ============================================ */
 
 .login-page {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow-y: auto;
-  padding: calc(1rem + env(safe-area-inset-top, 0px)) 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+  padding: 1rem;
   background: linear-gradient(135deg, var(--primary-100) 0%, var(--gray-50) 50%, var(--primary-50) 100%);
+  position: relative;
 }
 
 .login-page::before {
   content: '';
   position: absolute;
-  top: -50%;
-  right: -25%;
+  top: 0;
+  left: 0;
   width: 80%;
   height: 100%;
   background: radial-gradient(ellipse, rgba(14, 165, 233, 0.08) 0%, transparent 70%);
@@ -320,7 +319,6 @@ a:hover {
   padding: 2.5rem;
   position: relative;
   border: 1px solid var(--border-light);
-  margin: auto;
 }
 
 .login-card .icon-circle {
