@@ -3818,10 +3818,26 @@ const AppContent = () => {
     onClick: closeSidebar
   }), /*#__PURE__*/React.createElement("div", {
     className: `sidebar ${sidebarOpen ? 'open' : ''}`
-  }, /*#__PURE__*/React.createElement("nav", {
-    className: "sidebar-nav pt-3"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "sidebar-group-title text-muted small fw-bold px-3 mb-2 mt-2 text-uppercase"
+    className: "d-flex align-items-center justify-content-between mb-4 d-md-none"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fw-bold fs-5 d-flex align-items-center gap-2",
+    style: {
+      color: 'var(--primary)'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "map",
+    size: 24
+  }), " TripNan"), /*#__PURE__*/React.createElement("button", {
+    className: "btn p-1 border-0 bg-transparent text-muted",
+    onClick: closeSidebar
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 24
+  }))), /*#__PURE__*/React.createElement("nav", {
+    className: "sidebar-nav pt-1"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-group-title text-muted small fw-bold px-3 mb-2 text-uppercase"
   }, "Dashboard"), [{
     key: 'my-trips',
     icon: 'map',

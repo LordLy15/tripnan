@@ -2486,8 +2486,17 @@ const AppContent = () => {
 
       {/* Sidebar */}
       <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-        <nav className="sidebar-nav pt-3">
-          <div className="sidebar-group-title text-muted small fw-bold px-3 mb-2 mt-2 text-uppercase">Dashboard</div>
+        <div className="d-flex align-items-center justify-content-between mb-4 d-md-none">
+          <div className="fw-bold fs-5 d-flex align-items-center gap-2" style={{ color: 'var(--primary)' }}>
+            <Icon name="map" size={24} /> TripNan
+          </div>
+          <button className="btn p-1 border-0 bg-transparent text-muted" onClick={closeSidebar}>
+            <Icon name="x" size={24} />
+          </button>
+        </div>
+        
+        <nav className="sidebar-nav pt-1">
+          <div className="sidebar-group-title text-muted small fw-bold px-3 mb-2 text-uppercase">Dashboard</div>
           {[
             { key: 'my-trips', icon: 'map', label: 'My Trips' },
             { key: 'all-budgets', icon: 'dollar-sign', label: 'All Budgets' }
