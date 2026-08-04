@@ -2465,9 +2465,7 @@ const AppContent = () => {
           </div>
         </div>
         <div className="d-flex align-items-center gap-1 ms-auto">
-          <a href="/app-release.apk" className="btn p-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center" title="Install Android App" download>
-            <Icon name="smartphone" size={22} />
-          </a>
+
           <button className="btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center" onClick={() => { navigateTo('notifications'); closeSidebar(); }} title="Notifications">
             <Icon name="bell" size={22} />
             {unreadCount > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.6rem', padding: '0.25em 0.4em', transform: 'translate(-60%, 20%)' }}>{unreadCount}</span>}
