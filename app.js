@@ -3666,7 +3666,8 @@ const TemplatesPage = () => {
 
 // Notifications Dropdown
 const NotificationsDropdown = ({
-  onClose
+  onClose,
+  toggleId
 }) => {
   const {
     notifications,
@@ -3682,13 +3683,17 @@ const NotificationsDropdown = ({
   const dropdownRef = useRef(null);
   useEffect(() => {
     const handleClickOutside = event => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        onClose();
+      if (dropdownRef.current && dropdownRef.current.contains(event.target)) {
+        return;
       }
+      if (toggleId && event.target.closest(`#${toggleId}`)) {
+        return;
+      }
+      onClose();
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [onClose]);
+  }, [onClose, toggleId]);
   return /*#__PURE__*/React.createElement("div", {
     ref: dropdownRef,
     className: "position-absolute end-0 mt-2 bg-white shadow-lg rounded",
@@ -4235,6 +4240,7 @@ const AppContent = () => {
   }, /*#__PURE__*/React.createElement("div", {
     className: "position-relative"
   }, /*#__PURE__*/React.createElement("button", {
+    id: "notification-toggle-btn",
     className: "btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center",
     onClick: () => setShowNotifications(!showNotifications),
     title: "Notifications"
@@ -4249,7 +4255,8 @@ const AppContent = () => {
       transform: 'translate(-60%, 20%)'
     }
   }, unreadCount)), showNotifications && /*#__PURE__*/React.createElement(NotificationsDropdown, {
-    onClose: () => setShowNotifications(false)
+    onClose: () => setShowNotifications(false),
+    toggleId: "notification-toggle-btn"
   })), /*#__PURE__*/React.createElement("button", {
     className: "btn p-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center",
     onClick: logout,

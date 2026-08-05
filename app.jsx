@@ -2368,19 +2368,23 @@ const TemplatesPage = () => {
 };
 
 // Notifications Dropdown
-const NotificationsDropdown = ({ onClose }) => {
+const NotificationsDropdown = ({ onClose, toggleId }) => {
   const { notifications, markNotificationRead, markAllNotificationsRead, acceptFriendRequest, rejectFriendRequest, acceptTripInvite, rejectTripInvite, acceptTripJoinRequest, rejectTripJoinRequest } = useTrip();
   
   const dropdownRef = useRef(null);
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        onClose();
+      if (dropdownRef.current && dropdownRef.current.contains(event.target)) {
+        return;
       }
+      if (toggleId && event.target.closest(`#${toggleId}`)) {
+        return;
+      }
+      onClose();
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [onClose]);
+  }, [onClose, toggleId]);
 
   return (
     <div ref={dropdownRef} className="position-absolute end-0 mt-2 bg-white shadow-lg rounded" style={{ width: '350px', maxHeight: '450px', overflowY: 'auto', zIndex: 1050, border: '1px solid var(--border)', top: '100%' }}>
@@ -2806,11 +2810,11 @@ const AppContent = () => {
         </div>
         <div className="d-flex align-items-center gap-1 ms-auto">
           <div className="position-relative">
-            <button className="btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center" onClick={() => setShowNotifications(!showNotifications)} title="Notifications">
+            <button id="notification-toggle-btn" className="btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center" onClick={() => setShowNotifications(!showNotifications)} title="Notifications">
               <Icon name="bell" size={22} />
               {unreadCount > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.6rem', padding: '0.25em 0.4em', transform: 'translate(-60%, 20%)' }}>{unreadCount}</span>}
             </button>
-            {showNotifications && <NotificationsDropdown onClose={() => setShowNotifications(false)} />}
+            {showNotifications && <NotificationsDropdown onClose={() => setShowNotifications(false)} toggleId="notification-toggle-btn" />}
           </div>
           <button className="btn p-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center" onClick={logout} title="Logout">
             <Icon name="log-out" size={22} />
