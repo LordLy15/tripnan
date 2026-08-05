@@ -289,20 +289,20 @@ a:hover {
    ============================================ */
 
 .login-page {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  min-height: 100vh; /* fallback */
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: calc(1rem + env(safe-area-inset-top, 0px)) calc(1rem + env(safe-area-inset-right, 0px)) calc(1rem + env(safe-area-inset-bottom, 0px)) calc(1rem + env(safe-area-inset-left, 0px));
   background: linear-gradient(135deg, var(--primary-100) 0%, var(--gray-50) 50%, var(--primary-50) 100%);
-  overflow-y: auto;
+  position: relative;
 }
 
 .login-page::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -50%;
+  right: -25%;
   width: 80%;
   height: 100%;
   background: radial-gradient(ellipse, rgba(14, 165, 233, 0.08) 0%, transparent 70%);
@@ -313,62 +313,24 @@ a:hover {
   width: 100%;
   max-width: 400px;
   background: var(--bg-card);
-  border-radius: 24px; /* Highly rounded like mockup */
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
-  padding: 3rem 2.5rem;
+  padding: 2.5rem;
+  margin: auto;
   position: relative;
   border: 1px solid var(--border-light);
-  margin: auto; /* Safe centering! */
 }
 
 .login-card .icon-circle {
-  width: 60px;
-  height: 60px;
-  background: var(--primary-100);
-  color: var(--primary-dark); /* darker blue icon like mockup */
-  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.25rem;
-}
-
-.login-card .input-group {
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  transition: var(--transition);
-  background: var(--bg-card);
-}
-
-.login-card .input-group:focus-within {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 0.25rem rgba(14, 165, 233, 0.15);
-}
-
-.login-card .input-group-text {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-}
-
-.login-card .form-control {
-  border: none;
-  background: transparent;
-  padding-left: 0;
-}
-
-.login-card .form-control:focus {
-  box-shadow: none;
-}
-
-.login-card .btn-primary {
-  border-radius: var(--radius-md);
-  padding: 0.8rem;
-  font-weight: 600;
-  margin-top: 1rem;
-  background-color: var(--primary);
-  border: none;
+  margin: 0 auto 1.5rem;
+  background: var(--primary-100);
+  color: var(--primary);
 }
 
 .login-card h2 {
