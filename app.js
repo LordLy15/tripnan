@@ -81,6 +81,7 @@ const TripProvider = ({
   const [categories, setCategories] = useState([]);
   const [templates, setTemplates] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [globalFriends, setGlobalFriends] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [activeView, setActiveView] = useState('my-trips');
@@ -250,6 +251,12 @@ const TripProvider = ({
     });
     if (count.success) setUnreadCount(count.count || 0);
   };
+  const fetchGlobalFriends = async user => {
+    const data = await fetchAPI('get_global_friends', {
+      user_id: user
+    });
+    if (data.success) setGlobalFriends(data.friends || []);
+  };
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('tripUser', currentUser);
@@ -257,6 +264,7 @@ const TripProvider = ({
       fetchCategories(currentUser);
       fetchTemplates(currentUser);
       fetchNotifications(currentUser);
+      fetchGlobalFriends(currentUser);
     } else {
       localStorage.removeItem('tripUser');
       setTrips([]);
@@ -396,7 +404,7 @@ const TripProvider = ({
     } : t));
     fetchAPI('add_friend', friend);
   };
-  const removeFriend = async id => {
+  const removeFriend = id => {
     setTrips(trips.map(t => t.id === activeTripId ? {
       ...t,
       friends: t.friends.filter(f => f.id !== id)
@@ -404,6 +412,33 @@ const TripProvider = ({
     fetchAPI('delete_friend', {
       id
     });
+  };
+  const searchUsers = async query => {
+    if (!query) return [];
+    const data = await fetchAPI('search_users', {
+      query,
+      user_id: currentUser
+    });
+    return data.success ? data.users || [] : [];
+  };
+  const addGlobalFriend = async friendUsername => {
+    const res = await fetchAPI('add_global_friend', {
+      user_username: currentUser,
+      friend_username: friendUsername
+    });
+    if (res.success) {
+      await fetchGlobalFriends(currentUser);
+    }
+    return res;
+  };
+  const removeGlobalFriend = async id => {
+    const res = await fetchAPI('remove_global_friend', {
+      id
+    });
+    if (res.success) {
+      setGlobalFriends(globalFriends.filter(f => f.relationship_id !== id));
+    }
+    return res;
   };
   const joinTrip = async tripCode => {
     const data = await fetchAPI('join_trip', {
@@ -583,6 +618,10 @@ const TripProvider = ({
     deleteSchedule,
     addFriend,
     removeFriend,
+    globalFriends,
+    searchUsers,
+    addGlobalFriend,
+    removeGlobalFriend,
     joinTrip,
     exportTrip,
     importTrip,
@@ -3702,6 +3741,196 @@ const AllBudgetsReport = () => {
   }, trip.isOver ? '+' : '-', "Rp ", Math.abs(trip.diff).toLocaleString('en-US'))))))))));
 };
 
+// Global Friends Page
+const GlobalFriends = () => {
+  const {
+    globalFriends,
+    searchUsers,
+    addGlobalFriend,
+    removeGlobalFriend
+  } = useTrip();
+  const [filter, setFilter] = useState('');
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [addStatus, setAddStatus] = useState(null);
+  const handleSearch = async e => {
+    e.preventDefault();
+    if (!searchQuery) return;
+    setIsSearching(true);
+    setAddStatus(null);
+    const results = await searchUsers(searchQuery);
+    setSearchResults(results);
+    setIsSearching(false);
+  };
+  const handleAdd = async username => {
+    setAddStatus({
+      loading: username
+    });
+    const res = await addGlobalFriend(username);
+    if (res.success) {
+      setAddStatus({
+        success: `Added ${username}`
+      });
+      setSearchResults(searchResults.filter(u => u.username !== username));
+    } else {
+      setAddStatus({
+        error: res.message
+      });
+    }
+  };
+  const handleRemove = async (id, e) => {
+    e.stopPropagation();
+    if (confirm('Remove this friend?')) {
+      await removeGlobalFriend(id);
+    }
+  };
+  const filteredFriends = globalFriends.filter(f => f.username.toLowerCase().includes(filter.toLowerCase()) || f.email.toLowerCase().includes(filter.toLowerCase()));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-fade-in p-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between align-items-center mb-4"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    className: "fw-bold mb-1"
+  }, "Friends"), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted mb-0"
+  }, "Your connected travel buddies")), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-primary rounded-pill d-flex align-items-center gap-2",
+    onClick: () => setShowAddModal(true)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user-plus",
+    size: 18
+  }), " ", /*#__PURE__*/React.createElement("span", {
+    className: "d-none d-sm-inline"
+  }, "Find Friends"))), /*#__PURE__*/React.createElement("div", {
+    className: "card-trip mb-4 p-2 d-flex align-items-center",
+    style: {
+      borderRadius: '50px'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "search",
+    size: 18,
+    className: "text-muted ms-3 me-2"
+  }), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-control border-0 bg-transparent shadow-none",
+    placeholder: "Filter friends by username or email...",
+    value: filter,
+    onChange: e => setFilter(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "row g-3"
+  }, filteredFriends.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "col-12 text-center py-5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "module-icon mx-auto mb-3",
+    style: {
+      background: 'var(--gray-200)',
+      color: 'var(--text-muted)'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "users",
+    size: 32
+  })), /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold"
+  }, "No friends found"), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted"
+  }, "You haven't connected with anyone yet.")) : filteredFriends.map(friend => /*#__PURE__*/React.createElement("div", {
+    key: friend.relationship_id,
+    className: "col-12 col-md-6 col-lg-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-trip d-flex align-items-center p-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "avatar me-3 bg-primary text-white d-flex align-items-center justify-content-center fw-bold fs-5 rounded-circle",
+    style: {
+      width: 50,
+      height: 50
+    }
+  }, friend.username.charAt(0).toUpperCase()), /*#__PURE__*/React.createElement("div", {
+    className: "flex-grow-1"
+  }, /*#__PURE__*/React.createElement("h6", {
+    className: "fw-bold mb-0"
+  }, friend.username), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small mb-0"
+  }, friend.email)), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-danger btn-sm rounded-circle p-2",
+    onClick: e => handleRemove(friend.relationship_id, e),
+    title: "Remove Friend"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "user-minus",
+    size: 16
+  })))))), showAddModal && /*#__PURE__*/React.createElement("div", {
+    className: "modal-backdrop-custom d-flex align-items-center justify-content-center",
+    onClick: () => setShowAddModal(false)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "auth-card w-100",
+    style: {
+      maxWidth: 500,
+      margin: '20px'
+    },
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex justify-content-between align-items-center mb-4"
+  }, /*#__PURE__*/React.createElement("h4", {
+    className: "fw-bold mb-0"
+  }, "Find Friends"), /*#__PURE__*/React.createElement("button", {
+    className: "btn p-0 text-muted",
+    onClick: () => setShowAddModal(false)
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 24
+  }))), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleSearch,
+    className: "mb-4 d-flex gap-2"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-control",
+    placeholder: "Enter username or email...",
+    value: searchQuery,
+    onChange: e => setSearchQuery(e.target.value)
+  }), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "btn btn-primary",
+    disabled: isSearching
+  }, isSearching ? /*#__PURE__*/React.createElement("span", {
+    className: "spinner-border spinner-border-sm"
+  }) : /*#__PURE__*/React.createElement(Icon, {
+    name: "search",
+    size: 18
+  }))), addStatus?.success && /*#__PURE__*/React.createElement("div", {
+    className: "alert alert-success py-2"
+  }, addStatus.success), addStatus?.error && /*#__PURE__*/React.createElement("div", {
+    className: "alert alert-danger py-2"
+  }, addStatus.error), /*#__PURE__*/React.createElement("div", {
+    className: "search-results",
+    style: {
+      maxHeight: '300px',
+      overflowY: 'auto'
+    }
+  }, searchResults.length === 0 && !isSearching && searchQuery && /*#__PURE__*/React.createElement("p", {
+    className: "text-muted text-center py-3"
+  }, "No users found."), searchResults.map(user => /*#__PURE__*/React.createElement("div", {
+    key: user.username,
+    className: "d-flex align-items-center justify-content-between p-3 border-bottom border-light"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "d-flex align-items-center gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "avatar bg-secondary text-white d-flex align-items-center justify-content-center fw-bold rounded-circle",
+    style: {
+      width: 40,
+      height: 40
+    }
+  }, user.username.charAt(0).toUpperCase()), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "fw-bold"
+  }, user.username), /*#__PURE__*/React.createElement("div", {
+    className: "text-muted small"
+  }, user.email))), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline-primary rounded-pill px-3",
+    onClick: () => handleAdd(user.username),
+    disabled: addStatus?.loading === user.username
+  }, addStatus?.loading === user.username ? 'Adding...' : 'Add')))))));
+};
+
 // App Content
 const AppContent = () => {
   const {
@@ -3752,7 +3981,8 @@ const AppContent = () => {
     settings: /*#__PURE__*/React.createElement(SettingsPage, null),
     templates: /*#__PURE__*/React.createElement(TemplatesPage, null),
     notifications: /*#__PURE__*/React.createElement(NotificationsPage, null),
-    'all-budgets': /*#__PURE__*/React.createElement(AllBudgetsReport, null)
+    'all-budgets': /*#__PURE__*/React.createElement(AllBudgetsReport, null),
+    'global-friends': /*#__PURE__*/React.createElement(GlobalFriends, null)
   };
   return /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3842,6 +4072,10 @@ const AppContent = () => {
     key: 'all-budgets',
     icon: 'dollar-sign',
     label: 'All Budgets'
+  }, {
+    key: 'global-friends',
+    icon: 'users',
+    label: 'Friends'
   }].map(item => /*#__PURE__*/React.createElement("button", {
     key: item.key,
     className: `sidebar-nav-item ${activeView === item.key ? 'active' : ''}`,

@@ -27,6 +27,20 @@ try {
     exit();
 }
 
+try {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS global_friends (
+            id VARCHAR(50) PRIMARY KEY,
+            user_username VARCHAR(100) NOT NULL,
+            friend_username VARCHAR(100) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(user_username, friend_username)
+        )
+    ");
+} catch (PDOException $e) {
+    // Ignore error if table exists
+}
+
 function generateId() {
     return bin2hex(random_bytes(12));
 }
@@ -788,6 +802,59 @@ try {
             $hashedPassword = password_hash($new_password, PASSWORD_DEFAULT);
             $stmt = $pdo->prepare("UPDATE users SET password = ? WHERE username = ?");
             $stmt->execute([$hashedPassword, $username]);
+            echo json_encode(['success' => true]);
+            break;
+        }
+
+        case 'search_users': {
+            $query = isset($_GET['query']) ? trim($_GET['query']) : '';
+            $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
+            if (empty($query)) {
+                echo json_encode(['success' => true, 'users' => []]);
+                break;
+            }
+            $stmt = $pdo->prepare("SELECT username, email FROM users WHERE (username ILIKE ? OR email ILIKE ?) AND username != ? LIMIT 10");
+            $stmt->execute(["%$query%", "%$query%", $user_id]);
+            echo json_encode(['success' => true, 'users' => $stmt->fetchAll(PDO::FETCH_ASSOC)]);
+            break;
+        }
+
+        case 'get_global_friends': {
+            $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
+            $stmt = $pdo->prepare("SELECT g.id as relationship_id, u.username, u.email FROM global_friends g JOIN users u ON g.friend_username = u.username WHERE g.user_username = ? ORDER BY g.created_at DESC");
+            $stmt->execute([$user_id]);
+            echo json_encode(['success' => true, 'friends' => $stmt->fetchAll(PDO::FETCH_ASSOC)]);
+            break;
+        }
+
+        case 'add_global_friend': {
+            $user_username = isset($input['user_username']) ? $input['user_username'] : '';
+            $friend_username = isset($input['friend_username']) ? $input['friend_username'] : '';
+            
+            if (empty($user_username) || empty($friend_username)) {
+                echo json_encode(['success' => false, 'message' => 'Missing data']);
+                break;
+            }
+            
+            try {
+                $id = generateId();
+                $stmt = $pdo->prepare("INSERT INTO global_friends (id, user_username, friend_username) VALUES (?, ?, ?)");
+                $stmt->execute([$id, $user_username, $friend_username]);
+                echo json_encode(['success' => true, 'id' => $id]);
+            } catch (PDOException $e) {
+                if ($e->getCode() == '23505') {
+                    echo json_encode(['success' => false, 'message' => 'User is already your friend']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Database error']);
+                }
+            }
+            break;
+        }
+
+        case 'remove_global_friend': {
+            $id = isset($input['id']) ? $input['id'] : '';
+            $stmt = $pdo->prepare("DELETE FROM global_friends WHERE id = ?");
+            $stmt->execute([$id]);
             echo json_encode(['success' => true]);
             break;
         }
