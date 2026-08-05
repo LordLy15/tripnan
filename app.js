@@ -464,8 +464,53 @@ const TripProvider = ({
       trip_code: tripCode,
       user: currentUser
     });
-    if (data.success) await fetchTrips(currentUser);
+    // Doesn't instantly join anymore, so no need to fetchTrips immediately unless it was instant (which we changed)
     return data;
+  };
+  const inviteToTrip = async (tripId, friendUsername) => {
+    return await fetchAPI('invite_to_trip', {
+      trip_id: tripId,
+      friend_username: friendUsername,
+      user: currentUser
+    });
+  };
+  const acceptTripInvite = async notificationId => {
+    const res = await fetchAPI('accept_trip_invite', {
+      notification_id: notificationId
+    });
+    if (res.success) {
+      await fetchTrips(currentUser);
+      await fetchNotifications(currentUser);
+    }
+    return res;
+  };
+  const rejectTripInvite = async notificationId => {
+    const res = await fetchAPI('reject_trip_invite', {
+      notification_id: notificationId
+    });
+    if (res.success) {
+      await fetchNotifications(currentUser);
+    }
+    return res;
+  };
+  const acceptTripJoinRequest = async notificationId => {
+    const res = await fetchAPI('accept_trip_join_request', {
+      notification_id: notificationId
+    });
+    if (res.success) {
+      await fetchTrips(currentUser);
+      await fetchNotifications(currentUser);
+    }
+    return res;
+  };
+  const rejectTripJoinRequest = async notificationId => {
+    const res = await fetchAPI('reject_trip_join_request', {
+      notification_id: notificationId
+    });
+    if (res.success) {
+      await fetchNotifications(currentUser);
+    }
+    return res;
   };
   const exportTrip = async () => {
     const data = await fetchAPI('export_trip', {
@@ -644,6 +689,11 @@ const TripProvider = ({
     acceptFriendRequest,
     rejectFriendRequest,
     joinTrip,
+    inviteToTrip,
+    acceptTripInvite,
+    rejectTripInvite,
+    acceptTripJoinRequest,
+    rejectTripJoinRequest,
     exportTrip,
     importTrip,
     saveTemplate,
@@ -2352,16 +2402,35 @@ const Friends = () => {
     activeTrip,
     addFriend,
     removeFriend,
-    navigateTo
+    navigateTo,
+    globalFriends,
+    inviteToTrip
   } = useTrip();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [inviteStatus, setInviteStatus] = useState({});
   if (!activeTrip) return null;
   const handleAdd = async e => {
     e.preventDefault();
     await addFriend(name, email);
     setName('');
     setEmail('');
+  };
+  const handleInvite = async friendUsername => {
+    setInviteStatus({
+      loading: friendUsername
+    });
+    const res = await inviteToTrip(activeTrip.id, friendUsername);
+    if (res.success) {
+      setInviteStatus({
+        success: `Invite sent to ${friendUsername}!`
+      });
+    } else {
+      setInviteStatus({
+        error: res.message
+      });
+    }
+    setTimeout(() => setInviteStatus({}), 3000);
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-fade-in"
@@ -2430,7 +2499,52 @@ const Friends = () => {
     name: "user-plus",
     size: 16,
     className: "me-2"
-  }), " Add Friend"))))), /*#__PURE__*/React.createElement("div", {
+  }), " Add Friend")))), /*#__PURE__*/React.createElement("div", {
+    className: "card-trip mt-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-body p-4"
+  }, /*#__PURE__*/React.createElement("h5", {
+    className: "fw-bold mb-3 text-primary"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "users",
+    size: 18
+  }), " Invite Global Friends"), inviteStatus.success && /*#__PURE__*/React.createElement("div", {
+    className: "alert alert-success py-2 small"
+  }, inviteStatus.success), inviteStatus.error && /*#__PURE__*/React.createElement("div", {
+    className: "alert alert-danger py-2 small"
+  }, inviteStatus.error), globalFriends.length === 0 ? /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small text-center mb-0"
+  }, "No global friends yet.") : /*#__PURE__*/React.createElement("div", {
+    className: "d-flex flex-column gap-2",
+    style: {
+      maxHeight: '200px',
+      overflowY: 'auto'
+    }
+  }, globalFriends.map(friend => {
+    const isAlreadyInTrip = activeTrip.friends?.some(f => f.name === friend.username) || activeTrip.owner === friend.username;
+    return /*#__PURE__*/React.createElement("div", {
+      key: friend.relationship_id,
+      className: "d-flex align-items-center justify-content-between p-2 border rounded"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "d-flex align-items-center gap-2"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold",
+      style: {
+        width: 30,
+        height: 30,
+        fontSize: '0.8rem'
+      }
+    }, friend.username.charAt(0).toUpperCase()), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "fw-bold",
+      style: {
+        fontSize: '0.9rem'
+      }
+    }, friend.username))), /*#__PURE__*/React.createElement("button", {
+      className: "btn btn-sm btn-outline-primary py-1 px-2",
+      onClick: () => handleInvite(friend.username),
+      disabled: isAlreadyInTrip || inviteStatus.loading === friend.username
+    }, isAlreadyInTrip ? 'Added' : inviteStatus.loading === friend.username ? '...' : 'Invite'));
+  }))))), /*#__PURE__*/React.createElement("div", {
     className: "col-md-7"
   }, /*#__PURE__*/React.createElement("div", {
     className: "card-trip h-100"
@@ -3559,7 +3673,11 @@ const NotificationsDropdown = ({
     markNotificationRead,
     markAllNotificationsRead,
     acceptFriendRequest,
-    rejectFriendRequest
+    rejectFriendRequest,
+    acceptTripInvite,
+    rejectTripInvite,
+    acceptTripJoinRequest,
+    rejectTripJoinRequest
   } = useTrip();
   const dropdownRef = useRef(null);
   useEffect(() => {
@@ -3605,9 +3723,9 @@ const NotificationsDropdown = ({
   }, notifications.map(n => /*#__PURE__*/React.createElement("div", {
     key: n.id,
     className: `p-3 border-bottom ${!n.is_read ? 'bg-light' : 'bg-white'}`,
-    onClick: () => !n.is_read && n.type !== 'friend_request' && markNotificationRead(n.id),
+    onClick: () => !n.is_read && n.type !== 'friend_request' && n.type !== 'trip_invite' && n.type !== 'trip_join_request' && markNotificationRead(n.id),
     style: {
-      cursor: n.type === 'friend_request' && !n.is_read ? 'default' : 'pointer',
+      cursor: (n.type === 'friend_request' || n.type === 'trip_invite' || n.type === 'trip_join_request') && !n.is_read ? 'default' : 'pointer',
       transition: 'background-color 0.2s'
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -3620,7 +3738,7 @@ const NotificationsDropdown = ({
       flexShrink: 0
     }
   }, /*#__PURE__*/React.createElement(Icon, {
-    name: n.type === 'friend_request' ? 'user-plus' : n.type === 'trip_shared' ? 'share-2' : 'info',
+    name: n.type === 'friend_request' ? 'user-plus' : n.type === 'trip_invite' ? 'mail' : n.type === 'trip_join_request' ? 'user-plus' : n.type === 'trip_shared' ? 'share-2' : 'info',
     size: 18
   })), /*#__PURE__*/React.createElement("div", {
     className: "flex-grow-1"
@@ -3647,21 +3765,29 @@ const NotificationsDropdown = ({
     style: {
       fontSize: '0.75rem'
     }
-  }, new Date(n.created_at).toLocaleString('en-US')), n.type === 'friend_request' && !n.is_read && /*#__PURE__*/React.createElement("div", {
+  }, new Date(n.created_at).toLocaleString('en-US')), (n.type === 'friend_request' || n.type === 'trip_invite' || n.type === 'trip_join_request') && !n.is_read && /*#__PURE__*/React.createElement("div", {
     className: "mt-2 d-flex gap-2"
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-primary w-50",
     onClick: e => {
       e.stopPropagation();
-      acceptFriendRequest(n.id);
+      if (n.type === 'friend_request') acceptFriendRequest(n.id);else if (n.type === 'trip_invite') acceptTripInvite(n.id);else if (n.type === 'trip_join_request') acceptTripJoinRequest(n.id);
     }
-  }, "Accept"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    size: 14,
+    className: "me-1"
+  }), " Accept"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline-danger w-50",
     onClick: e => {
       e.stopPropagation();
-      rejectFriendRequest(n.id);
+      if (n.type === 'friend_request') rejectFriendRequest(n.id);else if (n.type === 'trip_invite') rejectTripInvite(n.id);else if (n.type === 'trip_join_request') rejectTripJoinRequest(n.id);
     }
-  }, "Reject"))))))));
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 14,
+    className: "me-1"
+  }), " Reject"))))))));
 };
 
 // ---------------------------------------------------------

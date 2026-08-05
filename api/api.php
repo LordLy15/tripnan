@@ -402,11 +402,141 @@ try {
                 break;
             }
 
-            // Add share entry
-            $stmt = $pdo->prepare("INSERT INTO trip_shares (id, trip_id, shared_with, permission) VALUES (?, ?, ?, 'view')");
-            $stmt->execute([generateId(), $trip['id'], $user]);
+            // Check if request already sent
+            $stmt = $pdo->prepare("SELECT id FROM notifications WHERE user_id = ? AND type = 'trip_join_request' AND data->>'requester' = ? AND data->>'trip_id' = ? AND is_read = false");
+            $stmt->execute([$trip['owner'], $user, $trip['id']]);
+            if ($stmt->fetch()) {
+                echo json_encode(['success' => false, 'message' => 'Join request already sent to the trip owner.']);
+                break;
+            }
 
-            echo json_encode(['success' => true, 'message' => 'Successfully joined trip!', 'trip_id' => $trip['id'], 'trip_name' => $trip['name']]);
+            // Send notification to trip owner
+            $id = generateId();
+            $title = "Trip Join Request";
+            $message = "{$user} wants to join your trip: {$trip['name']}";
+            $data = json_encode(['requester' => $user, 'trip_id' => $trip['id'], 'trip_name' => $trip['name']]);
+            $stmt = $pdo->prepare("INSERT INTO notifications (id, user_id, type, title, message, data) VALUES (?, ?, 'trip_join_request', ?, ?, ?)");
+            $stmt->execute([$id, $trip['owner'], $title, $message, $data]);
+
+            echo json_encode(['success' => true, 'message' => 'Request sent to trip owner!']);
+            break;
+        }
+
+        case 'invite_to_trip': {
+            $trip_id = isset($input['trip_id']) ? $input['trip_id'] : '';
+            $friend_username = isset($input['friend_username']) ? $input['friend_username'] : '';
+            $inviter = isset($input['user']) ? $input['user'] : '';
+
+            if (empty($trip_id) || empty($friend_username) || empty($inviter)) {
+                echo json_encode(['success' => false, 'message' => 'Missing data']);
+                break;
+            }
+
+            $stmt = $pdo->prepare("SELECT name FROM trips WHERE id = ?");
+            $stmt->execute([$trip_id]);
+            $trip = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$trip) {
+                echo json_encode(['success' => false, 'message' => 'Trip not found']);
+                break;
+            }
+
+            // Check if already in trip
+            $stmt = $pdo->prepare("SELECT id FROM trip_shares WHERE trip_id = ? AND shared_with = ?");
+            $stmt->execute([$trip_id, $friend_username]);
+            if ($stmt->fetch()) {
+                echo json_encode(['success' => false, 'message' => 'User is already in this trip']);
+                break;
+            }
+
+            // Check if invite already sent
+            $stmt = $pdo->prepare("SELECT id FROM notifications WHERE user_id = ? AND type = 'trip_invite' AND data->>'trip_id' = ? AND is_read = false");
+            $stmt->execute([$friend_username, $trip_id]);
+            if ($stmt->fetch()) {
+                echo json_encode(['success' => false, 'message' => 'Invite already sent']);
+                break;
+            }
+
+            $id = generateId();
+            $title = "Trip Invitation";
+            $message = "{$inviter} invited you to join trip: {$trip['name']}";
+            $data = json_encode(['inviter' => $inviter, 'trip_id' => $trip_id, 'trip_name' => $trip['name']]);
+            $stmt = $pdo->prepare("INSERT INTO notifications (id, user_id, type, title, message, data) VALUES (?, ?, 'trip_invite', ?, ?, ?)");
+            $stmt->execute([$id, $friend_username, $title, $message, $data]);
+
+            echo json_encode(['success' => true, 'message' => 'Invite sent!']);
+            break;
+        }
+
+        case 'accept_trip_invite':
+        case 'accept_trip_join_request': {
+            $notification_id = isset($input['notification_id']) ? $input['notification_id'] : '';
+            if (!$notification_id) {
+                echo json_encode(['success' => false, 'message' => 'Missing notification_id']);
+                break;
+            }
+            try {
+                $stmt = $pdo->prepare("SELECT * FROM notifications WHERE id = ?");
+                $stmt->execute([$notification_id]);
+                $notif = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if (!$notif || ($notif['type'] !== 'trip_invite' && $notif['type'] !== 'trip_join_request')) {
+                    echo json_encode(['success' => false, 'message' => 'Invalid notification']);
+                    break;
+                }
+                
+                $data = json_decode($notif['data'], true);
+                $trip_id = $data['trip_id'];
+                $user_to_add = $notif['type'] === 'trip_invite' ? $notif['user_id'] : $data['requester'];
+                
+                // Add to trip_shares
+                $stmt = $pdo->prepare("SELECT id FROM trip_shares WHERE trip_id = ? AND shared_with = ?");
+                $stmt->execute([$trip_id, $user_to_add]);
+                if (!$stmt->fetch()) {
+                    $id_share = generateId();
+                    $stmt = $pdo->prepare("INSERT INTO trip_shares (id, trip_id, shared_with, permission) VALUES (?, ?, ?, 'view')");
+                    $stmt->execute([$id_share, $trip_id, $user_to_add]);
+                }
+                
+                // Get user email
+                $stmt = $pdo->prepare("SELECT email FROM users WHERE username = ?");
+                $stmt->execute([$user_to_add]);
+                $u = $stmt->fetch(PDO::FETCH_ASSOC);
+                $email = $u ? $u['email'] : '';
+                
+                // Add to friends (travel buddies)
+                $stmt = $pdo->prepare("SELECT id FROM friends WHERE trip_id = ? AND name = ?");
+                $stmt->execute([$trip_id, $user_to_add]);
+                if (!$stmt->fetch()) {
+                    $id_friend = generateId();
+                    $stmt = $pdo->prepare("INSERT INTO friends (id, trip_id, name, email) VALUES (?, ?, ?, ?)");
+                    $stmt->execute([$id_friend, $trip_id, $user_to_add, $email]);
+                }
+                
+                // Mark as read
+                $stmt = $pdo->prepare("UPDATE notifications SET is_read = true WHERE id = ?");
+                $stmt->execute([$notification_id]);
+                
+                echo json_encode(['success' => true, 'message' => 'Accepted']);
+            } catch (PDOException $e) {
+                echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+            }
+            break;
+        }
+
+        case 'reject_trip_invite':
+        case 'reject_trip_join_request': {
+            $notification_id = isset($input['notification_id']) ? $input['notification_id'] : '';
+            if (!$notification_id) {
+                echo json_encode(['success' => false, 'message' => 'Missing notification_id']);
+                break;
+            }
+            try {
+                $stmt = $pdo->prepare("UPDATE notifications SET is_read = true WHERE id = ?");
+                $stmt->execute([$notification_id]);
+                echo json_encode(['success' => true, 'message' => 'Rejected']);
+            } catch (PDOException $e) {
+                echo json_encode(['success' => false, 'message' => 'Database error']);
+            }
             break;
         }
 
