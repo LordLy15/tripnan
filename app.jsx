@@ -2500,7 +2500,9 @@ const GlobalFriends = () => {
       <div className="row g-3">
         {filteredFriends.length === 0 ? (
           <div className="col-12 text-center py-5">
-            <div className="module-icon mx-auto mb-3" style={{ background: 'var(--gray-200)', color: 'var(--text-muted)' }}><Icon name="users" size={32} /></div>
+            <div className="d-flex align-items-center justify-content-center mx-auto mb-3 rounded-circle" style={{ width: 80, height: 80, background: 'var(--primary-subtle)', color: 'var(--primary)' }}>
+              <Icon name="users" size={40} />
+            </div>
             <h5 className="fw-bold">No friends found</h5>
             <p className="text-muted">You haven't connected with anyone yet.</p>
           </div>
@@ -2525,8 +2527,9 @@ const GlobalFriends = () => {
       </div>
 
       {showAddModal && (
-        <div className="modal-backdrop-custom d-flex align-items-center justify-content-center" onClick={() => setShowAddModal(false)}>
-          <div className="auth-card w-100" style={{ maxWidth: 500, margin: '20px' }} onClick={e => e.stopPropagation()}>
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ zIndex: 1050 }}>
+          <div className="position-fixed top-0 start-0 w-100 h-100" style={{ zIndex: 1040, backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(2px)' }} onClick={() => setShowAddModal(false)}></div>
+          <div className="card-trip position-relative p-4 w-100" style={{ zIndex: 1050, maxWidth: '500px', margin: '20px' }}>
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h4 className="fw-bold mb-0">Find Friends</h4>
               <button className="btn p-0 text-muted" onClick={() => setShowAddModal(false)}><Icon name="x" size={24} /></button>
@@ -2564,11 +2567,11 @@ const GlobalFriends = () => {
                     </div>
                   </div>
                   <button 
-                    className="btn btn-sm btn-outline-primary rounded-pill px-3" 
+                    className="btn btn-sm btn-outline-primary rounded-pill px-3 d-flex align-items-center gap-1 fw-medium" 
                     onClick={() => handleAdd(user.username)}
                     disabled={addStatus?.loading === user.username}
                   >
-                    {addStatus?.loading === user.username ? 'Adding...' : 'Add'}
+                    {addStatus?.loading === user.username ? <><span className="spinner-border spinner-border-sm"></span> Adding</> : <><Icon name="user-plus" size={14} /> Add</>}
                   </button>
                 </div>
               ))}

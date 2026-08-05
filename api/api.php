@@ -807,8 +807,8 @@ try {
         }
 
         case 'search_users': {
-            $query = isset($_GET['query']) ? trim($_GET['query']) : '';
-            $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
+            $query = isset($input['query']) ? trim($input['query']) : '';
+            $user_id = isset($input['user_id']) ? $input['user_id'] : '';
             if (empty($query)) {
                 echo json_encode(['success' => true, 'users' => []]);
                 break;

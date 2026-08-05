@@ -3823,14 +3823,16 @@ const GlobalFriends = () => {
   }, filteredFriends.length === 0 ? /*#__PURE__*/React.createElement("div", {
     className: "col-12 text-center py-5"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "module-icon mx-auto mb-3",
+    className: "d-flex align-items-center justify-content-center mx-auto mb-3 rounded-circle",
     style: {
-      background: 'var(--gray-200)',
-      color: 'var(--text-muted)'
+      width: 80,
+      height: 80,
+      background: 'var(--primary-subtle)',
+      color: 'var(--primary)'
     }
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "users",
-    size: 32
+    size: 40
   })), /*#__PURE__*/React.createElement("h5", {
     className: "fw-bold"
   }, "No friends found"), /*#__PURE__*/React.createElement("p", {
@@ -3860,15 +3862,25 @@ const GlobalFriends = () => {
     name: "user-minus",
     size: 16
   })))))), showAddModal && /*#__PURE__*/React.createElement("div", {
-    className: "modal-backdrop-custom d-flex align-items-center justify-content-center",
-    onClick: () => setShowAddModal(false)
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "auth-card w-100",
+    className: "position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center",
     style: {
-      maxWidth: 500,
-      margin: '20px'
+      zIndex: 1050
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "position-fixed top-0 start-0 w-100 h-100",
+    style: {
+      zIndex: 1040,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      backdropFilter: 'blur(2px)'
     },
-    onClick: e => e.stopPropagation()
+    onClick: () => setShowAddModal(false)
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "card-trip position-relative p-4 w-100",
+    style: {
+      zIndex: 1050,
+      maxWidth: '500px',
+      margin: '20px'
+    }
   }, /*#__PURE__*/React.createElement("div", {
     className: "d-flex justify-content-between align-items-center mb-4"
   }, /*#__PURE__*/React.createElement("h4", {
@@ -3925,10 +3937,15 @@ const GlobalFriends = () => {
   }, user.username), /*#__PURE__*/React.createElement("div", {
     className: "text-muted small"
   }, user.email))), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-sm btn-outline-primary rounded-pill px-3",
+    className: "btn btn-sm btn-outline-primary rounded-pill px-3 d-flex align-items-center gap-1 fw-medium",
     onClick: () => handleAdd(user.username),
     disabled: addStatus?.loading === user.username
-  }, addStatus?.loading === user.username ? 'Adding...' : 'Add')))))));
+  }, addStatus?.loading === user.username ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    className: "spinner-border spinner-border-sm"
+  }), " Adding") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Icon, {
+    name: "user-plus",
+    size: 14
+  }), " Add"))))))));
 };
 
 // App Content
