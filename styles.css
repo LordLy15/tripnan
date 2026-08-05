@@ -297,8 +297,7 @@ a:hover {
 
 /* Scaffold + SingleChildScrollView + Center Equivalent */
 .login-page {
-  min-height: 100vh;
-  min-height: 100dvh; /* dvh lebih akurat di mobile */
+  height: 100%; /* Menggunakan 100% untuk menghindari bug 100dvh yang macet di Android WebView saat keyboard ditutup */
   display: flex;
   flex-direction: column;
   overflow-y: auto; /* Wajib agar bisa di-scroll saat keyboard Android muncul */
