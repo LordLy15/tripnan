@@ -4344,9 +4344,9 @@ const AppContent = () => {
     name: "settings",
     size: 16
   }), " Settings"), !/wv/i.test(navigator.userAgent) && /*#__PURE__*/React.createElement("a", {
-    href: "/app-release.apk",
+    href: "/TripNan.apk",
     className: "btn btn-sm btn-primary w-100 d-flex align-items-center justify-content-center gap-2 mt-2 shadow-sm",
-    download: true,
+    download: "TripNan.apk",
     title: "Download Android App"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "smartphone",

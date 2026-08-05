@@ -2883,9 +2883,9 @@ const AppContent = () => {
           </button>
           {!/wv/i.test(navigator.userAgent) && (
             <a 
-              href="/app-release.apk" 
+              href="/TripNan.apk" 
               className="btn btn-sm btn-primary w-100 d-flex align-items-center justify-content-center gap-2 mt-2 shadow-sm" 
-              download
+              download="TripNan.apk"
               title="Download Android App"
             >
               <Icon name="smartphone" size={16} /> Download App
