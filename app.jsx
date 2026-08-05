@@ -574,7 +574,8 @@ const icons = {
   'send': '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
   'play': '<polygon points="5 3 19 12 5 21 5 3"/>',
   'log-in': '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>',
-  'smartphone': '<rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>'
+  'smartphone': '<rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>',
+  'search': '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>'
 };
 
 const Icon = ({ name, size = 20, className = "", color }) => (
@@ -2531,20 +2532,25 @@ const GlobalFriends = () => {
           <div className="position-fixed top-0 start-0 w-100 h-100" style={{ zIndex: 1040, backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(2px)' }} onClick={() => setShowAddModal(false)}></div>
           <div className="card-trip position-relative p-4 w-100" style={{ zIndex: 1050, maxWidth: '500px', margin: '20px' }}>
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <h4 className="fw-bold mb-0">Find Friends</h4>
+              <h4 className="fw-bold mb-0 d-flex align-items-center gap-2">
+                <Icon name="user-plus" size={24} className="text-primary" /> Find Friends
+              </h4>
               <button className="btn p-0 text-muted" onClick={() => setShowAddModal(false)}><Icon name="x" size={24} /></button>
             </div>
             
             <form onSubmit={handleSearch} className="mb-4 d-flex gap-2">
-              <input 
-                type="text" 
-                className="form-control" 
-                placeholder="Enter username or email..." 
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-              />
-              <button type="submit" className="btn btn-primary" disabled={isSearching}>
-                {isSearching ? <span className="spinner-border spinner-border-sm"></span> : <Icon name="search" size={18} />}
+              <div className="d-flex align-items-center form-control p-0 ps-3">
+                <Icon name="search" size={18} className="text-muted" />
+                <input 
+                  type="text" 
+                  className="form-control border-0 shadow-none bg-transparent" 
+                  placeholder="Enter username or email..." 
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <button type="submit" className="btn btn-primary px-4" disabled={isSearching}>
+                {isSearching ? <span className="spinner-border spinner-border-sm"></span> : 'Search'}
               </button>
             </form>
 
