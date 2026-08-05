@@ -91,9 +91,11 @@ body {
   background: var(--bg-body);
   color: var(--text-primary);
   line-height: 1.6;
-  font-size: 14px;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+}
+
+.form-control, .form-select {
+  font-size: 16px !important; /* Mencegah auto-zoom di WebView Android saat difokuskan */
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -295,11 +297,15 @@ a:hover {
 
 /* Scaffold + SingleChildScrollView + Center Equivalent */
 .login-page {
-  height: 100%;
-  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh; /* dvh lebih akurat di mobile */
   display: flex;
   flex-direction: column;
-  overflow-y: auto; /* Mencegah overflow saat keyboard muncul */
+  overflow-y: auto; /* Wajib agar bisa di-scroll saat keyboard Android muncul */
+  padding-top: max(24px, env(safe-area-inset-top));
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
   background: linear-gradient(135deg, var(--primary-100) 0%, var(--gray-50) 50%, var(--primary-50) 100%);
 }
 
