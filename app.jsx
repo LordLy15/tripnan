@@ -63,6 +63,7 @@ const TripProvider = ({ children }) => {
   const [templates, setTemplates] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [globalFriends, setGlobalFriends] = useState([]);
+  const [pendingRequests, setPendingRequests] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [activeView, setActiveView] = useState('my-trips');
@@ -246,6 +247,11 @@ const TripProvider = ({ children }) => {
     if (data.success) setGlobalFriends(data.friends || []);
   };
 
+  const fetchPendingRequests = async (user) => {
+    const data = await fetchAPI('get_pending_requests', { user: user });
+    if (data.success) setPendingRequests(data.pendingRequests || []);
+  };
+
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('tripUser', currentUser);
@@ -254,6 +260,7 @@ const TripProvider = ({ children }) => {
       fetchTemplates(currentUser);
       fetchNotifications(currentUser);
       fetchGlobalFriends(currentUser);
+      fetchPendingRequests(currentUser);
     } else {
       localStorage.removeItem('tripUser');
       setTrips([]);
@@ -357,11 +364,23 @@ const TripProvider = ({ children }) => {
   };
 
   const addGlobalFriend = async (friendUsername) => {
-    const res = await fetchAPI('add_global_friend', { user_username: currentUser, friend_username: friendUsername });
-    if (res.success) {
-      await fetchGlobalFriends(currentUser);
+    const data = await fetchAPI('add_global_friend', { user_username: currentUser, friend_username: friendUsername });
+    if (data.success) {
+      showToast('Friend request sent!', 'success');
+      await fetchPendingRequests(currentUser);
+    } else {
+      showToast(data.message || 'Failed to send request.', 'danger');
     }
-    return res;
+    return data;
+  };
+
+  const cancelFriendRequest = async (id) => {
+    const data = await fetchAPI('cancel_friend_request', { id });
+    if (data.success) {
+      showToast('Friend request canceled', 'success');
+      await fetchPendingRequests(currentUser);
+    }
+    return data;
   };
 
   const removeGlobalFriend = async (id) => {
@@ -536,6 +555,7 @@ const TripProvider = ({ children }) => {
     addSchedule, updateSchedule, updateSchedulePhotos, deleteSchedule,
     addFriend, removeFriend,
     globalFriends, searchUsers, addGlobalFriend, removeGlobalFriend,
+    pendingRequests, cancelFriendRequest,
     acceptFriendRequest, rejectFriendRequest,
     joinTrip, inviteToTrip, acceptTripInvite, rejectTripInvite, acceptTripJoinRequest, rejectTripJoinRequest,
     exportTrip, importTrip,
@@ -2584,7 +2604,7 @@ const AllBudgetsReport = () => {
 
 // Global Friends Page
 const GlobalFriends = () => {
-  const { globalFriends, searchUsers, addGlobalFriend, removeGlobalFriend } = useTrip();
+  const { globalFriends, searchUsers, addGlobalFriend, removeGlobalFriend, pendingRequests, cancelFriendRequest } = useTrip();
   const [filter, setFilter] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -2676,6 +2696,32 @@ const GlobalFriends = () => {
           ))
         )}
       </div>
+
+      {pendingRequests.length > 0 && (
+        <div className="mt-5">
+          <h4 className="fw-bold mb-3 d-flex align-items-center gap-2">
+            <Icon name="clock" size={20} className="text-warning" /> Pending Requests
+          </h4>
+          <div className="row g-3">
+            {pendingRequests.map(req => (
+              <div key={req.id} className="col-12 col-md-6 col-lg-4">
+                <div className="card-trip d-flex align-items-center p-3">
+                  <div className="avatar me-3 bg-warning text-white d-flex align-items-center justify-content-center fw-bold fs-5 rounded-circle" style={{ width: 50, height: 50 }}>
+                    {req.target_username.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="flex-grow-1">
+                    <h6 className="fw-bold mb-0">{req.target_username}</h6>
+                    <p className="text-muted small mb-0">Waiting for approval</p>
+                  </div>
+                  <button className="btn btn-outline-secondary btn-sm rounded-circle p-2" onClick={() => cancelFriendRequest(req.id)} title="Cancel Request">
+                    <Icon name="x" size={16} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {showAddModal && (
         <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ zIndex: 1050 }}>

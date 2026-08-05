@@ -1072,6 +1072,27 @@ try {
             break;
         }
 
+        case 'get_pending_requests': {
+            $user = isset($input['user']) ? $input['user'] : '';
+            $stmt = $pdo->prepare("
+                SELECT n.id, n.user_id as target_username 
+                FROM notifications n 
+                WHERE n.type = 'friend_request' AND n.is_read = false AND n.data->>'sender' = ?
+            ");
+            $stmt->execute([$user]);
+            $pending = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode(['success' => true, 'pendingRequests' => $pending]);
+            break;
+        }
+
+        case 'cancel_friend_request': {
+            $id = isset($input['id']) ? $input['id'] : '';
+            $stmt = $pdo->prepare("DELETE FROM notifications WHERE id = ?");
+            $stmt->execute([$id]);
+            echo json_encode(['success' => true]);
+            break;
+        }
+
         default:
             echo json_encode(['success' => false, 'message' => 'Unknown action: ' . $action]);
             break;

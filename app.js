@@ -82,6 +82,7 @@ const TripProvider = ({
   const [templates, setTemplates] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [globalFriends, setGlobalFriends] = useState([]);
+  const [pendingRequests, setPendingRequests] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [activeView, setActiveView] = useState('my-trips');
@@ -257,6 +258,12 @@ const TripProvider = ({
     });
     if (data.success) setGlobalFriends(data.friends || []);
   };
+  const fetchPendingRequests = async user => {
+    const data = await fetchAPI('get_pending_requests', {
+      user: user
+    });
+    if (data.success) setPendingRequests(data.pendingRequests || []);
+  };
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('tripUser', currentUser);
@@ -265,6 +272,7 @@ const TripProvider = ({
       fetchTemplates(currentUser);
       fetchNotifications(currentUser);
       fetchGlobalFriends(currentUser);
+      fetchPendingRequests(currentUser);
     } else {
       localStorage.removeItem('tripUser');
       setTrips([]);
@@ -422,14 +430,27 @@ const TripProvider = ({
     return data.success ? data.users || [] : [];
   };
   const addGlobalFriend = async friendUsername => {
-    const res = await fetchAPI('add_global_friend', {
+    const data = await fetchAPI('add_global_friend', {
       user_username: currentUser,
       friend_username: friendUsername
     });
-    if (res.success) {
-      await fetchGlobalFriends(currentUser);
+    if (data.success) {
+      showToast('Friend request sent!', 'success');
+      await fetchPendingRequests(currentUser);
+    } else {
+      showToast(data.message || 'Failed to send request.', 'danger');
     }
-    return res;
+    return data;
+  };
+  const cancelFriendRequest = async id => {
+    const data = await fetchAPI('cancel_friend_request', {
+      id
+    });
+    if (data.success) {
+      showToast('Friend request canceled', 'success');
+      await fetchPendingRequests(currentUser);
+    }
+    return data;
   };
   const removeGlobalFriend = async id => {
     const res = await fetchAPI('remove_global_friend', {
@@ -686,6 +707,8 @@ const TripProvider = ({
     searchUsers,
     addGlobalFriend,
     removeGlobalFriend,
+    pendingRequests,
+    cancelFriendRequest,
     acceptFriendRequest,
     rejectFriendRequest,
     joinTrip,
@@ -3945,7 +3968,9 @@ const GlobalFriends = () => {
     globalFriends,
     searchUsers,
     addGlobalFriend,
-    removeGlobalFriend
+    removeGlobalFriend,
+    pendingRequests,
+    cancelFriendRequest
   } = useTrip();
   const [filter, setFilter] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
@@ -4059,7 +4084,41 @@ const GlobalFriends = () => {
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "user-minus",
     size: 16
-  })))))), showAddModal && /*#__PURE__*/React.createElement("div", {
+  })))))), pendingRequests.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "mt-5"
+  }, /*#__PURE__*/React.createElement("h4", {
+    className: "fw-bold mb-3 d-flex align-items-center gap-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "clock",
+    size: 20,
+    className: "text-warning"
+  }), " Pending Requests"), /*#__PURE__*/React.createElement("div", {
+    className: "row g-3"
+  }, pendingRequests.map(req => /*#__PURE__*/React.createElement("div", {
+    key: req.id,
+    className: "col-12 col-md-6 col-lg-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-trip d-flex align-items-center p-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "avatar me-3 bg-warning text-white d-flex align-items-center justify-content-center fw-bold fs-5 rounded-circle",
+    style: {
+      width: 50,
+      height: 50
+    }
+  }, req.target_username.charAt(0).toUpperCase()), /*#__PURE__*/React.createElement("div", {
+    className: "flex-grow-1"
+  }, /*#__PURE__*/React.createElement("h6", {
+    className: "fw-bold mb-0"
+  }, req.target_username), /*#__PURE__*/React.createElement("p", {
+    className: "text-muted small mb-0"
+  }, "Waiting for approval")), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline-secondary btn-sm rounded-circle p-2",
+    onClick: () => cancelFriendRequest(req.id),
+    title: "Cancel Request"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "x",
+    size: 16
+  }))))))), showAddModal && /*#__PURE__*/React.createElement("div", {
     className: "position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center",
     style: {
       zIndex: 1050
