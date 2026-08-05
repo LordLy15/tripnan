@@ -372,6 +372,23 @@ const TripProvider = ({ children }) => {
     return res;
   };
 
+  const acceptFriendRequest = async (notificationId) => {
+    const res = await fetchAPI('accept_friend_request', { notification_id: notificationId });
+    if (res.success) {
+      await fetchGlobalFriends(currentUser);
+      await fetchNotifications(currentUser);
+    }
+    return res;
+  };
+
+  const rejectFriendRequest = async (notificationId) => {
+    const res = await fetchAPI('reject_friend_request', { notification_id: notificationId });
+    if (res.success) {
+      await fetchNotifications(currentUser);
+    }
+    return res;
+  };
+
   const joinTrip = async (tripCode) => {
     const data = await fetchAPI('join_trip', { trip_code: tripCode, user: currentUser });
     if (data.success) await fetchTrips(currentUser);
@@ -481,6 +498,7 @@ const TripProvider = ({ children }) => {
     addSchedule, updateSchedule, updateSchedulePhotos, deleteSchedule,
     addFriend, removeFriend,
     globalFriends, searchUsers, addGlobalFriend, removeGlobalFriend,
+    acceptFriendRequest, rejectFriendRequest,
     joinTrip,
     exportTrip, importTrip,
     saveTemplate, deleteTemplate, useTemplate,
@@ -2262,36 +2280,67 @@ const TemplatesPage = () => {
   );
 };
 
-// Notifications Page
-const NotificationsPage = () => {
-  const { notifications, markNotificationRead, markAllNotificationsRead, navigateTo } = useTrip();
+// Notifications Dropdown
+const NotificationsDropdown = ({ onClose }) => {
+  const { notifications, markNotificationRead, markAllNotificationsRead, acceptFriendRequest, rejectFriendRequest } = useTrip();
+  
+  const dropdownRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [onClose]);
+
   return (
-    <div className="animate-fade-in">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold mb-0"><Icon name="bell" size={24} /> Notifications</h2>
+    <div ref={dropdownRef} className="position-absolute end-0 mt-2 bg-white shadow-lg rounded" style={{ width: '350px', maxHeight: '450px', overflowY: 'auto', zIndex: 1050, border: '1px solid var(--border)', top: '100%' }}>
+      <div className="d-flex justify-content-between align-items-center p-3 border-bottom sticky-top bg-white" style={{ zIndex: 10 }}>
+        <h6 className="fw-bold mb-0">Notifikasi</h6>
         {notifications.some(n => !n.is_read) && (
-          <button className="btn btn-sm btn-outline-primary" onClick={markAllNotificationsRead}><Icon name="check-circle" size={14} className="me-1" /> Mark all read</button>
+          <button className="btn btn-sm text-primary p-0 text-decoration-none" onClick={markAllNotificationsRead}>Mark all read</button>
         )}
       </div>
       {notifications.length === 0 ? (
-        <div className="empty-state">
-          <Icon name="bell" size={64} />
-          <h4 className="fw-bold">No notifications</h4>
+        <div className="p-4 text-center text-muted">
+          <Icon name="bell" size={40} className="mb-2 opacity-50" />
+          <p className="mb-0">No notifications</p>
         </div>
       ) : (
-        <div className="d-flex flex-column gap-2">
+        <div className="d-flex flex-column">
           {notifications.map(n => (
-            <div key={n.id} className={`card-trip ${!n.is_read ? '' : 'opacity-75'}`} onClick={() => !n.is_read && markNotificationRead(n.id)} style={{ cursor: 'pointer' }}>
-              <div className="card-body p-3 d-flex align-items-center gap-3">
-                <div className={`rounded-circle d-flex align-items-center justify-content-center ${n.is_read ? 'bg-light' : 'bg-primary'}`} style={{ width: 40, height: 40, color: n.is_read ? 'var(--text-muted)' : 'white' }}>
-                  <Icon name={n.type === 'trip_shared' ? 'share-2' : 'info'} size={18} />
+            <div key={n.id} className={`p-3 border-bottom ${!n.is_read ? 'bg-light' : 'bg-white'}`} onClick={() => !n.is_read && n.type !== 'friend_request' && markNotificationRead(n.id)} style={{ cursor: n.type === 'friend_request' && !n.is_read ? 'default' : 'pointer', transition: 'background-color 0.2s' }}>
+              <div className="d-flex gap-3">
+                <div className={`rounded-circle d-flex align-items-center justify-content-center ${n.is_read ? 'bg-secondary' : 'bg-primary'} text-white`} style={{ width: 40, height: 40, flexShrink: 0 }}>
+                  <Icon name={n.type === 'friend_request' ? 'user-plus' : n.type === 'trip_shared' ? 'share-2' : 'info'} size={18} />
                 </div>
                 <div className="flex-grow-1">
-                  <h6 className="mb-1">{n.title}</h6>
-                  <p className="text-muted small mb-0">{n.message}</p>
-                  <small className="text-muted">{new Date(n.created_at).toLocaleString('en-US')}</small>
+                  <div className="d-flex justify-content-between align-items-start">
+                    <h6 className="mb-1" style={{ fontSize: '0.9rem' }}>{n.title}</h6>
+                    {!n.is_read && <span className="rounded-circle bg-primary mt-1" style={{ width: 8, height: 8 }} />}
+                  </div>
+                  <p className="text-muted mb-1" style={{ fontSize: '0.85rem' }}>{n.message}</p>
+                  <small className="text-muted" style={{ fontSize: '0.75rem' }}>{new Date(n.created_at).toLocaleString('en-US')}</small>
+                  
+                  {n.type === 'friend_request' && !n.is_read && (
+                    <div className="mt-2 d-flex gap-2">
+                      <button 
+                        className="btn btn-sm btn-primary w-50" 
+                        onClick={(e) => { e.stopPropagation(); acceptFriendRequest(n.id); }}
+                      >
+                        Accept
+                      </button>
+                      <button 
+                        className="btn btn-sm btn-outline-danger w-50" 
+                        onClick={(e) => { e.stopPropagation(); rejectFriendRequest(n.id); }}
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  )}
                 </div>
-                {!n.is_read && <span className="rounded-circle bg-primary" style={{ width: 8, height: 8 }} />}
               </div>
             </div>
           ))}
@@ -2456,7 +2505,7 @@ const GlobalFriends = () => {
     setAddStatus({ loading: username });
     const res = await addGlobalFriend(username);
     if (res.success) {
-      setAddStatus({ success: `Added ${username}` });
+      setAddStatus({ success: `Friend request sent to ${username}!` });
       setSearchResults(searchResults.filter(u => u.username !== username));
     } else {
       setAddStatus({ error: res.message });
@@ -2594,6 +2643,7 @@ const AppContent = () => {
   const { currentUser, activeView, navigateTo, logout, unreadCount } = useTrip();
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [showHeader, setShowHeader] = useState(true);
+  const [showNotifications, setShowNotifications] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -2634,7 +2684,6 @@ const AppContent = () => {
     budget: <BudgetReport />,
     settings: <SettingsPage />,
     templates: <TemplatesPage />,
-    notifications: <NotificationsPage />,
     'all-budgets': <AllBudgetsReport />,
     'global-friends': <GlobalFriends />
   };
@@ -2659,11 +2708,13 @@ const AppContent = () => {
           </div>
         </div>
         <div className="d-flex align-items-center gap-1 ms-auto">
-
-          <button className="btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center" onClick={() => { navigateTo('notifications'); closeSidebar(); }} title="Notifications">
-            <Icon name="bell" size={22} />
-            {unreadCount > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.6rem', padding: '0.25em 0.4em', transform: 'translate(-60%, 20%)' }}>{unreadCount}</span>}
-          </button>
+          <div className="position-relative">
+            <button className="btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center" onClick={() => setShowNotifications(!showNotifications)} title="Notifications">
+              <Icon name="bell" size={22} />
+              {unreadCount > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.6rem', padding: '0.25em 0.4em', transform: 'translate(-60%, 20%)' }}>{unreadCount}</span>}
+            </button>
+            {showNotifications && <NotificationsDropdown onClose={() => setShowNotifications(false)} />}
+          </div>
           <button className="btn p-2 border-0 bg-transparent text-primary d-flex align-items-center justify-content-center" onClick={logout} title="Logout">
             <Icon name="log-out" size={22} />
           </button>

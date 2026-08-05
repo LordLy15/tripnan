@@ -837,16 +837,99 @@ try {
             }
             
             try {
-                $id = generateId();
-                $stmt = $pdo->prepare("INSERT INTO global_friends (id, user_username, friend_username) VALUES (?, ?, ?)");
-                $stmt->execute([$id, $user_username, $friend_username]);
-                echo json_encode(['success' => true, 'id' => $id]);
-            } catch (PDOException $e) {
-                if ($e->getCode() == '23505') {
+                // Check if they are already friends
+                $stmt = $pdo->prepare("SELECT id FROM global_friends WHERE user_username = ? AND friend_username = ?");
+                $stmt->execute([$user_username, $friend_username]);
+                if ($stmt->fetch()) {
                     echo json_encode(['success' => false, 'message' => 'User is already your friend']);
-                } else {
-                    echo json_encode(['success' => false, 'message' => 'Database error']);
+                    break;
                 }
+
+                // Check if request already sent
+                $stmt = $pdo->prepare("SELECT id FROM notifications WHERE user_id = ? AND type = 'friend_request' AND data->>'sender' = ? AND is_read = false");
+                $stmt->execute([$friend_username, $user_username]);
+                if ($stmt->fetch()) {
+                    echo json_encode(['success' => false, 'message' => 'Friend request already sent']);
+                    break;
+                }
+
+                $id = generateId();
+                $title = "New Friend Request";
+                $message = "{$user_username} sent you a friend request";
+                $data = json_encode(['sender' => $user_username]);
+                $stmt = $pdo->prepare("INSERT INTO notifications (id, user_id, type, title, message, data) VALUES (?, ?, 'friend_request', ?, ?, ?)");
+                $stmt->execute([$id, $friend_username, $title, $message, $data]);
+                
+                echo json_encode(['success' => true, 'message' => 'Friend request sent']);
+            } catch (PDOException $e) {
+                echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+            }
+            break;
+        }
+
+        case 'accept_friend_request': {
+            $notification_id = isset($input['notification_id']) ? $input['notification_id'] : '';
+            if (!$notification_id) {
+                echo json_encode(['success' => false, 'message' => 'Missing notification_id']);
+                break;
+            }
+            try {
+                // Get notification
+                $stmt = $pdo->prepare("SELECT * FROM notifications WHERE id = ?");
+                $stmt->execute([$notification_id]);
+                $notif = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if (!$notif || $notif['type'] !== 'friend_request') {
+                    echo json_encode(['success' => false, 'message' => 'Invalid friend request']);
+                    break;
+                }
+                
+                $data = json_decode($notif['data'], true);
+                $sender = $data['sender'];
+                $receiver = $notif['user_id'];
+                
+                // Check if already friends receiver -> sender
+                $stmt = $pdo->prepare("SELECT id FROM global_friends WHERE user_username = ? AND friend_username = ?");
+                $stmt->execute([$receiver, $sender]);
+                if (!$stmt->fetch()) {
+                    $id1 = generateId();
+                    $stmt = $pdo->prepare("INSERT INTO global_friends (id, user_username, friend_username) VALUES (?, ?, ?)");
+                    $stmt->execute([$id1, $receiver, $sender]);
+                }
+                
+                // Check if already friends sender -> receiver
+                $stmt = $pdo->prepare("SELECT id FROM global_friends WHERE user_username = ? AND friend_username = ?");
+                $stmt->execute([$sender, $receiver]);
+                if (!$stmt->fetch()) {
+                    $id2 = generateId();
+                    $stmt = $pdo->prepare("INSERT INTO global_friends (id, user_username, friend_username) VALUES (?, ?, ?)");
+                    $stmt->execute([$id2, $sender, $receiver]);
+                }
+                
+                // Mark notification as read
+                $stmt = $pdo->prepare("UPDATE notifications SET is_read = true WHERE id = ?");
+                $stmt->execute([$notification_id]);
+                
+                echo json_encode(['success' => true, 'message' => 'Friend request accepted']);
+            } catch (PDOException $e) {
+                echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+            }
+            break;
+        }
+
+        case 'reject_friend_request': {
+            $notification_id = isset($input['notification_id']) ? $input['notification_id'] : '';
+            if (!$notification_id) {
+                echo json_encode(['success' => false, 'message' => 'Missing notification_id']);
+                break;
+            }
+            try {
+                // Mark notification as read
+                $stmt = $pdo->prepare("UPDATE notifications SET is_read = true WHERE id = ?");
+                $stmt->execute([$notification_id]);
+                echo json_encode(['success' => true, 'message' => 'Friend request rejected']);
+            } catch (PDOException $e) {
+                echo json_encode(['success' => false, 'message' => 'Database error']);
             }
             break;
         }
