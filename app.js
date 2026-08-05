@@ -1658,9 +1658,9 @@ const TripDashboard = () => {
     desc: 'View analytics'
   }].map(m => /*#__PURE__*/React.createElement("div", {
     key: m.key,
-    className: "col-md-4"
+    className: "col-6 col-md-3"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "module-card",
+    className: "module-card h-100",
     onClick: () => navigateTo(m.key)
   }, /*#__PURE__*/React.createElement("div", {
     className: "module-icon",
@@ -1671,7 +1671,7 @@ const TripDashboard = () => {
     name: m.icon,
     size: 28
   })), /*#__PURE__*/React.createElement("h4", {
-    className: "fw-bold mb-1"
+    className: "fw-bold mb-1 fs-5"
   }, m.title), /*#__PURE__*/React.createElement("p", {
     className: "text-muted small mb-0"
   }, m.desc))))));

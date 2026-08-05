@@ -1145,10 +1145,10 @@ const TripDashboard = () => {
           { key: 'friends', icon: 'users', color: 'var(--success)', title: 'Travel Buddies', desc: `${activeTrip.friends?.length || 0} friends` },
           { key: 'budget', icon: 'pie-chart', color: 'var(--warning)', title: 'Budget Report', desc: 'View analytics' }
         ].map(m => (
-          <div key={m.key} className="col-md-4">
-            <div className="module-card" onClick={() => navigateTo(m.key)}>
+          <div key={m.key} className="col-6 col-md-3">
+            <div className="module-card h-100" onClick={() => navigateTo(m.key)}>
               <div className="module-icon" style={{ background: m.color }}><Icon name={m.icon} size={28} /></div>
-              <h4 className="fw-bold mb-1">{m.title}</h4>
+              <h4 className="fw-bold mb-1 fs-5">{m.title}</h4>
               <p className="text-muted small mb-0">{m.desc}</p>
             </div>
           </div>
