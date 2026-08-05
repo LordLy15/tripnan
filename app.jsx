@@ -706,7 +706,12 @@ const calculateTripDuration = (schedules) => {
   let days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
   if (days === 0) days = 1; // At least 1 day
   
-  return `${days} Day${days > 1 ? 's' : ''}`;
+  const startDate = new Date(minDate);
+  const dd = String(startDate.getDate()).padStart(2, '0');
+  const mm = String(startDate.getMonth() + 1).padStart(2, '0');
+  const yyyy = startDate.getFullYear();
+  
+  return `${days} Day${days > 1 ? 's' : ''} • ${dd}/${mm}/${yyyy}`;
 };
 
 // My Trips Page
