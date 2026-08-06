@@ -210,10 +210,11 @@ const TripProvider = ({ children }) => {
         ? `&${Object.entries(data).map(([k,v]) => `${k}=${encodeURIComponent(v)}`).join('&')}` 
         : '';
         
-      const res = await fetch(`api/api.php?action=${action}${queryString}`, {
+      const res = await fetch(`api/api.php?action=${action}${queryString}${isGet ? `&_t=${Date.now()}` : ''}`, {
         method: isGet ? 'GET' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: isGet ? undefined : JSON.stringify(data)
+        body: isGet ? undefined : JSON.stringify(data),
+        cache: 'no-store'
       });
       
       const text = await res.text();
