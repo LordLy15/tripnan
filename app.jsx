@@ -1549,14 +1549,12 @@ const ScheduleCard = ({ schedule }) => {
           </div>
         )}
 
-        {(schedule.isCompleted || isEditing) && (
-          <PhotoGallery
-            photos={photos}
-            editable={isEditing}
-            onAdd={handlePhotoAdd}
-            onDelete={handlePhotoDelete}
-          />
-        )}
+        <PhotoGallery
+          photos={photos}
+          editable={true}
+          onAdd={handlePhotoAdd}
+          onDelete={handlePhotoDelete}
+        />
         
         {loadingPhotos && (
           <div className="text-center py-2">
