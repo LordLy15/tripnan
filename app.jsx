@@ -2856,7 +2856,7 @@ const AppContent = () => {
         </div>
         <div className="d-flex align-items-center gap-1 ms-auto">
           <div className="position-relative">
-            <button id="notification-toggle-btn" className="btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center" onClick={() => setShowNotifications(!showNotifications)} title="Notifications">
+            <button id="notification-toggle-btn" className="btn p-2 border-0 bg-transparent text-primary position-relative d-flex align-items-center justify-content-center" onClick={(e) => { e.stopPropagation(); setShowNotifications(!showNotifications); }} title="Notifications">
               <Icon name="bell" size={22} />
               {unreadCount > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.6rem', padding: '0.25em 0.4em', transform: 'translate(-60%, 20%)' }}>{unreadCount}</span>}
             </button>
