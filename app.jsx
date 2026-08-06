@@ -205,11 +205,17 @@ const TripProvider = ({ children }) => {
 
   const fetchAPI = async (action, data = {}) => {
     try {
-      const res = await fetch(`api/api.php?action=${action}${action === 'get_trips' || action === 'get_categories' || action === 'get_templates' || action === 'get_notifications' || action === 'get_unread_count' || action === 'get_profile' || action === 'find_trip_by_code' ? `&${Object.entries(data).map(([k,v]) => `${k}=${encodeURIComponent(v)}`).join('&')}` : ''}`, {
-        method: action.includes('get') ? 'GET' : 'POST',
+      const isGet = action.includes('get') || action === 'find_trip_by_code';
+      const queryString = isGet && Object.keys(data).length > 0 
+        ? `&${Object.entries(data).map(([k,v]) => `${k}=${encodeURIComponent(v)}`).join('&')}` 
+        : '';
+        
+      const res = await fetch(`api/api.php?action=${action}${queryString}`, {
+        method: isGet ? 'GET' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: action.includes('get') ? undefined : JSON.stringify(data)
+        body: isGet ? undefined : JSON.stringify(data)
       });
+      
       const text = await res.text();
       if (!text.startsWith('{')) return { success: false, message: 'Server error' };
       return JSON.parse(text);
