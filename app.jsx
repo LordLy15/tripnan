@@ -1293,6 +1293,14 @@ const Itinerary = () => {
       return new Date(`${a.date}T${timeA}`) - new Date(`${b.date}T${timeB}`);
     });
 
+  const allDates = [...new Set((activeTrip.schedules || []).map(s => s.date))].sort((a, b) => new Date(a) - new Date(b));
+  
+  const groupedByDate = sorted.reduce((acc, curr) => {
+    if (!acc[curr.date]) acc[curr.date] = [];
+    acc[curr.date].push(curr);
+    return acc;
+  }, {});
+
   return (
     <div className="animate-fade-in">
       <button className="btn btn-link text-muted p-0 mb-4" onClick={() => navigateTo('trip-dashboard')}><Icon name="arrow-left" size={16} /> Back</button>
@@ -1343,8 +1351,20 @@ const Itinerary = () => {
           <h4 className="fw-bold">No activities yet</h4>
         </div>
       ) : (
-        <div className="d-flex flex-column gap-3">
-          {sorted.map(s => <ScheduleCard key={s.id} schedule={s} />)}
+        <div className="d-flex flex-column gap-4">
+          {Object.keys(groupedByDate).sort((a, b) => new Date(a) - new Date(b)).map(date => {
+            const dayIndex = allDates.indexOf(date) + 1;
+            return (
+              <div key={date}>
+                <h5 className="fw-bold mb-3" style={{ color: 'var(--primary)' }}>
+                  Day {dayIndex} <span className="text-muted fs-6 fw-normal ms-2">({new Date(date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })})</span>
+                </h5>
+                <div className="d-flex flex-column gap-3">
+                  {groupedByDate[date].map(s => <ScheduleCard key={s.id} schedule={s} />)}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -1372,6 +1392,14 @@ const AddOns = () => {
       const timeB = b.time || '00:00';
       return new Date(`${a.date}T${timeA}`) - new Date(`${b.date}T${timeB}`);
     });
+
+  const allDates = [...new Set((activeTrip.schedules || []).map(s => s.date))].sort((a, b) => new Date(a) - new Date(b));
+  
+  const groupedByDate = sorted.reduce((acc, curr) => {
+    if (!acc[curr.date]) acc[curr.date] = [];
+    acc[curr.date].push(curr);
+    return acc;
+  }, {});
 
   return (
     <div className="animate-fade-in">
@@ -1423,8 +1451,20 @@ const AddOns = () => {
           <h4 className="fw-bold">No add-ons yet</h4>
         </div>
       ) : (
-        <div className="d-flex flex-column gap-3">
-          {sorted.map(s => <ScheduleCard key={s.id} schedule={s} />)}
+        <div className="d-flex flex-column gap-4">
+          {Object.keys(groupedByDate).sort((a, b) => new Date(a) - new Date(b)).map(date => {
+            const dayIndex = allDates.indexOf(date) + 1;
+            return (
+              <div key={date}>
+                <h5 className="fw-bold mb-3" style={{ color: 'var(--info)' }}>
+                  Day {dayIndex} <span className="text-muted fs-6 fw-normal ms-2">({new Date(date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })})</span>
+                </h5>
+                <div className="d-flex flex-column gap-3">
+                  {groupedByDate[date].map(s => <ScheduleCard key={s.id} schedule={s} />)}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
