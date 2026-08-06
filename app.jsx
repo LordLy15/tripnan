@@ -400,8 +400,11 @@ const TripProvider = ({ children }) => {
   const acceptFriendRequest = async (notificationId) => {
     const res = await fetchAPI('accept_friend_request', { notification_id: notificationId });
     if (res.success) {
+      setToast(res.message || 'Friend request accepted');
       await fetchGlobalFriends(currentUser);
       await fetchNotifications(currentUser);
+    } else {
+      setToast(res.message || 'Failed to accept friend request', 'error');
     }
     return res;
   };
@@ -409,7 +412,10 @@ const TripProvider = ({ children }) => {
   const rejectFriendRequest = async (notificationId) => {
     const res = await fetchAPI('reject_friend_request', { notification_id: notificationId });
     if (res.success) {
+      setToast(res.message || 'Friend request rejected');
       await fetchNotifications(currentUser);
+    } else {
+      setToast(res.message || 'Failed to reject friend request', 'error');
     }
     return res;
   };

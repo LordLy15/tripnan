@@ -1036,8 +1036,8 @@ try {
                     $stmt->execute([$id2, $sender, $receiver]);
                 }
                 
-                // Mark notification as read
-                $stmt = $pdo->prepare("UPDATE notifications SET is_read = true WHERE id = ?");
+                // Delete notification
+                $stmt = $pdo->prepare("DELETE FROM notifications WHERE id = ?");
                 $stmt->execute([$notification_id]);
                 
                 echo json_encode(['success' => true, 'message' => 'Friend request accepted']);
@@ -1054,8 +1054,8 @@ try {
                 break;
             }
             try {
-                // Mark notification as read
-                $stmt = $pdo->prepare("UPDATE notifications SET is_read = true WHERE id = ?");
+                // Delete notification
+                $stmt = $pdo->prepare("DELETE FROM notifications WHERE id = ?");
                 $stmt->execute([$notification_id]);
                 echo json_encode(['success' => true, 'message' => 'Friend request rejected']);
             } catch (PDOException $e) {
