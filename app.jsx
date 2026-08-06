@@ -2648,7 +2648,7 @@ const AllBudgetsReport = () => {
 
 // Global Friends Page
 const GlobalFriends = () => {
-  const { globalFriends, searchUsers, addGlobalFriend, removeGlobalFriend, pendingRequests, cancelFriendRequest } = useTrip();
+  const { globalFriends, searchUsers, addGlobalFriend, removeGlobalFriend, pendingRequests, cancelFriendRequest, notifications, acceptFriendRequest, rejectFriendRequest } = useTrip();
   const [filter, setFilter] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -2688,6 +2688,8 @@ const GlobalFriends = () => {
     f.username.toLowerCase().includes(filter.toLowerCase()) || 
     f.email.toLowerCase().includes(filter.toLowerCase())
   );
+
+  const receivedRequests = (notifications || []).filter(n => n.type === 'friend_request' && !n.is_read);
 
   return (
     <div className="animate-fade-in p-4">
@@ -2740,6 +2742,40 @@ const GlobalFriends = () => {
           ))
         )}
       </div>
+
+      {receivedRequests.length > 0 && (
+        <div className="mt-5">
+          <h4 className="fw-bold mb-3 d-flex align-items-center gap-2">
+            <Icon name="user-plus" size={20} className="text-primary" /> Friend Requests
+          </h4>
+          <div className="row g-3">
+            {receivedRequests.map(req => {
+              const sender = req.data?.sender || 'Someone';
+              return (
+                <div key={req.id} className="col-12 col-md-6 col-lg-4">
+                  <div className="card-trip d-flex align-items-center p-3" style={{ border: '1px solid var(--primary)' }}>
+                    <div className="avatar me-3 bg-primary text-white d-flex align-items-center justify-content-center fw-bold fs-5 rounded-circle" style={{ width: 50, height: 50 }}>
+                      {sender.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="flex-grow-1">
+                      <h6 className="fw-bold mb-0">{req.title}</h6>
+                      <p className="text-muted small mb-0">{req.message}</p>
+                    </div>
+                    <div className="d-flex flex-column gap-2 ms-2">
+                      <button className="btn btn-primary btn-sm rounded-circle p-2" onClick={() => acceptFriendRequest(req.id)} title="Accept">
+                        <Icon name="check" size={16} />
+                      </button>
+                      <button className="btn btn-outline-danger btn-sm rounded-circle p-2" onClick={() => rejectFriendRequest(req.id)} title="Reject">
+                        <Icon name="x" size={16} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {pendingRequests.length > 0 && (
         <div className="mt-5">
