@@ -2685,8 +2685,8 @@ const GlobalFriends = () => {
   };
 
   const filteredFriends = globalFriends.filter(f => 
-    f.username.toLowerCase().includes(filter.toLowerCase()) || 
-    f.email.toLowerCase().includes(filter.toLowerCase())
+    (f.username || '').toLowerCase().includes(filter.toLowerCase()) || 
+    (f.email || '').toLowerCase().includes(filter.toLowerCase())
   );
 
   const receivedRequests = (notifications || []).filter(n => n.type === 'friend_request' && !n.is_read);
@@ -2837,26 +2837,36 @@ const GlobalFriends = () => {
               {searchResults.length === 0 && !isSearching && searchQuery && (
                 <p className="text-muted text-center py-3">No users found.</p>
               )}
-              {searchResults.map(user => (
-                <div key={user.username} className="d-flex align-items-center justify-content-between p-3 border-bottom border-light">
-                  <div className="d-flex align-items-center gap-3">
-                    <div className="avatar bg-secondary text-white d-flex align-items-center justify-content-center fw-bold rounded-circle" style={{ width: 40, height: 40 }}>
-                      {user.username.charAt(0).toUpperCase()}
+              {searchResults.map(u => {
+                const isFriend = globalFriends.some(f => f.username === u.username);
+                const isPending = pendingRequests.some(req => req.target_username === u.username);
+                return (
+                  <div key={u.username} className="d-flex align-items-center justify-content-between p-3 border-bottom">
+                    <div className="d-flex align-items-center">
+                      <div className="avatar me-3 bg-secondary text-white d-flex align-items-center justify-content-center fw-bold rounded-circle" style={{ width: 40, height: 40 }}>
+                        {u.username.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <h6 className="mb-0 fw-bold">{u.username}</h6>
+                        <small className="text-muted">{u.email}</small>
+                      </div>
                     </div>
-                    <div>
-                      <div className="fw-bold">{user.username}</div>
-                      <div className="text-muted small">{user.email}</div>
-                    </div>
+                    {isFriend ? (
+                      <button className="btn btn-secondary btn-sm rounded-pill px-3" disabled>
+                        <Icon name="user-check" size={14} className="me-1" /> Friend
+                      </button>
+                    ) : isPending ? (
+                      <button className="btn btn-warning btn-sm rounded-pill px-3 text-white" disabled>
+                        <Icon name="clock" size={14} className="me-1" /> Pending
+                      </button>
+                    ) : (
+                      <button className="btn btn-outline-primary btn-sm rounded-pill px-3" onClick={() => handleAdd(u.username)} disabled={addStatus?.loading === u.username}>
+                        {addStatus?.loading === u.username ? <span className="spinner-border spinner-border-sm"></span> : <><Icon name="user-plus" size={14} className="me-1" /> Add</>}
+                      </button>
+                    )}
                   </div>
-                  <button 
-                    className="btn btn-sm btn-outline-primary rounded-pill px-3 d-flex align-items-center gap-1 fw-medium" 
-                    onClick={() => handleAdd(user.username)}
-                    disabled={addStatus?.loading === user.username}
-                  >
-                    {addStatus?.loading === user.username ? <><span className="spinner-border spinner-border-sm"></span> Adding</> : <><Icon name="user-plus" size={14} /> Add</>}
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
