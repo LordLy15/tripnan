@@ -874,7 +874,7 @@ try {
 
         case 'mark_all_notifications_read': {
             $user_id = isset($input['user_id']) ? $input['user_id'] : '';
-            $stmt = $pdo->prepare("UPDATE notifications SET is_read = 1 WHERE user_id = ?");
+            $stmt = $pdo->prepare("UPDATE notifications SET is_read = true WHERE user_id = ? AND type NOT IN ('friend_request', 'trip_invite', 'trip_join_request')");
             $stmt->execute([$user_id]);
             echo json_encode(['success' => true]);
             break;
